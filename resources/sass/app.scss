@@ -1,0 +1,33 @@
+// RESET
+@import 'preflight';
+
+// VARIABLES, MIXINS, FUNCTIONS
+@import 'init';
+
+// Libs
+// @import '~overlayscrollbars/css/OverlayScrollbars.css';
+@import '~simplebar/dist/simplebar.min.css';
+@import './tooltips';
+
+
+html {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    line-height: 1.5;
+    color: $grey-4;
+}
+
+body {
+    background: $grey-1;
+}
+
+
+.truncate {
+    @include truncate();
+}
+
+.simplebar-scrollbar {
+    &::before {
+        background: $grey-3;
+        width: 5px;
+    }
+}

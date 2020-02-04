@@ -1,0 +1,29 @@
+@function is-pixel($value) {
+    @return index('px', unit($value)) != null;
+}
+
+@function is-rem($value) {
+    @return index('rem', unit($value)) != null;
+}
+
+@function pixel-to-rem($value) {
+    @if is-pixel($value) {
+        @return $value / 16px * 1rem;
+    } 
+    @return $value;
+} 
+
+// fl - (FLUID FUNCTION)
+@function fl( $max-v, $min-v, $max-w: $fl-max-w, $min-w: $fl-min-w) {
+
+    // @if ($min-v == null) {
+    //   $min-v: pow($max-v / 1px, $power-to-min) * 1px;
+    //   @debug($power-to-min);
+    // }
+    
+    @if is-rem($max-v) {
+        $max-w: pixel-to-rem($max-w);
+        $min-w: pixel-to-rem($min-w);
+    }
+    @return calc((100vw - #{$min-w}) * #{($max-v - $min-v) / ($max-w - $min-w)} + #{$min-v});
+}
