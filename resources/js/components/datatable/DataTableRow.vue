@@ -22,8 +22,8 @@
         </div>
       </div>
       <div class="table-row-post">
-        <i class="icon lni-eye"></i>
-        <i class="icon lni-pencil"></i>
+        <icon name="eye" />
+        <icon name="edit-2" />
         <row-delete-button :item="row" />
       </div>
     </div>
@@ -47,12 +47,18 @@ export default {
 <style scoped lang="scss">
 @import "resources/sass/init";
 .table-row {
-  background: $white;
-  padding: 13px $table-row-padding-x;
-  border-radius: 5px;
-  box-shadow: 1px 2px 2px rgba(black, 0.08);
+  background: white;
+  padding: var(--sp-3) var(--table-row-horizontal-padding);
+  border-radius: var(--br);
+  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), .1);
+
   &:not(:last-child) {
-    margin-bottom: 13px;
+    margin-bottom: var(--sp-2);
+  }
+
+  transition: all .2s ease;
+  &:hover {
+    // background: hsla(var(--primary-v-6), .02);
   }
 }
 
@@ -62,15 +68,14 @@ export default {
 }
 
 .table-row-pre {
-  width: $table-row-pre-width;
-
+  width: var(--table-row-pre-width);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .table-row-post {
-  width: $table-row-post-width;
+  width: var(--table-row-post-width);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,24 +87,12 @@ export default {
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 0 $table-row-cells-margin-x;
+  margin: 0 var(--table-row-cells-horizontal-margin);
 }
 
 .table-row-cell {
-  font-size: 14px;
-  color: $grey-4;
-}
-
-.icon {
-  font-size: 22px;
-  color: $grey-4;
-
-  &.is-disabled {
-      opacity: .3;
-  }
-}
-
-.icon.lni-eye {
-    font-size: 24px;
+  font-size: var(--fz-xs);
+  font-weight:  var(--fw-bold);
+  color: var(--grey-5);
 }
 </style>

@@ -14,17 +14,24 @@
  </div>
     
 </template>
+
+<script>
+
+export default {
+    data() {
+        return {
+        };
+    },
+};
+</script>
+
 <style scoped lang="scss">
 @import "resources/sass/init";
 
 .main {
-    padding-top: $header-height + $main-vertical;
-    padding-left: $sidebar-width + $main-horizontal;
-    padding-right: $main-horizontal;
+    padding-top: calc(var(--header-height) + var(--main-top-padding));
+    padding-left: calc(var(--sidebar-width) + var(--main-horizontal-padding));
+    padding-right: var(--main-horizontal-padding);
 }
 </style>
 
-<script>
-export default {
-};
-</script>

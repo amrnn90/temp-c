@@ -48,9 +48,7 @@ export default {
 .flash-messages {
   position: fixed;
   z-index: 10000;
-  right: 50px;
+  left: 50px;
   bottom: 50px;
-  background: teal;
-  color: white;
 }
 </style>

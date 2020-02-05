@@ -35,7 +35,7 @@ export default {
   width: 3%;
   padding-top: 3%;
   margin-right: 3px;
-  background-color: darken($primary, 50%);
+  background-color: var(--primary-3);
 
   border-radius: 100%;
 //   display: inline-block;

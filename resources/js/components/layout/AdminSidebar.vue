@@ -2,16 +2,45 @@
   <nav class="sidebar">
     <ul class="sidebar-items">
       <li class="sidebar-items__item" v-for="resource in resources" :key="resource.name">
-        <router-link :to="{name: resource.name + '.index'}">{{resource.label}}</router-link>
+        <router-link :to="{name: resource.name + '.index'}">
+          <span class="icon-wrapper">
+            <icon name="folder" size="24" class="menu-icon" />
+          </span>
+          <!-- <span>{{resource.label}}</span> -->
+          <span>My Files</span>
+        </router-link>
       </li>
       <li class="sidebar-items__item">
-        <a href="#">Temp one</a>
+        <a href="#">
+          <span class="icon-wrapper">
+            <icon name="share" size="24" class="menu-icon" />
+          </span>
+          <span>Sharing</span>
+        </a>
       </li>
       <li class="sidebar-items__item">
-        <a href="#">Temp two</a>
+        <a href="#">
+          <span class="icon-wrapper">
+            <icon name="file" size="24" class="menu-icon" />
+          </span>
+          <span>File Requests</span>
+        </a>
       </li>
       <li class="sidebar-items__item">
-        <a href="#">Temp three</a>
+        <a href="#">
+          <span class="icon-wrapper">
+            <icon name="users" size="24" class="menu-icon" />
+          </span>
+          <span>Users</span>
+        </a>
+      </li>
+      <li class="sidebar-items__item">
+        <a href="#">
+          <span class="icon-wrapper">
+            <icon name="trash-2" size="24" class="menu-icon" />
+          </span>
+          <span>Deleted Files</span>
+        </a>
       </li>
     </ul>
   </nav>
@@ -34,33 +63,38 @@ export default {
   position: fixed;
   left: 0;
   z-index: 7777;
-  width: $sidebar-width;
+  width: var(--sidebar-width);
   height: 100vh;
   padding-top: 200px;
-  background: $white;
-  box-shadow: 3px 0 30px rgba(black, .05);
+  background: white;
+  box-shadow: 3px 0 30px rgba(black, 0.05);
+  display: flex;
+  justify-content: center;
 }
 
 .sidebar-items {
-  padding: 0 35px;
+  max-width: var(--sp-16);
 }
 
 .sidebar-items__item {
-  margin-bottom: 20px;
-  font-weight: bold;
-  font-size: 14px;
-  color: #7e828c;
-
+  margin-bottom: var(--sp-9);
+  font-weight: var(--fw-regular);
+  font-size: var(--fz-xs);
+  color: var(--grey-7);
   a {
-    display: block;
-    padding: 13px 0;
-    text-align: center;
-    border-radius: 5px;
+    display: flex;
+    align-items: flex-start;
   }
 
   .router-link-active {
-    background: $primary-light;
-    color: $white;
+    color: var(--grey-4);
+  }
+
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    height: 1.5em;
+    margin-right: var(--sp-4);
   }
 }
 </style>

@@ -34,7 +34,8 @@ export default {
 @import "resources/sass/init";
 
 .resource-label {
-  font-size: 24px;
-  margin-bottom: 24px;
+  font-size: var(--fz-2xl);
+  color: var(--grey-2);
+  margin-bottom: var(--sp-8);
 }
 </style>

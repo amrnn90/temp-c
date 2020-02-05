@@ -21,13 +21,13 @@
           </div>
         </simplebar>
       </div>
-    </div>
 
-    <paginator
-      :pagingInfo="pagingInfo"
-      @page-selected="handlePageSelected"
-      :isDisabled="isLoading"
-    />
+      <paginator
+        :pagingInfo="pagingInfo"
+        @page-selected="handlePageSelected"
+        :isDisabled="isLoading"
+      />
+    </div>
   </div>
 </template>
 
@@ -126,30 +126,28 @@ export default {
 <style scoped lang="scss">
 @import "resources/sass/init";
 
+.table {
+  margin: 0 calc(var(--table-row-horizontal-padding) * -1);
+}
+
 .table-body-wrapper {
   position: relative;
+  margin-bottom: var(--sp-3);
 }
 
 .table-body {
-  padding-bottom: 14px;
-  padding-right: 15px;
-}
+  // padding-bottom: 14px;
 
-// .table-body-wrapper::after {
-//   content: '';
-//   width: 100%;
-//   height: 40px;
-//   bottom: 0;
-//   position: absolute;
-//   background: linear-gradient(to top, $grey-1, transparent);
-//   pointer-events: none;
-// }
+  /* offset to make simplebar scroller outside */
+  padding: 0 var(--sp-4);
+}
 
 .simplebar {
   // max-height: 470px;
-  height: 470px;
+  height: 400px;
   transition: filter 0.3s ease;
-  margin-right: -15px;
   overflow-x: hidden;
+
+  margin: 0 calc(-1 * var(--sp-4))
 }
 </style>

@@ -65,8 +65,6 @@ export default {
         document.documentElement.clientHeight
       );
 
-      console.log('scrollHeight:', scrollHeight)
-      console.log('windowHeight:', windowHeight)
       return scrollHeight > windowHeight;
     },
 

@@ -107,3 +107,29 @@
     text-overflow: ellipsis;
     white-space: nowrap
 }
+
+
+@mixin colors($name) {
+    --#{$name}-1:  hsl(var(--#{$name}-hue),100%, 21%);
+    --#{$name}-2:  hsl(var(--#{$name}-hue), 87%, 29%);
+    --#{$name}-3:  hsl(var(--#{$name}-hue), 82%, 33%);
+    --#{$name}-4:  hsl(var(--#{$name}-hue), 76%, 39%);
+    --#{$name}-5:  hsl(var(--#{$name}-hue), 67%, 45%);
+    --#{$name}-6:  hsl(var(--#{$name}-hue), 65%, 55%);
+    --#{$name}-7:  hsl(var(--#{$name}-hue), 74%, 56%);
+    --#{$name}-8:  hsl(var(--#{$name}-hue), 84%, 74%);
+    --#{$name}-9:  hsl(var(--#{$name}-hue), 97%, 85%);
+    --#{$name}-10: hsl(var(--#{$name}-hue), 79%, 92%);
+
+    --#{$name}-v-1:  var(--#{$name}-hue),100%, 21%;
+    --#{$name}-v-2:  var(--#{$name}-hue), 87%, 29%;
+    --#{$name}-v-3:  var(--#{$name}-hue), 82%, 33%;
+    --#{$name}-v-4:  var(--#{$name}-hue), 76%, 39%;
+    --#{$name}-v-5:  var(--#{$name}-hue), 67%, 45%;
+    --#{$name}-v-6:  var(--#{$name}-hue), 65%, 55%;
+    --#{$name}-v-7:  var(--#{$name}-hue), 74%, 56%;
+    --#{$name}-v-8:  var(--#{$name}-hue), 84%, 74%;
+    --#{$name}-v-9:  var(--#{$name}-hue), 97%, 85%;
+    --#{$name}-v-10: var(--#{$name}-hue), 79%, 92%;
+
+}

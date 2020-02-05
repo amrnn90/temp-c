@@ -1,11 +1,11 @@
 <template>
   <delete-item :item="item" #default="{trigger, isDisabled}">
-    <i
+    <button
       @click="handleClick(isDisabled)"
-      class="icon lni-trash"
-      :class="{'is-disabled': isDisabled}"
       v-tooltip.top="{content: isDisabled ? '' : 'Delete Item',}"
+      :disabled="isDisabled"
     >
+      <icon name="trash-2" />
       <modal v-if="showModal" @dismiss="showModal = false">
         <div>
           <h2>Are you sure you want to delete this item?</h2>
@@ -13,7 +13,7 @@
           <button @click="showModal = false">No</button>
         </div>
       </modal>
-    </i>
+    </button>
   </delete-item>
 </template>
 
@@ -36,7 +36,7 @@ export default {
       triggerDelete().then(() => {
         this.showModal = false;
         this.refreshTable();
-        this.$flash('Item deleted successfully!');
+        this.$flash("Item deleted successfully!");
       });
     }
   }
@@ -45,14 +45,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "resources/sass/init";
-.icon {
-  font-size: 22px;
-  color: $grey-4;
-  cursor: pointer;
 
-  &.is-disabled {
-    opacity: 0.3;
-    cursor: default;
-  }
+button:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
+
 </style>

@@ -5,7 +5,7 @@
   
     .tooltip-inner {
       background: tomato;
-      color: $white;
+      color: white;
       border-radius: 5px;
       padding: 6px 10px 6px;
     //   box-shadow: 0 0 6px rgba(black, .1);
@@ -27,7 +27,7 @@
     }
   
     &[x-placement^="top"] {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
   
       .tooltip-arrow {
         border-width: 5px 5px 0 5px;
@@ -42,7 +42,7 @@
     }
   
     &[x-placement^="bottom"] {
-      margin-top: 15px;
+      margin-top: 10px;
   
       .tooltip-arrow {
         border-width: 0 5px 5px 5px;
