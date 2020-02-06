@@ -11,7 +11,8 @@ class Admin
         return [
             'resources' => collect($this->resources())->map->structure()->all(),
             'base_path' => '/admin',
-            'base_api_path' => '/admin/api'
+            'base_api_path' => '/admin/api',
+            'api_urls' => $this->apiUrls()
         ] ;
     }
 
@@ -27,5 +28,11 @@ class Admin
         return collect($this->resources())->filter(function($resource) use ($name) {
             return $resource->name() == $name;
         })->first();
+    }
+
+    protected function apiUrls() {
+        return [
+            'logout' => route('admin.logout'),
+        ];
     }
 }

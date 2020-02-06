@@ -40,7 +40,7 @@ class AdminServiceProvider extends ServiceProvider
                 Route::middleware(RedirectIfAuthenticated::class)
                     ->group(function () {
                         Route::get('login', 'LoginController@showLoginForm')->name('login');
-                        Route::post('login', 'LoginController@login');
+                        Route::post('login', 'LoginController@login')->name('login');
                     });
 
                 Route::middleware(Authenticate::class)

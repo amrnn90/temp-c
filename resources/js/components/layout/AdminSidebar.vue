@@ -6,8 +6,7 @@
           <span class="icon-wrapper">
             <icon name="folder" size="24" class="menu-icon" />
           </span>
-          <!-- <span>{{resource.label}}</span> -->
-          <span>My Files</span>
+          <span>{{resource.label}}</span>
         </router-link>
       </li>
       <li class="sidebar-items__item">
