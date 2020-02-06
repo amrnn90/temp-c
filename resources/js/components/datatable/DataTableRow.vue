@@ -2,7 +2,7 @@
   <div class="table-row">
     <div class="table-row-upper">
       <div class="table-row-pre">
-        <checkbox-input />
+        <checkbox-input :value="!!isSelected" @input="handleSelectedChange" />
       </div>
       <div class="table-row-cells table-cells">
         <div
@@ -35,11 +35,16 @@
 
 <script>
 export default {
-  props: ["row", "resource"],
+  props: ["row", "resource", "isSelected"],
   data() {
     return {
-      isExpanded: false
+      isExpanded: false,
     };
+  },
+  methods: {
+    handleSelectedChange(val) {
+      this.$emit('select', val);
+    }
   }
 };
 </script>

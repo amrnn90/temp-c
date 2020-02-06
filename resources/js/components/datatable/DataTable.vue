@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="table" ref="table">
-      <data-table-head :resource="resource" />
+      <data-table-head
+        :resource="resource"
+        :allRowsAreSelected="allRowsAreSelected"
+        @selectAllRows="handleSelectAllRows"
+      />
 
       <div class="table-body-wrapper">
         <!-- <spinner :show="isLoading" /> -->
@@ -13,10 +17,12 @@
         >
           <div class="table-body">
             <DataTableRow
-              v-for="(row, rowIndex) in pageData.data"
+              v-for="(row, rowIndex) in items"
               :key="rowIndex"
               :row="row"
               :resource="resource"
+              :isSelected="!!selectedRows[rowIndex]"
+              @select="(val) => handleRowSelectChange(rowIndex, val)"
             />
           </div>
         </simplebar>
@@ -51,17 +57,26 @@ export default {
       },
       hiddenColumns: [],
       // expandedRows: {},
+      selectedRows: {},
+      allRowsAreSelected: false,
       isLoading: false
     };
   },
   provide() {
     return {
-      refreshTable: this.refresh
+      refreshTable: this.refresh,
+      tableData: this.$data,
     };
   },
   computed: {
     pagingInfo() {
       return _.omit(this.pageData, ["data"]);
+    },
+    items() {
+      return _.get(this.pageData, 'data', []);
+    },
+    selectedItems() {
+      return this.items.filter((item, index) => this.selectedRows[index]);
     }
   },
   watch: {
@@ -88,15 +103,9 @@ export default {
         .get(this.resource.api_urls.index, { params: this.activeFilters })
         .then(({ data }) => {
           this.pageData = data;
-          const currentPage =
-            data.current_page > data.last_page
-              ? data.last_page
-              : data.current_page;
 
-          this.filters = {
-            ...this.filters,
-            page: currentPage.toString()
-          };
+          this.allRowsAreSelected = false;
+          this.selectedRows = {};
         })
         .finally(() => {
           this.isLoading = false;
@@ -108,6 +117,22 @@ export default {
         page: pageNum.toString()
       };
       this.$flash("Selected: " + pageNum);
+    },
+
+    handleRowSelectChange(rowIndex, val) {
+      this.selectedRows = {
+        ...this.selectedRows,
+        [rowIndex]: val
+      };
+    },
+    handleSelectAllRows(val) {
+      this.allRowsAreSelected = val;
+      this.selectedRows = {};
+      if (val) {
+        this.items.forEach((row, index) => {
+          this.selectedRows[index] = true;
+        });
+      }
     },
     scrollToTop() {
       if (this.$refs.simplebar) {
@@ -148,6 +173,6 @@ export default {
   transition: filter 0.3s ease;
   overflow-x: hidden;
 
-  margin: 0 calc(-1 * var(--sp-4))
+  margin: 0 calc(-1 * var(--sp-4));
 }
 </style>

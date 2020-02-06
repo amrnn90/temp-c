@@ -10,7 +10,7 @@
     </div>
     <div class="table-head-lower">
       <div class="table-head-pre">
-        <checkbox-input />
+        <checkbox-input :value="allRowsAreSelected" @input="val => $emit('selectAllRows', val)" />
       </div>
       <div class="table-head-cells table-cells">
         <div
@@ -28,14 +28,16 @@
           </span>
         </div>
       </div>
-      <div class="table-head-post"></div>
+      <div class="table-head-post">
+        <bulk-actions />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["resource"]
+  props: ["resource", "allRowsAreSelected"]
 };
 </script>
 
@@ -64,14 +66,14 @@ export default {
 
   &::placeholder {
     color: var(--grey-7);
-
   }
   & + .search-input-icon {
-      color: var(--grey-7);
+    color: var(--grey-7);
   }
 
-  &:focus, &:focus + .search-input-icon {
-     color: var(--grey-4);
+  &:focus,
+  &:focus + .search-input-icon {
+    color: var(--grey-4);
   }
 }
 
@@ -90,8 +92,7 @@ export default {
   padding: var(--sp-5) var(--table-row-horizontal-padding);
   border-radius: var(--br);
   margin-bottom: var(--sp-3);
-  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), .1);
-
+  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), 0.1);
 }
 
 .table-head-upper {

@@ -36,6 +36,6 @@ export default {
 .resource-label {
   font-size: var(--fz-2xl);
   color: var(--grey-2);
-  margin-bottom: var(--sp-8);
+  margin-bottom: var(--sp-6);
 }
 </style>

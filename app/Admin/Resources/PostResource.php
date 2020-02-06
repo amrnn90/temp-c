@@ -59,6 +59,7 @@ class PostResource
             return [
                 'abilities' => $this->abilitiesForModel($item),
                 'api_urls' => $this->modelApiUrls($item),
+                'id' => $this->getModelId($item),
                 'fields' => collect($this->fields())->map(function($field) use ($item) {
                     return $field->structureForModel($item);
                 })
@@ -122,5 +123,10 @@ class PostResource
     protected function scope($query)
     {
         return $query;
+    }
+
+    protected function getModelId($model) 
+    {
+        return $model->getAttribute($model->getKeyName());
     }
 }

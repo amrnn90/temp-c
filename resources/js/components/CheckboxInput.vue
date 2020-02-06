@@ -1,15 +1,16 @@
 <template>
-  <div class="checkbox-input" :class="{checked: isChecked}" @click="isChecked = !isChecked">
+  <div class="checkbox-input" :class="{checked: isChecked}" @click="$emit('input', !isChecked)">
     <icon name="check" stroke="var(--primary-10)" strokeWidth="2" class="icon" />
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      isChecked: false
-    };
+  props: ['value'],
+  computed: {
+    isChecked() {
+      return !!this.value;
+    }
   }
 };
 </script>
@@ -21,7 +22,7 @@ export default {
   width: var(--sp-5);
   height: var(--sp-5);
   border-radius: var(--br);
-  border: 2px solid var(--grey-9);
+  border: 1px solid var(--grey-8);
   display: inline-flex;
   justify-content: center;
   align-items: center;

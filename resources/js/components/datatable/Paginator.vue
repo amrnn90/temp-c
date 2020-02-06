@@ -34,11 +34,21 @@ export default {
     currentPage() {
       return this.pagingInfo.current_page;
     },
+    lastPage() {
+      return this.totalPages;
+    },
     isFirstPage() {
       return this.currentPage == 1;
     },
     isLastPage() {
-      return this.currentPage == this.totalPages;
+      return this.currentPage == this.lastPage;
+    }
+  },
+  watch: {
+    currentPage(currentPage) {
+      if (currentPage > this.lastPage) {
+        this.changePage(this.lastPage);
+      }
     }
   },
   methods: {
@@ -52,6 +62,9 @@ export default {
     },
     handlePageSelect(pageNum) {
       if (pageNum == this.currentPage || this.isDisabled) return;
+      this.changePage(pageNum);
+    },
+    changePage(pageNum) {
       this.$emit("page-selected", pageNum);
     }
   }
@@ -70,8 +83,7 @@ export default {
   border-radius: var(--br);
 
   color: var(--grey-5);
-  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), .1);
-
+  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), 0.1);
 
   &.is-disabled {
     opacity: 0.6;
@@ -119,7 +131,7 @@ export default {
   &:disabled {
     cursor: default;
     // color: var(--grey-8);
-    opacity: .3;
+    opacity: 0.3;
     // pointer-events: none;
   }
 }
