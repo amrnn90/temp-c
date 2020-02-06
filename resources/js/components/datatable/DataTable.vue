@@ -152,7 +152,7 @@ export default {
 @import "resources/sass/init";
 
 .table {
-  margin: 0 calc(var(--table-row-horizontal-padding) * -1);
+  // margin: 0 calc(var(--table-row-horizontal-padding) * -1);
 }
 
 .table-body-wrapper {
@@ -164,7 +164,7 @@ export default {
   // padding-bottom: 14px;
 
   /* offset to make simplebar scroller outside */
-  padding: 0 var(--sp-4);
+  padding: 0 calc(var(--page-card-horizontal-padding) + var(--sp-4));
 }
 
 .simplebar {
@@ -173,6 +173,6 @@ export default {
   transition: filter 0.3s ease;
   overflow-x: hidden;
 
-  margin: 0 calc(-1 * var(--sp-4));
+  margin: 0 calc(-1  * (var(--page-card-horizontal-padding) + var(--sp-4)));
 }
 </style>

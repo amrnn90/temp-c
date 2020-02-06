@@ -1,38 +1,38 @@
 <template>
-  <div class="table-head">
-    <div class="table-head-upper">
-      <div class="search-input-wrapper">
-        <input class="search-input" type="search" placeholder="Search" />
-        <icon name="search" strokeWidth="1" class="search-input-icon" />
+  <page-card class="table-head">
+      <div class="table-head-upper">
+        <div class="search-input-wrapper">
+          <input class="search-input" type="search" placeholder="Search" />
+          <icon name="search" strokeWidth="1" class="search-input-icon" />
+        </div>
+  
+        <button class="create-btn">Create New</button>
       </div>
-
-      <button class="create-btn">Create New</button>
-    </div>
-    <div class="table-head-lower">
-      <div class="table-head-pre">
-        <checkbox-input :value="allRowsAreSelected" @input="val => $emit('selectAllRows', val)" />
-      </div>
-      <div class="table-head-cells table-cells">
-        <div
-          class="table-head-cell"
-          :class="`cell-${field.name}`"
-          style="flex-grow: 1"
-          :style="{paddingLeft: resource.title_field == field.name ? '64px' : '0'}"
-          v-for="field in resource.fields"
-          :key="field.name"
-        >
-          <strong>{{field.label}}</strong>
-          <span class="table-head-cell-sort-icons">
-            <i class="lni-chevron-up"></i>
-            <i class="lni-chevron-down"></i>
-          </span>
+      <div class="table-head-lower">
+        <div class="table-head-pre">
+          <checkbox-input :value="allRowsAreSelected" @input="val => $emit('selectAllRows', val)" />
+        </div>
+        <div class="table-head-cells table-cells">
+          <div
+            class="table-head-cell"
+            :class="`cell-${field.name}`"
+            style="flex-grow: 1"
+            :style="{paddingLeft: resource.title_field == field.name ? '60px' : '0'}"
+            v-for="field in resource.fields"
+            :key="field.name"
+          >
+            <strong>{{field.label}}</strong>
+            <span class="table-head-cell-sort-icons">
+              <i class="lni-chevron-up"></i>
+              <i class="lni-chevron-down"></i>
+            </span>
+          </div>
+        </div>
+        <div class="table-head-post">
+          <bulk-actions />
         </div>
       </div>
-      <div class="table-head-post">
-        <bulk-actions />
-      </div>
-    </div>
-  </div>
+  </page-card>
 </template>
 
 <script>
@@ -88,11 +88,8 @@ export default {
 }
 
 .table-head {
-  background: white;
-  padding: var(--sp-5) var(--table-row-horizontal-padding);
-  border-radius: var(--br);
+
   margin-bottom: var(--sp-3);
-  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), 0.1);
 }
 
 .table-head-upper {

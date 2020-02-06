@@ -1,5 +1,5 @@
 <template>
-  <div class="table-row">
+  <page-card class="table-row">
     <div class="table-row-upper">
       <div class="table-row-pre">
         <checkbox-input :value="!!isSelected" @input="handleSelectedChange" />
@@ -30,7 +30,7 @@
     <div class="table-row-expand">
       <expand :show="isExpanded">hello</expand>
     </div>
-  </div>
+  </page-card>
 </template>
 
 <script>
@@ -52,19 +52,17 @@ export default {
 <style scoped lang="scss">
 @import "resources/sass/init";
 .table-row {
-  background: white;
-  padding: var(--sp-3) var(--table-row-horizontal-padding);
-  border-radius: var(--br);
-  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), .1);
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-3);
 
   &:not(:last-child) {
     margin-bottom: var(--sp-2);
   }
 
   transition: all .2s ease;
-  &:hover {
-    // background: hsla(var(--primary-v-6), .02);
-  }
+  // &:hover {
+  //   // background: hsla(var(--primary-v-6), .02);
+  // }
 }
 
 .table-row-upper {

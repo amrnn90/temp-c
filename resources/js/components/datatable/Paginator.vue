@@ -1,6 +1,5 @@
 <template>
-  <div v-if="totalPages > 1">
-    <div class="paginator" :class="{'is-disabled': isDisabled}">
+  <page-card v-if="totalPages > 1" class="paginator" :class="{'is-disabled': isDisabled}">
       <button @click="handlePrev" class="prev" :disabled="isFirstPage">
         <icon name="chevron-left" strokeWidth="2" size="22" />
       </button>
@@ -16,9 +15,8 @@
       <button @click="handleNext" class="next" :disabled="isLastPage">
         <icon name="chevron-right" strokeWidth="2" size="22" />
       </button>
-    </div>
     <!-- <pre>{{pagingInfo}}</pre> -->
-  </div>
+  </page-card>
 </template>
 
 <script>
@@ -75,15 +73,12 @@ export default {
 @import "resources/sass/init";
 
 .paginator {
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-3);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--sp-3) var(--table-row-horizontal-padding);
-  background: white;
-  border-radius: var(--br);
-
   color: var(--grey-5);
-  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), 0.1);
 
   &.is-disabled {
     opacity: 0.6;
