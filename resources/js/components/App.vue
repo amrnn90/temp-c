@@ -22,6 +22,11 @@ export default {
         return {
         };
     },
+    mounted() {
+        // setInterval(() => {
+        //     document.documentElement.style.setProperty('--primary-hue', Math.ceil(Math.random()*255));
+        // }, 2000);
+    }
 };
 </script>
 

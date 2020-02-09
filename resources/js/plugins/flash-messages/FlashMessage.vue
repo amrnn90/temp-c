@@ -34,7 +34,7 @@ export default {
   background: var(--success-5);
   box-shadow: 2px 2px 10px hsla(var(--success-v-2), 0.4);
   padding: var(--sp-4) var(--sp-6);
-  color: var(--primary-10);
+  color: var(--success-10);
   border-radius: var(--br);
   display: flex;
   align-items: flex-start;

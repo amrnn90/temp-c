@@ -697,6 +697,16 @@ video {
   --grey-8: hsl(210, 31%, 80%);
   --grey-9: hsl(212, 33%, 89%);
   --grey-10: hsl(210, 36%, 96%);
+  --grey-v-1: 209, 61%, 16%;
+  --grey-v-2: 211, 39%, 23%;
+  --grey-v-3: 209, 34%, 30%;
+  --grey-v-4: 209, 28%, 39%;
+  --grey-v-5: 210, 22%, 49%;
+  --grey-v-6: 209, 23%, 60%;
+  --grey-v-7: 211, 27%, 70%;
+  --grey-v-8: 210, 31%, 80%;
+  --grey-v-9: 212, 33%, 89%;
+  --grey-v-10: 210, 36%, 96%;
   --blue-hue: 205;
   --blue-1: hsl(var(--blue-hue),100%, 21%);
   --blue-2: hsl(var(--blue-hue), 87%, 29%);
@@ -708,6 +718,16 @@ video {
   --blue-8: hsl(var(--blue-hue), 84%, 74%);
   --blue-9: hsl(var(--blue-hue), 97%, 85%);
   --blue-10: hsl(var(--blue-hue), 79%, 92%);
+  --blue-v-1: var(--blue-hue),100%, 21%;
+  --blue-v-2: var(--blue-hue), 87%, 29%;
+  --blue-v-3: var(--blue-hue), 82%, 33%;
+  --blue-v-4: var(--blue-hue), 76%, 39%;
+  --blue-v-5: var(--blue-hue), 67%, 45%;
+  --blue-v-6: var(--blue-hue), 65%, 55%;
+  --blue-v-7: var(--blue-hue), 74%, 56%;
+  --blue-v-8: var(--blue-hue), 84%, 74%;
+  --blue-v-9: var(--blue-hue), 97%, 85%;
+  --blue-v-10: var(--blue-hue), 79%, 92%;
   --cyan-hue: 184;
   --cyan-1: hsl(var(--cyan-hue),100%, 21%);
   --cyan-2: hsl(var(--cyan-hue), 87%, 29%);
@@ -719,7 +739,17 @@ video {
   --cyan-8: hsl(var(--cyan-hue), 84%, 74%);
   --cyan-9: hsl(var(--cyan-hue), 97%, 85%);
   --cyan-10: hsl(var(--cyan-hue), 79%, 92%);
-  --primary-hue: var(--blue-hue);
+  --cyan-v-1: var(--cyan-hue),100%, 21%;
+  --cyan-v-2: var(--cyan-hue), 87%, 29%;
+  --cyan-v-3: var(--cyan-hue), 82%, 33%;
+  --cyan-v-4: var(--cyan-hue), 76%, 39%;
+  --cyan-v-5: var(--cyan-hue), 67%, 45%;
+  --cyan-v-6: var(--cyan-hue), 65%, 55%;
+  --cyan-v-7: var(--cyan-hue), 74%, 56%;
+  --cyan-v-8: var(--cyan-hue), 84%, 74%;
+  --cyan-v-9: var(--cyan-hue), 97%, 85%;
+  --cyan-v-10: var(--cyan-hue), 79%, 92%;
+  --primary-hue: var(--cyan-hue);
   --primary-1: hsl(var(--primary-hue),100%, 21%);
   --primary-2: hsl(var(--primary-hue), 87%, 29%);
   --primary-3: hsl(var(--primary-hue), 82%, 33%);
@@ -730,6 +760,16 @@ video {
   --primary-8: hsl(var(--primary-hue), 84%, 74%);
   --primary-9: hsl(var(--primary-hue), 97%, 85%);
   --primary-10: hsl(var(--primary-hue), 79%, 92%);
+  --primary-v-1: var(--primary-hue),100%, 21%;
+  --primary-v-2: var(--primary-hue), 87%, 29%;
+  --primary-v-3: var(--primary-hue), 82%, 33%;
+  --primary-v-4: var(--primary-hue), 76%, 39%;
+  --primary-v-5: var(--primary-hue), 67%, 45%;
+  --primary-v-6: var(--primary-hue), 65%, 55%;
+  --primary-v-7: var(--primary-hue), 74%, 56%;
+  --primary-v-8: var(--primary-hue), 84%, 74%;
+  --primary-v-9: var(--primary-hue), 97%, 85%;
+  --primary-v-10: var(--primary-hue), 79%, 92%;
   --primary: var(--primary-7);
   --success-hue: var(--cyan-hue);
   --success-1: hsl(var(--success-hue),100%, 21%);
@@ -742,10 +782,27 @@ video {
   --success-8: hsl(var(--success-hue), 84%, 74%);
   --success-9: hsl(var(--success-hue), 97%, 85%);
   --success-10: hsl(var(--success-hue), 79%, 92%);
+  --success-v-1: var(--success-hue),100%, 21%;
+  --success-v-2: var(--success-hue), 87%, 29%;
+  --success-v-3: var(--success-hue), 82%, 33%;
+  --success-v-4: var(--success-hue), 76%, 39%;
+  --success-v-5: var(--success-hue), 67%, 45%;
+  --success-v-6: var(--success-hue), 65%, 55%;
+  --success-v-7: var(--success-hue), 74%, 56%;
+  --success-v-8: var(--success-hue), 84%, 74%;
+  --success-v-9: var(--success-hue), 97%, 85%;
+  --success-v-10: var(--success-hue), 79%, 92%;
   --body-color: hsl(var(--primary-hue), 45%, 98%);
-  /* COMPONENTS */
+  /* LAYOUT */
   --header-height: var(--sp-12);
   --sidebar-width: var(--sp-19);
+  --main-top-padding: var(--sp-8);
+  --main-horizontal-padding: var(--sp-14);
+  /* COMPONENTS */
+  --page-card-horizontal-padding: var(--sp-6);
+  --table-row-pre-width: var(--sp-5);
+  --table-row-post-width: var(--sp-15);
+  --table-row-cells-horizontal-margin: var(--sp-6);
 }
 
 .tooltip {
@@ -756,7 +813,7 @@ video {
 
 .tooltip .tooltip-inner {
   background: tomato;
-  color: #fff;
+  color: white;
   border-radius: 5px;
   padding: 6px 10px 6px;
 }
@@ -772,7 +829,7 @@ video {
 }
 
 .tooltip[x-placement^=top] {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .tooltip[x-placement^=top] .tooltip-arrow {
@@ -787,7 +844,7 @@ video {
 }
 
 .tooltip[x-placement^=bottom] {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .tooltip[x-placement^=bottom] .tooltip-arrow {
@@ -860,11 +917,10 @@ video {
 html {
   font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   line-height: 1.5;
-  color: #7E828C;
+  color: var(--grey-5);
 }
 
 body {
-  background: #F4F5F9;
   background: var(--body-color);
 }
 
@@ -875,7 +931,7 @@ body {
 }
 
 .simplebar-scrollbar::before {
-  background: #BAC7C7;
+  background: var(--grey-9);
   width: 5px;
 }
 

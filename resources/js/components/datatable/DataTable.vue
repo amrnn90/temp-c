@@ -17,12 +17,12 @@
         >
           <div class="table-body">
             <DataTableRow
-              v-for="(row, rowIndex) in items"
-              :key="rowIndex"
+              v-for="row in items"
+              :key="row.id"
               :row="row"
               :resource="resource"
-              :isSelected="!!selectedRows[rowIndex]"
-              @select="(val) => handleRowSelectChange(rowIndex, val)"
+              :isSelected="!!selectedRows[row.id]"
+              @select="(val) => handleRowSelectChange(row.id, val)"
             />
           </div>
         </simplebar>
@@ -43,94 +43,115 @@ import DataTableLayoutMixin from "./DataTableLayoutMixin";
 import QueryFiltersSyncMixin from "./QueryFiltersSyncMixin";
 import { objectToQuerystring } from "@/utils";
 
+import paginationModule from "@/store/pagination";
+import { mapGetters } from "vuex";
+
 export default {
   components: {
     simplebar
   },
-  mixins: [DataTableLayoutMixin, QueryFiltersSyncMixin],
-  props: ["resource"],
+  mixins: [
+    DataTableLayoutMixin
+    //  QueryFiltersSyncMixin
+  ],
+  props: {
+    resource: {},
+    storeId: {}
+  },
   data() {
     return {
-      pageData: null,
-      filters: {
-        page: null
-      },
+      // id: genId(),
+      // pageData: null,
+      // filters: {
+      //   page: null
+      // },
       hiddenColumns: [],
       // expandedRows: {},
       selectedRows: {},
-      allRowsAreSelected: false,
-      isLoading: false
+      allRowsAreSelected: false
+      // isLoading: false
     };
   },
   provide() {
     return {
       refreshTable: this.refresh,
       tableData: this.$data,
+      tableStore: this.tableStore
     };
   },
-  computed: {
-    pagingInfo() {
-      return _.omit(this.pageData, ["data"]);
-    },
-    items() {
-      return _.get(this.pageData, 'data', []);
-    },
-    selectedItems() {
-      return this.items.filter((item, index) => this.selectedRows[index]);
-    }
+  computedOnSteroids() {
+    // const storeId = `mytable`;
+
+    return {
+      pagingInfo() {
+        return _.omit(this.pageData, ["data"]);
+      },
+      selectedItems() {
+        return this.items.filter(item => this.selectedRows[item.id]);
+      },
+      ...mapGetters(this.$dynamicModuleId(), ["pageData", "isLoading", "items"])
+    };
   },
   watch: {
     pageData() {
       this.$nextTick(() => {
         this.layTable();
       });
-    },
-    filters: {
-      immediate: true,
-      handler(newFilters, oldFilters) {
-        if (_.isEqual(newFilters, oldFilters)) return;
-
-        this.refresh().then(() => {
-          this.scrollToTop();
-        });
-      }
     }
+    // filters: {
+    //   immediate: true,
+    //   handler(newFilters, oldFilters) {
+    //     if (_.isEqual(newFilters, oldFilters)) return;
+    //     this.refresh().then(() => {
+    //       this.scrollToTop();
+    //     });
+    //   }
+    // }
   },
   methods: {
-    refresh() {
-      this.isLoading = true;
-      return axios
-        .get(this.resource.api_urls.index, { params: this.activeFilters })
-        .then(({ data }) => {
-          this.pageData = data;
+    refresh(clearRowsState = true) {
+      // this.isLoading = true;
+      // return axios
+      //   .get(this.resource.api_urls.index, { params: this.activeFilters })
+      //   .then(({ data }) => {
+      //     this.pageData = data;
 
-          this.allRowsAreSelected = false;
-          this.selectedRows = {};
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      //     if (clearRowsState) {
+      //       this.allRowsAreSelected = false;
+      //       this.selectedRows = {};
+      //     }
+      //   })
+      //   .finally(() => {
+      //     this.isLoading = false;
+      //   });
+
+      // return this.$store.dispatch(`${this.storeId}/refresh`);
+      return this.tableStore.dispatch("refresh");
     },
+
     handlePageSelected(pageNum) {
-      this.filters = {
-        ...this.filters,
+      // this.filters = {
+      //   ...this.filters,
+      //   page: pageNum.toString()
+      // };
+      this.tableStore.dispatch("updateFilters", {
         page: pageNum.toString()
-      };
+      });
       this.$flash("Selected: " + pageNum);
     },
 
-    handleRowSelectChange(rowIndex, val) {
+    handleRowSelectChange(id, val) {
       this.selectedRows = {
         ...this.selectedRows,
-        [rowIndex]: val
+        [id]: val
       };
     },
     handleSelectAllRows(val) {
       this.allRowsAreSelected = val;
       this.selectedRows = {};
       if (val) {
-        this.items.forEach((row, index) => {
-          this.selectedRows[index] = true;
+        this.items.forEach(row => {
+          this.selectedRows[row.id] = true;
         });
       }
     },
@@ -142,8 +163,22 @@ export default {
       }
     }
   },
+  beforeCreate() {
+    const storeNamespace = ``;
+    const url = this.$options.propsData.resource.api_urls.index;
+
+    const module = paginationModule(url, {
+      syncFiltersWithRouteParams: true,
+      routeParamsPrefix: "table",
+      filters: { sort: "tiems", temp: null }
+    });
+
+    this.tableStore = this.$dynamicModule(storeNamespace, module);
+
+  },
   created() {
-    // this.refresh();
+
+    this.refresh();
   }
 };
 </script>
@@ -173,6 +208,6 @@ export default {
   transition: filter 0.3s ease;
   overflow-x: hidden;
 
-  margin: 0 calc(-1  * (var(--page-card-horizontal-padding) + var(--sp-4)));
+  margin: 0 calc(-1 * (var(--page-card-horizontal-padding) + var(--sp-4)));
 }
 </style>

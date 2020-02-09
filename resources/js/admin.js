@@ -2,7 +2,9 @@ import Vue from 'vue';
 import PortalVue from 'portal-vue'
 import VTooltip from 'v-tooltip'
 import FlashMessages from '@/plugins/flash-messages';
-import router from '@/routes';
+import ComputedOnSteroids from '@/plugins/computed-on-steroids';
+import router from '@/router';
+import store from '@/store';
 import axios from '@/axios';
 import _ from '@/lodash';
 
@@ -10,6 +12,7 @@ Vue.config.productionTip = false;
 Vue.use(PortalVue);
 Vue.use(VTooltip);
 Vue.use(FlashMessages);
+Vue.use(ComputedOnSteroids);
 
 window._ = _;
 window.Vue = Vue;
@@ -39,5 +42,6 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 const app = new Vue({
     el: '#app',
     router,
+    store
 });
 

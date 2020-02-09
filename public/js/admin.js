@@ -4005,15 +4005,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
+  },
+  mounted: function mounted() {
+    setInterval(function () {
+      document.documentElement.style.setProperty('--primary-hue', Math.ceil(Math.random() * 255));
+    }, 2000);
   }
 });
 
@@ -4032,11 +4031,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      isChecked: false
-    };
+  props: ['value'],
+  computed: {
+    isChecked: function isChecked() {
+      return !!this.value;
+    }
   }
 });
 
@@ -4174,11 +4176,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+var loadedSprite = false;
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['name'],
+  props: {
+    name: {
+      type: String
+    },
+    size: {
+      "default": 24
+    },
+    stroke: {
+      "default": "currentColor"
+    },
+    strokeWidth: {
+      "default": 1
+    },
+    strokeLinecap: {
+      "default": "round"
+    },
+    strokeLinejoin: {
+      "default": "round"
+    }
+  },
   computed: {
     iconUrl: function iconUrl() {
-      return this.name ? "".concat(_icons_feather_sprite_svg__WEBPACK_IMPORTED_MODULE_0___default.a, "#").concat(this.name) : null;
+      return "#" + this.name;
+    },
+    styles: function styles() {
+      return {
+        width: parseInt(this.size) + 'px',
+        height: parseInt(this.size) + 'px',
+        stroke: this.stroke,
+        strokeWidth: this.strokeWidth,
+        strokeLinecap: this.strokeLinecap,
+        strokeLinejoin: this.strokeLinejoin,
+        fill: 'none',
+        display: 'inline-block',
+        boxSizing: 'content-box'
+      };
+    }
+  },
+  mounted: function mounted() {
+    if (!loadedSprite) {
+      loadedSprite = true;
+      axios(_icons_feather_sprite_svg__WEBPACK_IMPORTED_MODULE_0___default.a).then(function (_ref) {
+        var data = _ref.data;
+        return data;
+      }).then(function (data) {
+        var spriteEl = document.createElement("div");
+        spriteEl.style.setProperty("display", "none");
+        spriteEl.innerHTML = data;
+        document.body.appendChild(spriteEl);
+      })["catch"](function (error) {
+        loadedSprite = false;
+      });
     }
   }
 });
@@ -4194,6 +4245,25 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PageCard.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PageCard.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -4227,6 +4297,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/datatable/BulkActions.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/datatable/BulkActions.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  inject: ['tableData'],
+  computed: {
+    selectedItems: function selectedItems() {
+      var _this = this;
+
+      return _.get(this.tableData, 'pageData.data', []).filter(function (item, index) {
+        return _this.tableData.selectedRows[index];
+      });
+    },
+    anyItemSelected: function anyItemSelected() {
+      return this.selectedItems && this.selectedItems.length > 0;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/datatable/DataTable.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/datatable/DataTable.vue?vue&type=script&lang=js& ***!
@@ -4240,6 +4343,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _DataTableLayoutMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataTableLayoutMixin */ "./resources/js/components/datatable/DataTableLayoutMixin.js");
 /* harmony import */ var _QueryFiltersSyncMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./QueryFiltersSyncMixin */ "./resources/js/components/datatable/QueryFiltersSyncMixin.js");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/utils */ "./resources/js/utils/index.js");
+/* harmony import */ var _store_pagination__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/store/pagination */ "./resources/js/store/pagination.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -4279,6 +4383,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -4287,72 +4399,117 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  mixins: [_DataTableLayoutMixin__WEBPACK_IMPORTED_MODULE_1__["default"], _QueryFiltersSyncMixin__WEBPACK_IMPORTED_MODULE_2__["default"]],
+  mixins: [_DataTableLayoutMixin__WEBPACK_IMPORTED_MODULE_1__["default"] //  QueryFiltersSyncMixin
+  ],
   props: ["resource"],
   data: function data() {
     return {
-      pageData: null,
-      filters: {
-        page: null
-      },
+      id: Object(_utils__WEBPACK_IMPORTED_MODULE_3__["genId"])(),
+      // pageData: null,
+      // filters: {
+      //   page: null
+      // },
       hiddenColumns: [],
       // expandedRows: {},
-      isLoading: false
+      selectedRows: {},
+      allRowsAreSelected: false // isLoading: false
+
     };
   },
   provide: function provide() {
     return {
-      refreshTable: this.refresh
+      refreshTable: this.refresh,
+      tableData: this.$data
     };
   },
   computed: {
     pagingInfo: function pagingInfo() {
       return _.omit(this.pageData, ["data"]);
+    },
+    // items() {
+    //   return _.get(this.pageData, "data", []);
+    // },
+    selectedItems: function selectedItems() {
+      var _this = this;
+
+      return this.items.filter(function (item) {
+        return _this.selectedRows[item.id];
+      });
+    },
+    items: function items() {
+      return this.$store.getters["table-".concat(this.id, "/items")];
+    },
+    pageData: function pageData() {
+      return this.$store.getters["table-".concat(this.id, "/pageData")];
+    },
+    isLoading: function isLoading() {
+      return this.$store.getters["table-".concat(this.id, "/isLoading")];
     }
   },
   watch: {
-    pageData: function pageData() {
-      var _this = this;
-
-      this.$nextTick(function () {
-        _this.layTable();
-      });
-    },
-    filters: {
+    pageData: {
       immediate: true,
-      handler: function handler(newFilters, oldFilters) {
+      handler: function handler() {
         var _this2 = this;
 
-        if (_.isEqual(newFilters, oldFilters)) return;
-        this.refresh().then(function () {
-          _this2.scrollToTop();
+        console.log("here");
+        this.$nextTick(function () {
+          _this2.layTable();
         });
       }
-    }
+    } // filters: {
+    //   immediate: true,
+    //   handler(newFilters, oldFilters) {
+    //     if (_.isEqual(newFilters, oldFilters)) return;
+    //     this.refresh().then(() => {
+    //       this.scrollToTop();
+    //     });
+    //   }
+    // }
+
   },
   methods: {
     refresh: function refresh() {
-      var _this3 = this;
-
-      this.isLoading = true;
-      return axios.get(this.resource.api_urls.index, {
-        params: this.activeFilters
-      }).then(function (_ref) {
-        var data = _ref.data;
-        _this3.pageData = data;
-        var currentPage = data.current_page > data.last_page ? data.last_page : data.current_page;
-        _this3.filters = _objectSpread({}, _this3.filters, {
-          page: currentPage.toString()
-        });
-      })["finally"](function () {
-        _this3.isLoading = false;
-      });
+      var clearRowsState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      // this.isLoading = true;
+      // return axios
+      //   .get(this.resource.api_urls.index, { params: this.activeFilters })
+      //   .then(({ data }) => {
+      //     this.pageData = data;
+      //     if (clearRowsState) {
+      //       this.allRowsAreSelected = false;
+      //       this.selectedRows = {};
+      //     }
+      //   })
+      //   .finally(() => {
+      //     this.isLoading = false;
+      //   });
+      return this.$store.dispatch("table-".concat(this.id, "/refresh"));
     },
     handlePageSelected: function handlePageSelected(pageNum) {
-      this.filters = _objectSpread({}, this.filters, {
+      // this.filters = {
+      //   ...this.filters,
+      //   page: pageNum.toString()
+      // };
+      this.$store.dispatch("table-".concat(this.id, "/updateFilters"), {
         page: pageNum.toString()
       });
       this.$flash("Selected: " + pageNum);
+    },
+    handleRowSelectChange: function handleRowSelectChange(id, val) {
+      this.selectedRows = _objectSpread({}, this.selectedRows, _defineProperty({}, id, val));
+    },
+    handleSelectAllRows: function handleSelectAllRows(val) {
+      var _this3 = this;
+
+      this.allRowsAreSelected = val;
+      this.selectedRows = {};
+
+      if (val) {
+        this.items.forEach(function (row) {
+          _this3.selectedRows[row.id] = true;
+        });
+      }
     },
     scrollToTop: function scrollToTop() {
       if (this.$refs.simplebar) {
@@ -4360,7 +4517,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     }
   },
-  created: function created() {// this.refresh();
+  created: function created() {
+    this.$store.registerModule("table-".concat(this.id), Object(_store_pagination__WEBPACK_IMPORTED_MODULE_4__["default"])(this.resource.api_urls.index));
+    this.refresh();
   }
 });
 
@@ -4401,8 +4560,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["resource"]
+  props: ["resource", "allRowsAreSelected"]
 });
 
 /***/ }),
@@ -4452,11 +4622,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["row", "resource"],
+  props: ["row", "resource", "isSelected"],
   data: function data() {
     return {
       isExpanded: false
     };
+  },
+  methods: {
+    handleSelectedChange: function handleSelectedChange(val) {
+      this.$emit('select', val);
+    }
   }
 });
 
@@ -4490,6 +4665,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["pagingInfo", "isDisabled"],
   computed: {
@@ -4499,11 +4676,21 @@ __webpack_require__.r(__webpack_exports__);
     currentPage: function currentPage() {
       return this.pagingInfo.current_page;
     },
+    lastPage: function lastPage() {
+      return this.totalPages;
+    },
     isFirstPage: function isFirstPage() {
       return this.currentPage == 1;
     },
     isLastPage: function isLastPage() {
-      return this.currentPage == this.totalPages;
+      return this.currentPage == this.lastPage;
+    }
+  },
+  watch: {
+    currentPage: function currentPage(_currentPage) {
+      if (_currentPage > this.lastPage) {
+        this.changePage(this.lastPage);
+      }
     }
   },
   methods: {
@@ -4517,7 +4704,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     handlePageSelect: function handlePageSelect(pageNum) {
       if (pageNum == this.currentPage || this.isDisabled) return;
-      this.$emit('page-selected', pageNum);
+      this.changePage(pageNum);
+    },
+    changePage: function changePage(pageNum) {
+      this.$emit("page-selected", pageNum);
     }
   }
 });
@@ -4571,9 +4761,9 @@ __webpack_require__.r(__webpack_exports__);
       triggerDelete().then(function () {
         _this.showModal = false;
 
-        _this.refreshTable();
+        _this.refreshTable(false);
 
-        _this.$flash('Item deleted successfully!');
+        _this.$flash("Item deleted successfully!");
       });
     }
   }
@@ -4620,7 +4810,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      logoutUrl: _.get(window, 'structure.api_urls.logout'),
+      csrfToken: null
+    };
+  },
+  methods: {
+    handleLogout: function handleLogout() {}
+  },
+  mounted: function mounted() {
+    this.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  }
+});
 
 /***/ }),
 
@@ -4633,6 +4853,34 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4729,8 +4977,6 @@ __webpack_require__.r(__webpack_exports__);
     bodyIsOverflowing: function bodyIsOverflowing() {
       var windowHeight = document.documentElement.clientHeight;
       var scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight);
-      console.log('scrollHeight:', scrollHeight);
-      console.log('windowHeight:', windowHeight);
       return scrollHeight > windowHeight;
     },
     afterModalLeave: function afterModalLeave() {
@@ -4805,6 +5051,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4924,7 +5177,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".main[data-v-332fccf4] {\n  padding-top: 100px;\n  padding-left: 300px;\n  padding-right: 60px;\n}", ""]);
+exports.push([module.i, "[data-v-332fccf4]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.main[data-v-332fccf4] {\n  padding-top: calc(var(--header-height) + var(--main-top-padding));\n  padding-left: calc(var(--sidebar-width) + var(--main-horizontal-padding));\n  padding-right: var(--main-horizontal-padding);\n}", ""]);
 
 // exports
 
@@ -4943,7 +5196,26 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".checkbox-input[data-v-237f0dec] {\n  width: 21px;\n  height: 21px;\n  border-radius: 5px;\n  border: 1px solid #BAC7C7;\n  display: inline-block;\n  cursor: pointer;\n  overflow: hidden;\n  background: #fff;\n}\n.checkbox-input[data-v-237f0dec]::after {\n  content: \"\";\n  width: 100%;\n  height: 100%;\n  -webkit-transform: scale(0, 0);\n          transform: scale(0, 0);\n  opacity: 0;\n  background: #8A85EC;\n  border-radius: 5px;\n  display: inline-block;\n  -webkit-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.checked[data-v-237f0dec]::after {\n  opacity: 1;\n  -webkit-transform: scale(0.6, 0.6);\n          transform: scale(0.6, 0.6);\n}", ""]);
+exports.push([module.i, "[data-v-237f0dec]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.checkbox-input[data-v-237f0dec] {\n  width: var(--sp-5);\n  height: var(--sp-5);\n  border-radius: var(--br);\n  border: 1px solid var(--grey-8);\n  display: -webkit-inline-box;\n  display: inline-flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n  background: white;\n  cursor: pointer;\n  -webkit-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.checkbox-input .icon[data-v-237f0dec] {\n  -webkit-transform: scale(0, 0);\n          transform: scale(0, 0);\n  opacity: 0;\n  -webkit-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.checked[data-v-237f0dec] {\n  background: var(--primary);\n  border-color: transparent;\n}\n.checked .icon[data-v-237f0dec] {\n  opacity: 1;\n  -webkit-transform: scale(1, 1);\n          transform: scale(1, 1);\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".page-card[data-v-a30f5fac] {\n  background: white;\n  margin-left: calc(var(--page-card-horizontal-padding) * -1);\n  margin-right: calc(var(--page-card-horizontal-padding) * -1);\n  padding: var(--sp-5) var(--page-card-horizontal-padding);\n  border-radius: var(--br);\n  box-shadow: 1px 1px 4px hsla(var(--primary-v-6), 0.1);\n}", ""]);
 
 // exports
 
@@ -4962,7 +5234,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".spinner[data-v-7ae326fe] {\n  position: absolute;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 9999;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n}\n.bounce[data-v-7ae326fe] {\n  width: 3%;\n  padding-top: 3%;\n  margin-right: 3px;\n  background-color: #130f63;\n  border-radius: 100%;\n  -webkit-animation: sk-bouncedelay-data-v-7ae326fe 1.4s infinite ease-in-out both;\n  animation: sk-bouncedelay-data-v-7ae326fe 1.4s infinite ease-in-out both;\n}\n.spinner .bounce1[data-v-7ae326fe] {\n  -webkit-animation-delay: -0.32s;\n  animation-delay: -0.32s;\n}\n.spinner .bounce2[data-v-7ae326fe] {\n  -webkit-animation-delay: -0.16s;\n  animation-delay: -0.16s;\n}\n@-webkit-keyframes sk-bouncedelay-data-v-7ae326fe {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n}\n}\n@keyframes sk-bouncedelay-data-v-7ae326fe {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n}\n}", ""]);
+exports.push([module.i, "[data-v-7ae326fe]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.spinner[data-v-7ae326fe] {\n  position: absolute;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 9999;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n}\n.bounce[data-v-7ae326fe] {\n  width: 3%;\n  padding-top: 3%;\n  margin-right: 3px;\n  background-color: var(--primary-3);\n  border-radius: 100%;\n  -webkit-animation: sk-bouncedelay-data-v-7ae326fe 1.4s infinite ease-in-out both;\n  animation: sk-bouncedelay-data-v-7ae326fe 1.4s infinite ease-in-out both;\n}\n.spinner .bounce1[data-v-7ae326fe] {\n  -webkit-animation-delay: -0.32s;\n  animation-delay: -0.32s;\n}\n.spinner .bounce2[data-v-7ae326fe] {\n  -webkit-animation-delay: -0.16s;\n  animation-delay: -0.16s;\n}\n@-webkit-keyframes sk-bouncedelay-data-v-7ae326fe {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n}\n}\n@keyframes sk-bouncedelay-data-v-7ae326fe {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n}\n}", ""]);
 
 // exports
 
@@ -4981,7 +5253,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".table-body-wrapper[data-v-0bc9d484] {\n  position: relative;\n}\n.table-body[data-v-0bc9d484] {\n  padding-bottom: 14px;\n  padding-right: 15px;\n}\n.simplebar[data-v-0bc9d484] {\n  height: 470px;\n  -webkit-transition: -webkit-filter 0.3s ease;\n  transition: -webkit-filter 0.3s ease;\n  transition: filter 0.3s ease;\n  transition: filter 0.3s ease, -webkit-filter 0.3s ease;\n  margin-right: -15px;\n  overflow-x: hidden;\n}", ""]);
+exports.push([module.i, "[data-v-0bc9d484]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.table-body-wrapper[data-v-0bc9d484] {\n  position: relative;\n  margin-bottom: var(--sp-3);\n}\n.table-body[data-v-0bc9d484] {\n  /* offset to make simplebar scroller outside */\n  padding: 0 calc(var(--page-card-horizontal-padding) + var(--sp-4));\n}\n.simplebar[data-v-0bc9d484] {\n  height: 400px;\n  -webkit-transition: -webkit-filter 0.3s ease;\n  transition: -webkit-filter 0.3s ease;\n  transition: filter 0.3s ease;\n  transition: filter 0.3s ease, -webkit-filter 0.3s ease;\n  overflow-x: hidden;\n  margin: 0 calc(-1 * (var(--page-card-horizontal-padding) + var(--sp-4)));\n}", ""]);
 
 // exports
 
@@ -5000,7 +5272,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".table-head[data-v-e30b5684] {\n  font-size: 14px;\n  font-weight: bold;\n  text-transform: uppercase;\n  margin-bottom: 17px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  padding: 0 13px;\n}\n.table-head-pre[data-v-e30b5684] {\n  width: 30px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.table-head-post[data-v-e30b5684] {\n  width: 90px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  margin-left: auto;\n}\n.table-head-cells[data-v-e30b5684] {\n  -webkit-box-flex: 1;\n          flex-grow: 1;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  margin: 0 25px;\n}\n.table-head-cell[data-v-e30b5684] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.table-head-cell-sort-icons[data-v-e30b5684] {\n  margin-left: 10px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n}\n.table-head-cell-sort-icons i[data-v-e30b5684] {\n  font-size: 7px;\n  font-weight: bold;\n}\n.table-head-cell-sort-icons i[data-v-e30b5684]:first-child {\n  margin-bottom: 1px;\n}", ""]);
+exports.push([module.i, "[data-v-e30b5684]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.search-input-wrapper[data-v-e30b5684] {\n  position: relative;\n}\n.search-input-wrapper .search-input-icon[data-v-e30b5684] {\n  position: absolute;\n  top: 50%;\n  left: var(--sp-3);\n  -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n}\n.search-input[data-v-e30b5684] {\n  background: var(--grey-10);\n  border-radius: var(--br);\n  padding: var(--sp-3) var(--sp-7);\n  padding-left: var(--sp-11);\n  font-size: var(--fz-xs);\n  font-weight: var(--fw-semibold);\n}\n.search-input[data-v-e30b5684]::-webkit-input-placeholder {\n  color: var(--grey-7);\n}\n.search-input[data-v-e30b5684]::-moz-placeholder {\n  color: var(--grey-7);\n}\n.search-input[data-v-e30b5684]:-ms-input-placeholder {\n  color: var(--grey-7);\n}\n.search-input[data-v-e30b5684]::-ms-input-placeholder {\n  color: var(--grey-7);\n}\n.search-input[data-v-e30b5684]::placeholder {\n  color: var(--grey-7);\n}\n.search-input + .search-input-icon[data-v-e30b5684] {\n  color: var(--grey-7);\n}\n.search-input[data-v-e30b5684]:focus, .search-input:focus + .search-input-icon[data-v-e30b5684] {\n  color: var(--grey-4);\n}\n.create-btn[data-v-e30b5684] {\n  background: var(--primary);\n  color: var(--primary-10);\n  border-radius: var(--br);\n  padding: var(--sp-3) var(--sp-7);\n  font-size: var(--fz-xs);\n  font-weight: var(--fw-bold);\n}\n.table-head[data-v-e30b5684] {\n  margin-bottom: var(--sp-3);\n}\n.table-head-upper[data-v-e30b5684] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  margin-bottom: var(--sp-6);\n}\n.table-head-lower[data-v-e30b5684] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  font-size: var(--fz-xs);\n  font-weight: var(--fw-bold);\n  color: var(--grey-8);\n  text-transform: uppercase;\n}\n.table-head-pre[data-v-e30b5684] {\n  width: var(--table-row-pre-width);\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.table-head-post[data-v-e30b5684] {\n  width: var(--table-row-post-width);\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  margin-left: auto;\n}\n.table-head-cells[data-v-e30b5684] {\n  -webkit-box-flex: 1;\n          flex-grow: 1;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  margin: 0 var(--table-row-cells-horizontal-margin);\n}\n.table-head-cell[data-v-e30b5684] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.table-head-cell-sort-icons[data-v-e30b5684] {\n  margin-left: 10px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n}\n.table-head-cell-sort-icons i[data-v-e30b5684] {\n  font-size: 7px;\n  font-weight: bold;\n}\n.table-head-cell-sort-icons i[data-v-e30b5684]:first-child {\n  margin-bottom: 1px;\n}", ""]);
 
 // exports
 
@@ -5019,7 +5291,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".table-row[data-v-7a5a8a6c] {\n  background: #fff;\n  padding: 13px 13px;\n  border-radius: 5px;\n  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.08);\n}\n.table-row[data-v-7a5a8a6c]:not(:last-child) {\n  margin-bottom: 13px;\n}\n.table-row-upper[data-v-7a5a8a6c] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.table-row-pre[data-v-7a5a8a6c] {\n  width: 30px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.table-row-post[data-v-7a5a8a6c] {\n  width: 90px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  margin-left: auto;\n}\n.table-row-cells[data-v-7a5a8a6c] {\n  -webkit-box-flex: 1;\n          flex-grow: 1;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  cursor: pointer;\n  margin: 0 25px;\n}\n.table-row-cell[data-v-7a5a8a6c] {\n  font-size: 14px;\n  color: #7E828C;\n}\n.icon[data-v-7a5a8a6c] {\n  font-size: 22px;\n  color: #7E828C;\n}\n.icon.is-disabled[data-v-7a5a8a6c] {\n  opacity: 0.3;\n}\n.icon.lni-eye[data-v-7a5a8a6c] {\n  font-size: 24px;\n}", ""]);
+exports.push([module.i, "[data-v-7a5a8a6c]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.table-row[data-v-7a5a8a6c] {\n  padding-top: var(--sp-3);\n  padding-bottom: var(--sp-3);\n  -webkit-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.table-row[data-v-7a5a8a6c]:not(:last-child) {\n  margin-bottom: var(--sp-2);\n}\n.table-row-upper[data-v-7a5a8a6c] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.table-row-pre[data-v-7a5a8a6c] {\n  width: var(--table-row-pre-width);\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.table-row-post[data-v-7a5a8a6c] {\n  width: var(--table-row-post-width);\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  margin-left: auto;\n}\n.table-row-cells[data-v-7a5a8a6c] {\n  -webkit-box-flex: 1;\n          flex-grow: 1;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  cursor: pointer;\n  margin: 0 var(--table-row-cells-horizontal-margin);\n}\n.table-row-cell[data-v-7a5a8a6c] {\n  font-size: var(--fz-xs);\n  font-weight: var(--fw-bold);\n  color: var(--grey-5);\n}", ""]);
 
 // exports
 
@@ -5038,7 +5310,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".paginator[data-v-07e7050b] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n  padding: 12px;\n  background: #fff;\n  border-radius: 5px;\n}\n.paginator.is-disabled[data-v-07e7050b] {\n  opacity: 0.6;\n  pointer-events: none;\n}\n.page[data-v-07e7050b],\n.prev[data-v-07e7050b],\n.next[data-v-07e7050b] {\n  cursor: pointer;\n}\n.page[data-v-07e7050b] {\n  line-height: 25px;\n  text-align: center;\n  border-radius: 5px;\n  width: 25px;\n  height: 25px;\n}\n.page[data-v-07e7050b]:not(:last-child) {\n  margin-right: 20px;\n}\n.page[data-v-07e7050b]:hover {\n  background: #C7C4FF;\n  color: white;\n}\n.page.active[data-v-07e7050b] {\n  background: #8A85EC;\n  color: #fff;\n}\n.prev[data-v-07e7050b],\n.next[data-v-07e7050b] {\n  font-size: 14px;\n}\n.prev.is-disabled[data-v-07e7050b],\n.next.is-disabled[data-v-07e7050b] {\n  cursor: default;\n  color: #BAC7C7;\n  pointer-events: none;\n}\n.prev[data-v-07e7050b] {\n  margin-right: 20px;\n}\n.next[data-v-07e7050b] {\n  margin-left: 20px;\n}", ""]);
+exports.push([module.i, "[data-v-07e7050b]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.paginator[data-v-07e7050b] {\n  padding-top: var(--sp-3);\n  padding-bottom: var(--sp-3);\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n  color: var(--grey-5);\n}\n.paginator.is-disabled[data-v-07e7050b] {\n  opacity: 0.6;\n  pointer-events: none;\n}\n.page[data-v-07e7050b],\n.prev[data-v-07e7050b],\n.next[data-v-07e7050b] {\n  cursor: pointer;\n}\n.page[data-v-07e7050b] {\n  line-height: var(--sp-6);\n  width: var(--sp-6);\n  height: var(--sp-6);\n  text-align: center;\n  border-radius: var(--br);\n  font-size: var(--fz-xs);\n  font-weight: var(--fw-bold);\n}\n.page[data-v-07e7050b]:not(:last-child) {\n  margin-right: var(--sp-5);\n}\n.page[data-v-07e7050b]:hover {\n  background: var(--primary-10);\n}\n.page.active[data-v-07e7050b] {\n  background: var(--primary);\n  color: var(--primary-10);\n}\n.prev[data-v-07e7050b]:disabled,\n.next[data-v-07e7050b]:disabled {\n  cursor: default;\n  opacity: 0.3;\n}\n.prev[data-v-07e7050b] {\n  margin-right: var(--sp-5);\n}\n.next[data-v-07e7050b] {\n  margin-left: var(--sp-5);\n}", ""]);
 
 // exports
 
@@ -5057,7 +5329,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".icon[data-v-21a43f9e] {\n  font-size: 22px;\n  color: #7E828C;\n  cursor: pointer;\n}\n.icon.is-disabled[data-v-21a43f9e] {\n  opacity: 0.3;\n  cursor: default;\n}", ""]);
+exports.push([module.i, "[data-v-21a43f9e]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\nbutton[data-v-21a43f9e]:disabled {\n  opacity: 0.3;\n  cursor: default;\n}", ""]);
 
 // exports
 
@@ -5076,7 +5348,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "[data-v-8e2e872c]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}", ""]);
 
 // exports
 
@@ -5095,7 +5367,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".header[data-v-03f33542] {\n  position: fixed;\n  top: 0;\n  background: #fff;\n  width: 100%;\n  height: var(--header-height);\n  padding-left: 300px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  z-index: 1000;\n}", ""]);
+exports.push([module.i, "[data-v-03f33542]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.header[data-v-03f33542] {\n  overflow: hidden;\n  position: fixed;\n  top: 0;\n  background: white;\n  width: 100%;\n  height: var(--header-height);\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  z-index: 1000;\n  padding-left: calc(var(--sidebar-width) + var(--main-horizontal-padding));\n  padding-right: var(--main-horizontal-padding);\n}", ""]);
 
 // exports
 
@@ -5114,7 +5386,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".sidebar[data-v-1e03d4f7] {\n  position: fixed;\n  left: 0;\n  z-index: 7777;\n  width: var(--sidebar-width);\n  height: 100vh;\n  padding-top: 200px;\n  background: #fff;\n  box-shadow: 3px 0 30px rgba(0, 0, 0, 0.05);\n}\n.sidebar-items[data-v-1e03d4f7] {\n  padding: 0 35px;\n}\n.sidebar-items__item[data-v-1e03d4f7] {\n  margin-bottom: var(--sp-9);\n  font-weight: var(--fw-regular);\n  font-size: var(--fz-xs);\n  color: var(--grey-7);\n}\n.sidebar-items__item a[data-v-1e03d4f7] {\n  display: block;\n}\n.sidebar-items__item .router-link-active[data-v-1e03d4f7] {\n  color: var(--grey-4);\n}", ""]);
+exports.push([module.i, "[data-v-1e03d4f7]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.sidebar[data-v-1e03d4f7] {\n  position: fixed;\n  left: 0;\n  z-index: 7777;\n  width: var(--sidebar-width);\n  height: 100vh;\n  padding-top: 200px;\n  background: white;\n  box-shadow: 3px 0 30px rgba(0, 0, 0, 0.05);\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n}\n.sidebar-items[data-v-1e03d4f7] {\n  max-width: var(--sp-16);\n}\n.sidebar-items__item[data-v-1e03d4f7] {\n  margin-bottom: var(--sp-9);\n  font-weight: var(--fw-regular);\n  font-size: var(--fz-xs);\n  color: var(--grey-7);\n}\n.sidebar-items__item a[data-v-1e03d4f7] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: start;\n          align-items: flex-start;\n}\n.sidebar-items__item .router-link-active[data-v-1e03d4f7] {\n  color: var(--grey-4);\n}\n.sidebar-items__item .icon-wrapper[data-v-1e03d4f7] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  height: 1.5em;\n  margin-right: var(--sp-4);\n}", ""]);
 
 // exports
 
@@ -5133,7 +5405,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".modal-backdrop[data-v-2c7ec46f] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  background: rgba(0, 0, 0, 0.5);\n  z-index: 9999;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n}\n.modal[data-v-2c7ec46f] {\n  -webkit-box-flex: 1;\n          flex: 1;\n  background: white;\n  border-radius: 5px;\n  max-width: 600px;\n  min-height: 300px;\n  overflow: auto;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07), 0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07), 0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);\n}\n.modal-enter .modal[data-v-2c7ec46f],\n.modal-leave-to .modal[data-v-2c7ec46f] {\n  -webkit-transform: translateY(-30px);\n          transform: translateY(-30px);\n}\n.modal-enter-to .modal[data-v-2c7ec46f],\n.modal-leave .modal[data-v-2c7ec46f] {\n  -webkit-transform: translateY(0);\n          transform: translateY(0);\n}\n.modal-enter-active .modal[data-v-2c7ec46f],\n.modal-leave-active .modal[data-v-2c7ec46f] {\n  -webkit-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.modal-enter[data-v-2c7ec46f],\n.modal-leave-to[data-v-2c7ec46f] {\n  opacity: 0;\n}\n.modal-enter-to[data-v-2c7ec46f],\n.modal-leave[data-v-2c7ec46f] {\n  opacity: 1;\n}\n.modal-enter-active[data-v-2c7ec46f],\n.modal-leave-active[data-v-2c7ec46f] {\n  -webkit-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}", ""]);
+exports.push([module.i, "[data-v-2c7ec46f]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.modal-backdrop[data-v-2c7ec46f] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  background: rgba(0, 0, 0, 0.5);\n  z-index: 9999;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n}\n.modal[data-v-2c7ec46f] {\n  -webkit-box-flex: 1;\n          flex: 1;\n  background: white;\n  border-radius: 5px;\n  max-width: 600px;\n  min-height: 300px;\n  overflow: auto;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07), 0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07), 0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);\n}\n.modal-enter .modal[data-v-2c7ec46f],\n.modal-leave-to .modal[data-v-2c7ec46f] {\n  -webkit-transform: translateY(-30px);\n          transform: translateY(-30px);\n}\n.modal-enter-to .modal[data-v-2c7ec46f],\n.modal-leave .modal[data-v-2c7ec46f] {\n  -webkit-transform: translateY(0);\n          transform: translateY(0);\n}\n.modal-enter-active .modal[data-v-2c7ec46f],\n.modal-leave-active .modal[data-v-2c7ec46f] {\n  -webkit-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.modal-enter[data-v-2c7ec46f],\n.modal-leave-to[data-v-2c7ec46f] {\n  opacity: 0;\n}\n.modal-enter-to[data-v-2c7ec46f],\n.modal-leave[data-v-2c7ec46f] {\n  opacity: 1;\n}\n.modal-enter-active[data-v-2c7ec46f],\n.modal-leave-active[data-v-2c7ec46f] {\n  -webkit-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}", ""]);
 
 // exports
 
@@ -5152,7 +5424,26 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".resource-label[data-v-266d24ab] {\n  font-size: 24px;\n  margin-bottom: 24px;\n}", ""]);
+exports.push([module.i, "[data-v-266d24ab]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.resource-label[data-v-266d24ab] {\n  font-size: var(--fz-2xl);\n  color: var(--grey-2);\n  margin-bottom: var(--sp-6);\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".flash-message[data-v-72412c40] {\n  background: var(--success-5);\n  box-shadow: 2px 2px 10px hsla(var(--success-v-2), 0.4);\n  padding: var(--sp-4) var(--sp-6);\n  color: var(--primary-10);\n  border-radius: var(--br);\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: start;\n          align-items: flex-start;\n  font-size: var(--fz-sm);\n  font-weight: var(--fw-semibold);\n  max-width: calc(var(--sp-20) * 2);\n}\n.flash-message[data-v-72412c40]:not(:last-child) {\n  margin-bottom: var(--sp-3);\n}", ""]);
 
 // exports
 
@@ -5171,7 +5462,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".flash-messages[data-v-18b97343] {\n  position: fixed;\n  z-index: 10000;\n  right: 50px;\n  bottom: 50px;\n}", ""]);
+exports.push([module.i, "[data-v-18b97343]:root {\n  --sp-px: 1px;\n  --sp-0: 0;\n  --sp-1: 0.25rem;\n  --sp-2: 0.5rem;\n  --sp-3: 0.75rem;\n  --sp-4: 1rem;\n  --sp-5: 1.25rem;\n  --sp-6: 1.5rem;\n  --sp-7: 1.75rem;\n  --sp-8: 2rem;\n  --sp-9: 2.25rem;\n  --sp-10: 2.5rem;\n  --sp-11: 3rem;\n  --sp-12: 3.5rem;\n  --sp-13: 4rem;\n  --sp-14: 5rem;\n  --sp-15: 6rem;\n  --sp-16: 8rem;\n  --sp-17: 10rem;\n  --sp-18: 12rem;\n  --sp-19: 14rem;\n  --sp-20: 16rem;\n  --fz-2xs: 0.625rem;\n  --fz-xs: 0.75rem;\n  --fz-sm: 0.875rem;\n  --fz-base: 1rem;\n  --fz-lg: 1.125rem;\n  --fz-xl: 1.25rem;\n  --fz-2xl: 1.5rem;\n  --fz-3xl: 1.875rem;\n  --fz-4xl: 2.25rem;\n  --fz-5xl: 3rem;\n  --fw-hairline: 100;\n  --fw-thin: 200;\n  --fw-light: 300;\n  --fw-regular: 400;\n  --fw-medium: 500;\n  --fw-semibold: 600;\n  --fw-bold: 700;\n  --fw-extrabold: 800;\n  --fw-black: 900;\n  --br: 5px;\n  --grey-1: hsl(209, 61%, 16%);\n  --grey-2: hsl(211, 39%, 23%);\n  --grey-3: hsl(209, 34%, 30%);\n  --grey-4: hsl(209, 28%, 39%);\n  --grey-5: hsl(210, 22%, 49%);\n  --grey-6: hsl(209, 23%, 60%);\n  --grey-7: hsl(211, 27%, 70%);\n  --grey-8: hsl(210, 31%, 80%);\n  --grey-9: hsl(212, 33%, 89%);\n  --grey-10: hsl(210, 36%, 96%);\n  --grey-v-1: 209, 61%, 16%;\n  --grey-v-2: 211, 39%, 23%;\n  --grey-v-3: 209, 34%, 30%;\n  --grey-v-4: 209, 28%, 39%;\n  --grey-v-5: 210, 22%, 49%;\n  --grey-v-6: 209, 23%, 60%;\n  --grey-v-7: 211, 27%, 70%;\n  --grey-v-8: 210, 31%, 80%;\n  --grey-v-9: 212, 33%, 89%;\n  --grey-v-10: 210, 36%, 96%;\n  --blue-hue: 205;\n  --blue-1: hsl(var(--blue-hue),100%, 21%);\n  --blue-2: hsl(var(--blue-hue), 87%, 29%);\n  --blue-3: hsl(var(--blue-hue), 82%, 33%);\n  --blue-4: hsl(var(--blue-hue), 76%, 39%);\n  --blue-5: hsl(var(--blue-hue), 67%, 45%);\n  --blue-6: hsl(var(--blue-hue), 65%, 55%);\n  --blue-7: hsl(var(--blue-hue), 74%, 56%);\n  --blue-8: hsl(var(--blue-hue), 84%, 74%);\n  --blue-9: hsl(var(--blue-hue), 97%, 85%);\n  --blue-10: hsl(var(--blue-hue), 79%, 92%);\n  --blue-v-1: var(--blue-hue),100%, 21%;\n  --blue-v-2: var(--blue-hue), 87%, 29%;\n  --blue-v-3: var(--blue-hue), 82%, 33%;\n  --blue-v-4: var(--blue-hue), 76%, 39%;\n  --blue-v-5: var(--blue-hue), 67%, 45%;\n  --blue-v-6: var(--blue-hue), 65%, 55%;\n  --blue-v-7: var(--blue-hue), 74%, 56%;\n  --blue-v-8: var(--blue-hue), 84%, 74%;\n  --blue-v-9: var(--blue-hue), 97%, 85%;\n  --blue-v-10: var(--blue-hue), 79%, 92%;\n  --cyan-hue: 184;\n  --cyan-1: hsl(var(--cyan-hue),100%, 21%);\n  --cyan-2: hsl(var(--cyan-hue), 87%, 29%);\n  --cyan-3: hsl(var(--cyan-hue), 82%, 33%);\n  --cyan-4: hsl(var(--cyan-hue), 76%, 39%);\n  --cyan-5: hsl(var(--cyan-hue), 67%, 45%);\n  --cyan-6: hsl(var(--cyan-hue), 65%, 55%);\n  --cyan-7: hsl(var(--cyan-hue), 74%, 56%);\n  --cyan-8: hsl(var(--cyan-hue), 84%, 74%);\n  --cyan-9: hsl(var(--cyan-hue), 97%, 85%);\n  --cyan-10: hsl(var(--cyan-hue), 79%, 92%);\n  --cyan-v-1: var(--cyan-hue),100%, 21%;\n  --cyan-v-2: var(--cyan-hue), 87%, 29%;\n  --cyan-v-3: var(--cyan-hue), 82%, 33%;\n  --cyan-v-4: var(--cyan-hue), 76%, 39%;\n  --cyan-v-5: var(--cyan-hue), 67%, 45%;\n  --cyan-v-6: var(--cyan-hue), 65%, 55%;\n  --cyan-v-7: var(--cyan-hue), 74%, 56%;\n  --cyan-v-8: var(--cyan-hue), 84%, 74%;\n  --cyan-v-9: var(--cyan-hue), 97%, 85%;\n  --cyan-v-10: var(--cyan-hue), 79%, 92%;\n  --primary-hue: var(--cyan-hue);\n  --primary-1: hsl(var(--primary-hue),100%, 21%);\n  --primary-2: hsl(var(--primary-hue), 87%, 29%);\n  --primary-3: hsl(var(--primary-hue), 82%, 33%);\n  --primary-4: hsl(var(--primary-hue), 76%, 39%);\n  --primary-5: hsl(var(--primary-hue), 67%, 45%);\n  --primary-6: hsl(var(--primary-hue), 65%, 55%);\n  --primary-7: hsl(var(--primary-hue), 74%, 56%);\n  --primary-8: hsl(var(--primary-hue), 84%, 74%);\n  --primary-9: hsl(var(--primary-hue), 97%, 85%);\n  --primary-10: hsl(var(--primary-hue), 79%, 92%);\n  --primary-v-1: var(--primary-hue),100%, 21%;\n  --primary-v-2: var(--primary-hue), 87%, 29%;\n  --primary-v-3: var(--primary-hue), 82%, 33%;\n  --primary-v-4: var(--primary-hue), 76%, 39%;\n  --primary-v-5: var(--primary-hue), 67%, 45%;\n  --primary-v-6: var(--primary-hue), 65%, 55%;\n  --primary-v-7: var(--primary-hue), 74%, 56%;\n  --primary-v-8: var(--primary-hue), 84%, 74%;\n  --primary-v-9: var(--primary-hue), 97%, 85%;\n  --primary-v-10: var(--primary-hue), 79%, 92%;\n  --primary: var(--primary-7);\n  --success-hue: var(--cyan-hue);\n  --success-1: hsl(var(--success-hue),100%, 21%);\n  --success-2: hsl(var(--success-hue), 87%, 29%);\n  --success-3: hsl(var(--success-hue), 82%, 33%);\n  --success-4: hsl(var(--success-hue), 76%, 39%);\n  --success-5: hsl(var(--success-hue), 67%, 45%);\n  --success-6: hsl(var(--success-hue), 65%, 55%);\n  --success-7: hsl(var(--success-hue), 74%, 56%);\n  --success-8: hsl(var(--success-hue), 84%, 74%);\n  --success-9: hsl(var(--success-hue), 97%, 85%);\n  --success-10: hsl(var(--success-hue), 79%, 92%);\n  --success-v-1: var(--success-hue),100%, 21%;\n  --success-v-2: var(--success-hue), 87%, 29%;\n  --success-v-3: var(--success-hue), 82%, 33%;\n  --success-v-4: var(--success-hue), 76%, 39%;\n  --success-v-5: var(--success-hue), 67%, 45%;\n  --success-v-6: var(--success-hue), 65%, 55%;\n  --success-v-7: var(--success-hue), 74%, 56%;\n  --success-v-8: var(--success-hue), 84%, 74%;\n  --success-v-9: var(--success-hue), 97%, 85%;\n  --success-v-10: var(--success-hue), 79%, 92%;\n  --body-color: hsl(var(--primary-hue), 45%, 98%);\n  /* LAYOUT */\n  --header-height: var(--sp-12);\n  --sidebar-width: var(--sp-19);\n  --main-top-padding: var(--sp-8);\n  --main-horizontal-padding: var(--sp-14);\n  /* COMPONENTS */\n  --page-card-horizontal-padding: var(--sp-6);\n  --table-row-pre-width: var(--sp-5);\n  --table-row-post-width: var(--sp-15);\n  --table-row-cells-horizontal-margin: var(--sp-6);\n}\n.flash-messages[data-v-18b97343] {\n  position: fixed;\n  z-index: 10000;\n  left: 50px;\n  bottom: 50px;\n}", ""]);
 
 // exports
 
@@ -5209,26 +5500,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.icon[data-v-77a3cee4] {\n  width: 24px;\n  height: 24px;\n  stroke: currentColor;\n  stroke-width: 2;\n  stroke-linecap: round;\n  stroke-linejoin: round;\n  fill: none;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css&":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css& ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.flash-message[data-v-72412c40] {\n  background: var(--primary-6);\n  padding: var(--sp-4);\n  color: white;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .icon {\n  width: 24px;\n  height: 24px;\n  stroke: currentColor;\n  stroke-width: 2;\n  stroke-linecap: round;\n  stroke-linejoin: round;\n  fill: none;\n} */\n", ""]);
 
 // exports
 
@@ -34993,6 +35265,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--7-2!../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../node_modules/vue-loader/lib??vue-loader-options!./PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Spinner.vue?vue&type=style&index=0&id=7ae326fe&scoped=true&lang=scss&":
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Spinner.vue?vue&type=style&index=0&id=7ae326fe&scoped=true&lang=scss& ***!
@@ -35323,6 +35625,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessages.vue?vue&type=style&index=0&id=18b97343&scoped=true&lang=scss&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/plugins/flash-messages/FlashMessages.vue?vue&type=style&index=0&id=18b97343&scoped=true&lang=scss& ***!
@@ -35406,36 +35738,6 @@ options.transform = transform
 options.insertInto = undefined;
 
 var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css&":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -41276,42 +41578,7 @@ var render = function() {
       _vm._v(" "),
       _c("admin-sidebar"),
       _vm._v(" "),
-      _c(
-        "main",
-        { staticClass: "main" },
-        [
-          _c("router-view"),
-          _vm._v(" "),
-          _c("icon", {
-            staticStyle: {
-              display: "inline-block",
-              stroke: "var(--success-8)"
-            },
-            attrs: { name: "eye" }
-          }),
-          _vm._v(" "),
-          _c("icon", {
-            staticStyle: { display: "inline-block" },
-            attrs: { name: "plus" }
-          }),
-          _vm._v(" "),
-          _c("icon", {
-            staticStyle: { display: "inline-block" },
-            attrs: { name: "trash-2" }
-          }),
-          _vm._v(" "),
-          _c("icon", {
-            staticStyle: { display: "inline-block" },
-            attrs: { name: "edit-2" }
-          }),
-          _vm._v(" "),
-          _c("icon", {
-            staticStyle: { display: "inline-block" },
-            attrs: { name: "edit" }
-          })
-        ],
-        1
-      ),
+      _c("main", { staticClass: "main" }, [_c("router-view")], 1),
       _vm._v(" "),
       _c("portal-target", { attrs: { name: "modals" } }),
       _vm._v(" "),
@@ -41342,15 +41609,30 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {
-    staticClass: "checkbox-input",
-    class: { checked: _vm.isChecked },
-    on: {
-      click: function($event) {
-        _vm.isChecked = !_vm.isChecked
+  return _c(
+    "div",
+    {
+      staticClass: "checkbox-input",
+      class: { checked: _vm.isChecked },
+      on: {
+        click: function($event) {
+          return _vm.$emit("input", !_vm.isChecked)
+        }
       }
-    }
-  })
+    },
+    [
+      _c("icon", {
+        staticClass: "icon",
+        attrs: {
+          name: "check",
+          stroke: "var(--primary-10)",
+          strokeWidth: "2",
+          size: "16"
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41426,9 +41708,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("svg", { staticClass: "icon", attrs: { viewBox: "0 0 32 32" } }, [
-    _c("use", { attrs: { "xlink:href": _vm.iconUrl } })
-  ])
+  return _c(
+    "svg",
+    { staticClass: "icon", style: _vm.styles, attrs: { viewBox: "0 0 32 32" } },
+    [_c("use", { attrs: { "xlink:href": _vm.iconUrl } })]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41453,6 +41737,30 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PageCard.vue?vue&type=template&id=a30f5fac&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PageCard.vue?vue&type=template&id=a30f5fac&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "page-card" }, [_vm._t("default")], 2)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41500,6 +41808,32 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/datatable/BulkActions.vue?vue&type=template&id=38d1eb05&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/datatable/BulkActions.vue?vue&type=template&id=38d1eb05& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.anyItemSelected
+    ? _c("div", [_vm._v("\n  Bulk Actions\n")])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/datatable/DataTable.vue?vue&type=template&id=0bc9d484&scoped=true&":
 /*!**********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/datatable/DataTable.vue?vue&type=template&id=0bc9d484&scoped=true& ***!
@@ -41515,56 +41849,67 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "div",
-        { ref: "table", staticClass: "table" },
-        [
-          _c("data-table-head", { attrs: { resource: _vm.resource } }),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "table-body-wrapper" },
-            [
-              _vm.pageData
-                ? _c(
-                    "simplebar",
-                    {
-                      ref: "simplebar",
-                      staticClass: "simplebar",
-                      style: { filter: _vm.isLoading ? "blur(8px)" : null }
-                    },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "table-body" },
-                        _vm._l(_vm.pageData.data, function(row, rowIndex) {
-                          return _c("DataTableRow", {
-                            key: rowIndex,
-                            attrs: { row: row, resource: _vm.resource }
-                          })
-                        }),
-                        1
-                      )
-                    ]
-                  )
-                : _vm._e()
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("paginator", {
-        attrs: { pagingInfo: _vm.pagingInfo, isDisabled: _vm.isLoading },
-        on: { "page-selected": _vm.handlePageSelected }
-      })
-    ],
-    1
-  )
+  return _c("div", [
+    _c(
+      "div",
+      { ref: "table", staticClass: "table" },
+      [
+        _c("data-table-head", {
+          attrs: {
+            resource: _vm.resource,
+            allRowsAreSelected: _vm.allRowsAreSelected
+          },
+          on: { selectAllRows: _vm.handleSelectAllRows }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "table-body-wrapper" },
+          [
+            _vm.pageData
+              ? _c(
+                  "simplebar",
+                  {
+                    ref: "simplebar",
+                    staticClass: "simplebar",
+                    style: { filter: _vm.isLoading ? "blur(8px)" : null }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "table-body" },
+                      _vm._l(_vm.items, function(row) {
+                        return _c("DataTableRow", {
+                          key: row.id,
+                          attrs: {
+                            row: row,
+                            resource: _vm.resource,
+                            isSelected: !!_vm.selectedRows[row.id]
+                          },
+                          on: {
+                            select: function(val) {
+                              return _vm.handleRowSelectChange(row.id, val)
+                            }
+                          }
+                        })
+                      }),
+                      1
+                    )
+                  ]
+                )
+              : _vm._e()
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("paginator", {
+          attrs: { pagingInfo: _vm.pagingInfo, isDisabled: _vm.isLoading },
+          on: { "page-selected": _vm.handlePageSelected }
+        })
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41588,49 +41933,80 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "table-head" }, [
-    _c("div", { staticClass: "table-head-pre" }, [_c("checkbox-input")], 1),
+  return _c("page-card", { staticClass: "table-head" }, [
+    _c("div", { staticClass: "table-head-upper" }, [
+      _c(
+        "div",
+        { staticClass: "search-input-wrapper" },
+        [
+          _c("input", {
+            staticClass: "search-input",
+            attrs: { type: "search", placeholder: "Search" }
+          }),
+          _vm._v(" "),
+          _c("icon", {
+            staticClass: "search-input-icon",
+            attrs: { name: "search", strokeWidth: "1" }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("button", { staticClass: "create-btn" }, [_vm._v("Create New")])
+    ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "table-head-cells table-cells" },
-      _vm._l(_vm.resource.fields, function(field) {
-        return _c(
-          "div",
-          {
-            key: field.name,
-            staticClass: "table-head-cell",
-            class: "cell-" + field.name,
-            staticStyle: { "flex-grow": "1" },
-            style: {
-              paddingLeft: _vm.resource.title_field == field.name ? "64px" : "0"
+    _c("div", { staticClass: "table-head-lower" }, [
+      _c(
+        "div",
+        { staticClass: "table-head-pre" },
+        [
+          _c("checkbox-input", {
+            attrs: { value: _vm.allRowsAreSelected },
+            on: {
+              input: function(val) {
+                return _vm.$emit("selectAllRows", val)
+              }
             }
-          },
-          [
-            _c("strong", [_vm._v(_vm._s(field.label))]),
-            _vm._v(" "),
-            _vm._m(0, true)
-          ]
-        )
-      }),
-      0
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "table-head-post" })
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "table-head-cells table-cells" },
+        _vm._l(_vm.resource.fields, function(field) {
+          return _c(
+            "div",
+            {
+              key: field.name,
+              staticClass: "table-head-cell",
+              class: "cell-" + field.name,
+              staticStyle: { "flex-grow": "1" },
+              style: {
+                paddingLeft:
+                  _vm.resource.title_field == field.name ? "60px" : "0"
+              }
+            },
+            [
+              _c("strong", [_vm._v(_vm._s(field.label))]),
+              _vm._v(" "),
+              _c("span", { staticClass: "table-head-cell-sort-icons" }, [
+                _c("i", { staticClass: "lni-chevron-up" }),
+                _vm._v(" "),
+                _c("i", { staticClass: "lni-chevron-down" })
+              ])
+            ]
+          )
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-head-post" }, [_c("bulk-actions")], 1)
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "table-head-cell-sort-icons" }, [
-      _c("i", { staticClass: "lni-chevron-up" }),
-      _vm._v(" "),
-      _c("i", { staticClass: "lni-chevron-down" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -41652,9 +42028,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "table-row" }, [
+  return _c("page-card", { staticClass: "table-row" }, [
     _c("div", { staticClass: "table-row-upper" }, [
-      _c("div", { staticClass: "table-row-pre" }, [_c("checkbox-input")], 1),
+      _c(
+        "div",
+        { staticClass: "table-row-pre" },
+        [
+          _c("checkbox-input", {
+            attrs: { value: !!_vm.isSelected },
+            on: { input: _vm.handleSelectedChange }
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -41695,9 +42081,9 @@ var render = function() {
         "div",
         { staticClass: "table-row-post" },
         [
-          _c("i", { staticClass: "icon lni-eye" }),
+          _c("icon", { attrs: { name: "eye" } }),
           _vm._v(" "),
-          _c("i", { staticClass: "icon lni-pencil" }),
+          _c("icon", { attrs: { name: "edit-2" } }),
           _vm._v(" "),
           _c("row-delete-button", { attrs: { item: _vm.row } })
         ],
@@ -41736,50 +42122,63 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.totalPages > 1
-    ? _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "paginator",
-            class: { "is-disabled": _vm.isDisabled }
-          },
-          [
-            _c("i", {
-              staticClass: "prev lni-chevron-left",
-              class: { "is-disabled": _vm.isFirstPage },
+    ? _c(
+        "page-card",
+        { staticClass: "paginator", class: { "is-disabled": _vm.isDisabled } },
+        [
+          _c(
+            "button",
+            {
+              staticClass: "prev",
+              attrs: { disabled: _vm.isFirstPage },
               on: { click: _vm.handlePrev }
-            }),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "pages" },
-              _vm._l(Array(_vm.totalPages).keys(), function(pageNum) {
-                return _c(
-                  "span",
-                  {
-                    key: pageNum,
-                    staticClass: "page",
-                    class: { active: pageNum + 1 == _vm.currentPage },
-                    on: {
-                      click: function($event) {
-                        return _vm.handlePageSelect(pageNum + 1)
-                      }
+            },
+            [
+              _c("icon", {
+                attrs: { name: "chevron-left", strokeWidth: "2", size: "22" }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "pages" },
+            _vm._l(Array(_vm.totalPages).keys(), function(pageNum) {
+              return _c(
+                "button",
+                {
+                  key: pageNum,
+                  staticClass: "page",
+                  class: { active: pageNum + 1 == _vm.currentPage },
+                  on: {
+                    click: function($event) {
+                      return _vm.handlePageSelect(pageNum + 1)
                     }
-                  },
-                  [_vm._v(_vm._s(pageNum + 1))]
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c("i", {
-              staticClass: "next lni-chevron-right",
-              class: { "is-disabled": _vm.isLastPage },
+                  }
+                },
+                [_vm._v(_vm._s(pageNum + 1))]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "next",
+              attrs: { disabled: _vm.isLastPage },
               on: { click: _vm.handleNext }
-            })
-          ]
-        )
-      ])
+            },
+            [
+              _c("icon", {
+                attrs: { name: "chevron-right", strokeWidth: "2", size: "22" }
+              })
+            ],
+            1
+          )
+        ]
+      )
     : _vm._e()
 }
 var staticRenderFns = []
@@ -41814,7 +42213,7 @@ var render = function() {
           var isDisabled = ref.isDisabled
           return [
             _c(
-              "i",
+              "button",
               {
                 directives: [
                   {
@@ -41825,8 +42224,7 @@ var render = function() {
                     modifiers: { top: true }
                   }
                 ],
-                staticClass: "icon lni-trash",
-                class: { "is-disabled": isDisabled },
+                attrs: { disabled: isDisabled },
                 on: {
                   click: function($event) {
                     return _vm.handleClick(isDisabled)
@@ -41834,6 +42232,8 @@ var render = function() {
                 }
               },
               [
+                _c("icon", { attrs: { name: "trash-2" } }),
+                _vm._v(" "),
                 _vm.showModal
                   ? _c(
                       "modal",
@@ -41924,14 +42324,13 @@ var render = function() {
               "margin-right": "24px",
               "border-radius": "50%",
               "flex-shrink": "0",
-              width: "40px",
-              height: "40px"
+              width: "var(--sp-9)",
+              height: "var(--sp-9)"
             },
             attrs: {
               src:
-                "https://api.adorable.io/avatars/40/" +
-                _vm.field.data.split("").join("_") +
-                ".png",
+                "https://i.pravatar.cc/40?u=" +
+                _vm.field.data.split("").join("_"),
               alt: ""
             }
           })
@@ -41965,7 +42364,42 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("header", { staticClass: "header" }, [_vm._v("Header stuff")])
+  return _c(
+    "header",
+    { staticClass: "header" },
+    [
+      _c(
+        "v-popover",
+        { staticStyle: { "margin-left": "auto" } },
+        [
+          _c("img", {
+            staticStyle: {
+              "border-radius": "50%",
+              "flex-shrink": "0",
+              width: "var(--sp-9)",
+              height: "var(--sp-9)",
+              border: "1px solid var(--grey-9)",
+              cursor: "pointer"
+            },
+            attrs: { src: "https://i.pravatar.cc/40?u=amr", alt: "" }
+          }),
+          _vm._v(" "),
+          _c("template", { slot: "popover" }, [
+            _c("form", { attrs: { action: _vm.logoutUrl, method: "POST" } }, [
+              _c("input", {
+                attrs: { type: "hidden", name: "_token" },
+                domProps: { value: _vm.csrfToken }
+              }),
+              _vm._v(" "),
+              _c("button", { attrs: { type: "submit" } }, [_vm._v("Logout")])
+            ])
+          ])
+        ],
+        2
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -42002,49 +42436,104 @@ var render = function() {
               _c(
                 "router-link",
                 { attrs: { to: { name: resource.name + ".index" } } },
-                [_vm._v(_vm._s(resource.label))]
+                [
+                  _c(
+                    "span",
+                    { staticClass: "icon-wrapper" },
+                    [
+                      _c("icon", {
+                        staticClass: "menu-icon",
+                        attrs: { name: "folder", size: "24" }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("span", [_vm._v(_vm._s(resource.label))])
+                ]
               )
             ],
             1
           )
         }),
         _vm._v(" "),
-        _vm._m(0),
+        _c("li", { staticClass: "sidebar-items__item" }, [
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "span",
+              { staticClass: "icon-wrapper" },
+              [
+                _c("icon", {
+                  staticClass: "menu-icon",
+                  attrs: { name: "share", size: "24" }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v("Sharing")])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(1),
+        _c("li", { staticClass: "sidebar-items__item" }, [
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "span",
+              { staticClass: "icon-wrapper" },
+              [
+                _c("icon", {
+                  staticClass: "menu-icon",
+                  attrs: { name: "file", size: "24" }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v("File Requests")])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(2)
+        _c("li", { staticClass: "sidebar-items__item" }, [
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "span",
+              { staticClass: "icon-wrapper" },
+              [
+                _c("icon", {
+                  staticClass: "menu-icon",
+                  attrs: { name: "users", size: "24" }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v("Users")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "sidebar-items__item" }, [
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "span",
+              { staticClass: "icon-wrapper" },
+              [
+                _c("icon", {
+                  staticClass: "menu-icon",
+                  attrs: { name: "trash-2", size: "24" }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v("Deleted Files")])
+          ])
+        ])
       ],
       2
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "sidebar-items__item" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Temp one")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "sidebar-items__item" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Temp two")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "sidebar-items__item" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Temp three")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -42168,7 +42657,39 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "flash-message", on: { click: _vm.handleClick } },
-    [_vm._v(_vm._s(_vm.message.content))]
+    [
+      _c(
+        "span",
+        {
+          staticStyle: {
+            display: "flex",
+            "align-items": "center",
+            height: "1.5em",
+            "margin-right": "var(--sp-4)"
+          }
+        },
+        [
+          _c("icon", {
+            staticStyle: {
+              stroke: "var(--success-9)",
+              "border-radius": "50%",
+              border: "1px solid var(--success-9)",
+              padding: "var(--sp-1)",
+              "box-sizing": "content-box"
+            },
+            attrs: { name: "check", size: "18" }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("span", [
+        _vm._v(
+          _vm._s(_vm.message.content) +
+            " Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ipsa natus amet in, itaque,"
+        )
+      ])
+    ]
   )
 }
 var staticRenderFns = []
@@ -57336,6 +57857,1076 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/vuex/dist/vuex.esm.js":
+/*!********************************************!*\
+  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
+  \********************************************/
+/*! exports provided: default, Store, install, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/**
+ * vuex v3.1.2
+ * (c) 2019 Evan You
+ * @license MIT
+ */
+function applyMixin (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+}
+
+var target = typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+    ? global
+    : {};
+var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+function partial (fn, arg) {
+  return function () {
+    return fn(arg)
+  }
+}
+
+// Base data struct for store's module, package with some attribute and method
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  // Store some children item
+  this._children = Object.create(null);
+  // Store the origin module object which passed by programmer
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+
+  // Store the origin module's state
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors = { namespaced: { configurable: true } };
+
+prototypeAccessors.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (true) {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (true) {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (true) {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (true) {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+  this._makeLocalGettersCache = Object.create(null);
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  var state = this._modules.root.state;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  var useDevtools = options.devtools !== undefined ? options.devtools : Vue.config.devtools;
+  if (useDevtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors$1 = { state: { configurable: true } };
+
+prototypeAccessors$1.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors$1.state.set = function (v) {
+  if (true) {
+    assert(false, "use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+     true &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+
+  try {
+    this._actionSubscribers
+      .filter(function (sub) { return sub.before; })
+      .forEach(function (sub) { return sub.before(action, this$1.state); });
+  } catch (e) {
+    if (true) {
+      console.warn("[vuex] error in before action subscribers: ");
+      console.error(e);
+    }
+  }
+
+  var result = entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload);
+
+  return result.then(function (res) {
+    try {
+      this$1._actionSubscribers
+        .filter(function (sub) { return sub.after; })
+        .forEach(function (sub) { return sub.after(action, this$1.state); });
+    } catch (e) {
+      if (true) {
+        console.warn("[vuex] error in after action subscribers: ");
+        console.error(e);
+      }
+    }
+    return res
+  })
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  return genericSubscribe(fn, this._subscribers)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn) {
+  var subs = typeof fn === 'function' ? { before: fn } : fn;
+  return genericSubscribe(subs, this._actionSubscribers)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (true) {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors$1 );
+
+function genericSubscribe (fn, subs) {
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  // reset local getters cache
+  store._makeLocalGettersCache = Object.create(null);
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure environment.
+    computed[key] = partial(fn, store);
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    if (store._modulesNamespaceMap[namespace] && "development" !== 'production') {
+      console.error(("[vuex] duplicate namespace " + namespace + " for the namespaced module " + (path.join('/'))));
+    }
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      if (true) {
+        if (moduleName in parentState) {
+          console.warn(
+            ("[vuex] state field \"" + moduleName + "\" was overridden by a module with the same name at \"" + (path.join('.')) + "\"")
+          );
+        }
+      }
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  if (!store._makeLocalGettersCache[namespace]) {
+    var gettersProxy = {};
+    var splitPos = namespace.length;
+    Object.keys(store.getters).forEach(function (type) {
+      // skip if the target getter is not match this namespace
+      if (type.slice(0, splitPos) !== namespace) { return }
+
+      // extract local getter type
+      var localType = type.slice(splitPos);
+
+      // Add a port to the getters proxy.
+      // Define as getter property because
+      // we do not want to evaluate the getters in this time.
+      Object.defineProperty(gettersProxy, localType, {
+        get: function () { return store.getters[type]; },
+        enumerable: true
+      });
+    });
+    store._makeLocalGettersCache[namespace] = gettersProxy;
+  }
+
+  return store._makeLocalGettersCache[namespace]
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (true) {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (true) {
+      assert(store._committing, "do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (true) {
+    assert(typeof type === 'string', ("expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (true) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+/**
+ * Reduce the code which written in Vue.js for getting the state.
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} states # Object's item can be a function which accept state and getters for param, you can do something for state and getters in it.
+ * @param {Object}
+ */
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  if ( true && !isValidMap(states)) {
+    console.error('[vuex] mapState: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for committing the mutation
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} mutations # Object's item can be a function which accept `commit` function as the first param, it can accept anthor params. You can commit mutation and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  if ( true && !isValidMap(mutations)) {
+    console.error('[vuex] mapMutations: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // Get the commit method from store
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for getting the getters
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} getters
+ * @return {Object}
+ */
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  if ( true && !isValidMap(getters)) {
+    console.error('[vuex] mapGetters: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    // The namespace has been mutated by normalizeNamespace
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if ( true && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for dispatch the action
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  if ( true && !isValidMap(actions)) {
+    console.error('[vuex] mapActions: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // get dispatch function from store
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Rebinding namespace param for mapXXX function in special scoped, and return them by simple object
+ * @param {String} namespace
+ * @return {Object}
+ */
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+/**
+ * Normalize the map
+ * normalizeMap([1, 2, 3]) => [ { key: 1, val: 1 }, { key: 2, val: 2 }, { key: 3, val: 3 } ]
+ * normalizeMap({a: 1, b: 2, c: 3}) => [ { key: 'a', val: 1 }, { key: 'b', val: 2 }, { key: 'c', val: 3 } ]
+ * @param {Array|Object} map
+ * @return {Object}
+ */
+function normalizeMap (map) {
+  if (!isValidMap(map)) {
+    return []
+  }
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+/**
+ * Validate whether given map is valid or not
+ * @param {*} map
+ * @return {Boolean}
+ */
+function isValidMap (map) {
+  return Array.isArray(map) || isObject(map)
+}
+
+/**
+ * Return a function expect two param contains namespace and map. it will normalize the namespace and then the param's function will handle the new namespace and the map.
+ * @param {Function} fn
+ * @return {Function}
+ */
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+/**
+ * Search a special module from store by namespace. if module not exist, print error message.
+ * @param {Object} store
+ * @param {String} helper
+ * @param {String} namespace
+ * @return {Object}
+ */
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if ( true && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.1.2',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index_esm);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -57425,7 +59016,9 @@ var map = {
 	"./components/Expand.vue": "./resources/js/components/Expand.vue",
 	"./components/Icon.vue": "./resources/js/components/Icon.vue",
 	"./components/Notification.vue": "./resources/js/components/Notification.vue",
+	"./components/PageCard.vue": "./resources/js/components/PageCard.vue",
 	"./components/Spinner.vue": "./resources/js/components/Spinner.vue",
+	"./components/datatable/BulkActions.vue": "./resources/js/components/datatable/BulkActions.vue",
 	"./components/datatable/DataTable.vue": "./resources/js/components/datatable/DataTable.vue",
 	"./components/datatable/DataTableHead.vue": "./resources/js/components/datatable/DataTableHead.vue",
 	"./components/datatable/DataTableRow.vue": "./resources/js/components/datatable/DataTableRow.vue",
@@ -57477,9 +59070,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var portal_vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(portal_vue__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var v_tooltip__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! v-tooltip */ "./node_modules/v-tooltip/dist/v-tooltip.esm.js");
 /* harmony import */ var _plugins_flash_messages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/plugins/flash-messages */ "./resources/js/plugins/flash-messages/index.js");
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/routes */ "./resources/js/routes.js");
-/* harmony import */ var _axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/axios */ "./resources/js/axios.js");
-/* harmony import */ var _lodash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/lodash */ "./resources/js/lodash.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/router */ "./resources/js/router.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/store */ "./resources/js/store/index.js");
+/* harmony import */ var _axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/axios */ "./resources/js/axios.js");
+/* harmony import */ var _lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/lodash */ "./resources/js/lodash.js");
+
 
 
 
@@ -57491,9 +59086,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(portal_vue__WEBPACK_IMPORTED_MODULE_1___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_tooltip__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(_plugins_flash_messages__WEBPACK_IMPORTED_MODULE_3__["default"]);
-window._ = _lodash__WEBPACK_IMPORTED_MODULE_6__["default"];
+window._ = _lodash__WEBPACK_IMPORTED_MODULE_7__["default"];
 window.Vue = vue__WEBPACK_IMPORTED_MODULE_0___default.a;
-window.axios = _axios__WEBPACK_IMPORTED_MODULE_5__["default"];
+window.axios = _axios__WEBPACK_IMPORTED_MODULE_6__["default"];
 console.info('structure:', window.structure);
 /**
  * The following block of code may be used to automatically register your
@@ -57516,7 +59111,8 @@ files.keys().map(function (key) {
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
-  router: _routes__WEBPACK_IMPORTED_MODULE_4__["default"]
+  router: _router__WEBPACK_IMPORTED_MODULE_4__["default"],
+  store: _store__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 
 /***/ }),
@@ -58016,6 +59612,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/PageCard.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/PageCard.vue ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PageCard_vue_vue_type_template_id_a30f5fac_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PageCard.vue?vue&type=template&id=a30f5fac&scoped=true& */ "./resources/js/components/PageCard.vue?vue&type=template&id=a30f5fac&scoped=true&");
+/* harmony import */ var _PageCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PageCard.vue?vue&type=script&lang=js& */ "./resources/js/components/PageCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _PageCard_vue_vue_type_style_index_0_id_a30f5fac_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss& */ "./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _PageCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PageCard_vue_vue_type_template_id_a30f5fac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PageCard_vue_vue_type_template_id_a30f5fac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "a30f5fac",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PageCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PageCard.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/PageCard.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PageCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PageCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss& ***!
+  \********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_style_index_0_id_a30f5fac_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--7-2!../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../node_modules/vue-loader/lib??vue-loader-options!./PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PageCard.vue?vue&type=style&index=0&id=a30f5fac&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_style_index_0_id_a30f5fac_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_style_index_0_id_a30f5fac_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_style_index_0_id_a30f5fac_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_style_index_0_id_a30f5fac_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_style_index_0_id_a30f5fac_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PageCard.vue?vue&type=template&id=a30f5fac&scoped=true&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/PageCard.vue?vue&type=template&id=a30f5fac&scoped=true& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_template_id_a30f5fac_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./PageCard.vue?vue&type=template&id=a30f5fac&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PageCard.vue?vue&type=template&id=a30f5fac&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_template_id_a30f5fac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PageCard_vue_vue_type_template_id_a30f5fac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Spinner.vue":
 /*!*********************************************!*\
   !*** ./resources/js/components/Spinner.vue ***!
@@ -58098,6 +59781,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Spinner_vue_vue_type_template_id_7ae326fe_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Spinner_vue_vue_type_template_id_7ae326fe_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/datatable/BulkActions.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/datatable/BulkActions.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BulkActions_vue_vue_type_template_id_38d1eb05___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BulkActions.vue?vue&type=template&id=38d1eb05& */ "./resources/js/components/datatable/BulkActions.vue?vue&type=template&id=38d1eb05&");
+/* harmony import */ var _BulkActions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BulkActions.vue?vue&type=script&lang=js& */ "./resources/js/components/datatable/BulkActions.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BulkActions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BulkActions_vue_vue_type_template_id_38d1eb05___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BulkActions_vue_vue_type_template_id_38d1eb05___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/datatable/BulkActions.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/datatable/BulkActions.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/datatable/BulkActions.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkActions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BulkActions.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/datatable/BulkActions.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkActions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/datatable/BulkActions.vue?vue&type=template&id=38d1eb05&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/datatable/BulkActions.vue?vue&type=template&id=38d1eb05& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkActions_vue_vue_type_template_id_38d1eb05___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BulkActions.vue?vue&type=template&id=38d1eb05& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/datatable/BulkActions.vue?vue&type=template&id=38d1eb05&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkActions_vue_vue_type_template_id_38d1eb05___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkActions_vue_vue_type_template_id_38d1eb05___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -59211,7 +60963,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FlashMessage_vue_vue_type_template_id_72412c40_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FlashMessage.vue?vue&type=template&id=72412c40&scoped=true& */ "./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=template&id=72412c40&scoped=true&");
 /* harmony import */ var _FlashMessage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FlashMessage.vue?vue&type=script&lang=js& */ "./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css& */ "./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss& */ "./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -59253,19 +61005,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css&":
-/*!***********************************************************************************************************************!*\
-  !*** ./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css& ***!
-  \***********************************************************************************************************************/
+/***/ "./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss&":
+/*!************************************************************************************************************************!*\
+  !*** ./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss& ***!
+  \************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/plugins/flash-messages/FlashMessage.vue?vue&type=style&index=0&id=72412c40&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMessage_vue_vue_type_style_index_0_id_72412c40_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -59400,9 +61152,9 @@ var notifications = [1, 2];
 
 /***/ }),
 
-/***/ "./resources/js/routes.js":
+/***/ "./resources/js/router.js":
 /*!********************************!*\
-  !*** ./resources/js/routes.js ***!
+  !*** ./resources/js/router.js ***!
   \********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -59447,6 +61199,236 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history'
 });
 /* harmony default export */ __webpack_exports__["default"] = (router);
+
+/***/ }),
+
+/***/ "./resources/js/store/index.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/index.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment: function increment(state) {
+      state.count++;
+    }
+  }
+});
+/* harmony default export */ __webpack_exports__["default"] = (store);
+
+/***/ }),
+
+/***/ "./resources/js/store/pagination.js":
+/*!******************************************!*\
+  !*** ./resources/js/store/pagination.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/router */ "./resources/js/router.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+function applyPrefix(filters, prefix) {
+  prefix = prefix ? "".concat(prefix, "_") : '';
+  var result = {};
+  Object.keys(filters).forEach(function (key) {
+    result[prefix + key] = filters[key];
+  });
+  return result;
+}
+
+function removePrefix(filters, prefix) {
+  prefix = prefix ? "".concat(prefix, "_") : '';
+  var result = {};
+  Object.keys(filters).filter(function (key) {
+    return key.startsWith(prefix);
+  }).forEach(function (key) {
+    result[key.split(prefix).slice(1).join('')] = filters[key];
+  });
+  return result;
+}
+
+function getFiltersFromQueryParams(filters, prefix) {
+  var allQueryParams = _router__WEBPACK_IMPORTED_MODULE_0__["default"].currentRoute.query;
+  var prefixedFilters = applyPrefix(filters, prefix);
+  return removePrefix(_.pick(allQueryParams, Object.keys(prefixedFilters)), prefix);
+}
+
+function getInitialFiltersFromRouteParams(filters, prefix) {
+  var unprefixedQueryParams = getFiltersFromQueryParams(filters, prefix);
+
+  var initialFilters = _objectSpread({}, filters, {}, unprefixedQueryParams);
+
+  return initialFilters;
+}
+
+function syncFiltersWithRouteParams(filters, prefix) {
+  var unprefixedQueryParams = getFiltersFromQueryParams(filters, prefix);
+  var allQueryParams = _router__WEBPACK_IMPORTED_MODULE_0__["default"].query;
+  var prefixedFilters = applyPrefix(filters, prefix);
+
+  if (!_.isEqual(unprefixedQueryParams, filters)) {
+    var newQueryParams = _.omitBy(_objectSpread({}, allQueryParams, {}, prefixedFilters), _.isNil);
+
+    _router__WEBPACK_IMPORTED_MODULE_0__["default"].replace(_objectSpread({}, _router__WEBPACK_IMPORTED_MODULE_0__["default"].currenRoute, {
+      query: newQueryParams
+    }));
+  }
+}
+
+var defaultOptions = {
+  filters: {},
+  syncFiltersWithRouteParams: false,
+  routeParamsPrefix: null
+};
+/* harmony default export */ __webpack_exports__["default"] = (function (url) {
+  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  var options = _objectSpread({}, defaultOptions, {}, opts);
+
+  var initialFilters = options.syncFiltersWithRouteParams ? getInitialFiltersFromRouteParams(options.filters, options.routeParamsPrefix) : options.filters;
+  return {
+    state: function state() {
+      return {
+        pageData: null,
+        isLoading: false,
+        error: null,
+        filters: _objectSpread({
+          page: null
+        }, initialFilters)
+      };
+    },
+    getters: {
+      totalPages: function totalPages(state) {
+        return Math.ceil(_.get(state, "pageData.total", 0) / _.get(state, "pageData.per_page", 10));
+      },
+      currentPage: function currentPage(state) {
+        return _.get(state, 'pageData.current_page', 1);
+      },
+      lastPage: function lastPage(state, getters) {
+        return getters.totalPages;
+      },
+      isFirstPage: function isFirstPage(state, getters) {
+        return getters.currentPage == 1;
+      },
+      isLastPage: function isLastPage(state, getters) {
+        return getters.currentPage == getters.lastPage;
+      },
+      isLoading: function isLoading(state) {
+        return state.isLoading;
+      },
+      error: function error(state) {
+        return state.error;
+      },
+      pageData: function pageData(state) {
+        return _.get(state, 'pageData');
+      },
+      items: function items(state) {
+        return _.get(state, 'pageData.data');
+      },
+      filters: function filters(state) {
+        return state.filters;
+      },
+      nonEmptyFilters: function nonEmptyFilters(state, getters) {
+        return _.omitBy(state.filters, _.isNil);
+      }
+    },
+    mutations: {
+      LOAD_PAGE_INIT: function LOAD_PAGE_INIT(state) {
+        state.isLoading = true;
+        state.error = null;
+      },
+      LOAD_PAGE_SUCCESS: function LOAD_PAGE_SUCCESS(state, pageData) {
+        state.pageData = _objectSpread({}, pageData);
+        state.isLoading = false;
+        state.error = null;
+      },
+      LOAD_PAGE_ERROR: function LOAD_PAGE_ERROR(state, error) {
+        state.isLoading = false;
+        state.error = error;
+      },
+      UPDATE_FILTERS: function UPDATE_FILTERS(state, filters) {
+        state.filters = _objectSpread({}, filters);
+      }
+    },
+    actions: {
+      load: function load(_ref) {
+        var commit = _ref.commit,
+            dispatch = _ref.dispatch,
+            state = _ref.state,
+            getters = _ref.getters;
+        commit('LOAD_PAGE_INIT');
+        return axios.get(url, {
+          params: _objectSpread({}, getters.nonEmptyFilters)
+        }).then(function (_ref2) {
+          var data = _ref2.data;
+          commit('LOAD_PAGE_SUCCESS', data);
+
+          if (getters.currentPage > getters.lastPage) {
+            return dispatch('updateFilters', {
+              page: getters.lastPage
+            });
+          } // if (clearRowsState) {
+          //   this.allRowsAreSelected = false;
+          //   this.selectedRows = {};
+          // }
+
+        })["catch"](function (error) {
+          commit('LOAD_PAGE_ERROR', error);
+        });
+      },
+      refresh: function refresh(_ref3) {
+        var dispatch = _ref3.dispatch,
+            getters = _ref3.getters;
+        return dispatch('load');
+      },
+      updateFilters: function updateFilters(_ref4, filters) {
+        var commit = _ref4.commit,
+            dispatch = _ref4.dispatch,
+            state = _ref4.state;
+
+        var newFilters = _objectSpread({}, state.filters, {}, filters);
+
+        var oldFilters = state.filters;
+        commit('UPDATE_FILTERS', newFilters);
+
+        if (!_.isEqual(newFilters, oldFilters)) {
+          if (options.syncFiltersWithRouteParams) {
+            syncFiltersWithRouteParams(newFilters, options.routeParamsPrefix);
+          }
+
+          return dispatch('refresh');
+        }
+      },
+      clearFilters: function clearFilters(_ref5) {
+        var dispatch = _ref5.dispatch;
+        return dispatch('updateFilters', {});
+      }
+    },
+    namespaced: true
+  };
+});
 
 /***/ }),
 

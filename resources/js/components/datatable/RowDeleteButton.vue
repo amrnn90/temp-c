@@ -35,7 +35,7 @@ export default {
     handleConfirm(triggerDelete) {
       triggerDelete().then(() => {
         this.showModal = false;
-        this.refreshTable();
+        this.refreshTable(false);
         this.$flash("Item deleted successfully!");
       });
     }
