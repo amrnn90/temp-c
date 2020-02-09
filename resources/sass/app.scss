@@ -5,7 +5,6 @@
 @import 'init';
 
 // Libs
-// @import '~overlayscrollbars/css/OverlayScrollbars.css';
 @import '~simplebar/dist/simplebar.min.css';
 @import './tooltips';
 
@@ -17,6 +16,7 @@ html {
 }
 
 body {
+    -webkit-font-smoothing: antialiased;
     background: var(--body-color);
 }
 

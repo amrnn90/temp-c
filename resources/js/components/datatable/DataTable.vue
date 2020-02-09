@@ -21,8 +21,6 @@
               :key="row.id"
               :row="row"
               :resource="resource"
-              :isSelected="!!selectedRows[row.id]"
-              @select="(val) => handleRowSelectChange(row.id, val)"
             />
           </div>
         </simplebar>
@@ -42,16 +40,13 @@ import simplebar from "simplebar-vue";
 import { mapGetters } from "vuex";
 import DataTableLayoutMixin from "./DataTableLayoutMixin";
 import { objectToQuerystring } from "@/utils";
-import paginationModule from "@/store/pagination";
-
+import dataTableModule from "@/store/data-table";
 
 export default {
   components: {
     simplebar
   },
-  mixins: [
-    DataTableLayoutMixin
-  ],
+  mixins: [DataTableLayoutMixin],
   props: {
     resource: {},
     storeId: {}
@@ -67,19 +62,19 @@ export default {
     return {
       hiddenColumns: [],
       // expandedRows: {},
-      selectedRows: {},
       allRowsAreSelected: false
     };
   },
   computedOnSteroids() {
     return {
+      ...mapGetters(this.$dynamicModuleId(), [
+        "pageData",
+        "isLoading",
+        "items"
+      ]),
       pagingInfo() {
         return _.omit(this.pageData, ["data"]);
       },
-      selectedItems() {
-        return this.items.filter(item => this.selectedRows[item.id]);
-      },
-      ...mapGetters(this.$dynamicModuleId(), ["pageData", "isLoading", "items"])
     };
   },
   watch: {
@@ -94,7 +89,6 @@ export default {
       return this.tableStore.dispatch("refresh").then(() => {
         if (clearRowsState) {
           this.allRowsAreSelected = false;
-          this.selectedRows = {};
         }
       });
     },
@@ -106,20 +100,9 @@ export default {
       this.$flash("Selected: " + pageNum);
     },
 
-    handleRowSelectChange(id, val) {
-      this.selectedRows = {
-        ...this.selectedRows,
-        [id]: val
-      };
-    },
     handleSelectAllRows(val) {
       this.allRowsAreSelected = val;
-      this.selectedRows = {};
-      if (val) {
-        this.items.forEach(row => {
-          this.selectedRows[row.id] = true;
-        });
-      }
+
     },
     scrollToTop() {
       if (this.$refs.simplebar) {
@@ -132,11 +115,7 @@ export default {
   beforeCreate() {
     const url = this.$options.propsData.resource.api_urls.index;
 
-    const module = paginationModule(url, {
-      syncFiltersWithRouteParams: true,
-      routeParamsPrefix: "table",
-      filters: {}
-    });
+    const module = dataTableModule(url);
 
     this.tableStore = this.$registerDynamicModule(module);
   },
@@ -152,9 +131,8 @@ export default {
 <style scoped lang="scss">
 @import "resources/sass/init";
 
-.table {
-  // margin: 0 calc(var(--table-row-horizontal-padding) * -1);
-}
+// .table {
+// }
 
 .table-body-wrapper {
   position: relative;
@@ -162,8 +140,6 @@ export default {
 }
 
 .table-body {
-  // padding-bottom: 14px;
-
   /* offset to make simplebar scroller outside */
   padding: 0 calc(var(--page-card-horizontal-padding) + var(--sp-4));
 }

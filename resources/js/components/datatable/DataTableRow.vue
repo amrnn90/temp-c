@@ -2,7 +2,7 @@
   <page-card class="table-row">
     <div class="table-row-upper">
       <div class="table-row-pre">
-        <checkbox-input :value="!!isSelected" @input="handleSelectedChange" />
+        <checkbox-input :value="isSelectedRow" @input="toggleRow" />
       </div>
       <div class="table-row-cells table-cells">
         <div
@@ -34,16 +34,30 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  props: ["row", "resource", "isSelected"],
+  props: ["row", "resource"],
+  inject: ["tableStoreNamespace"],
   data() {
     return {
-      isExpanded: false,
+      isExpanded: false
     };
   },
+  computed: {
+    rowId() {
+      return this.row.id;
+    },
+    tableStore() {
+      return this.$dynamicModuleStore(this.tableStoreNamespace);
+    },
+    isSelectedRow() {
+      return this.tableStore.getters("isSelectedRow", this.rowId);
+    }
+  },
   methods: {
-    handleSelectedChange(val) {
-      this.$emit('select', val);
+    toggleRow() {
+      this.tableStore.dispatch("toggleRow", this.rowId);
     }
   }
 };
@@ -59,7 +73,7 @@ export default {
     margin-bottom: var(--sp-2);
   }
 
-  transition: all .2s ease;
+  transition: all 0.2s ease;
   // &:hover {
   //   // background: hsla(var(--primary-v-6), .02);
   // }
@@ -95,7 +109,7 @@ export default {
 
 .table-row-cell {
   font-size: var(--fz-xs);
-  font-weight:  var(--fw-bold);
+  font-weight: var(--fw-bold);
   color: var(--grey-5);
 }
 </style>

@@ -1,65 +1,15 @@
 import router from '@/router';
 
-function applyPrefix(filters, prefix) {
-  prefix = prefix ? `${prefix}_` : '';
-  const result = {};
-
-  Object.keys(filters).forEach(key => {
-    result[prefix + key] = filters[key];
-  });
-
-  return result;
-}
-
-function removePrefix(filters, prefix) {
-  prefix = prefix ? `${prefix}_` : '';
-  const result = {};
-
-  Object.keys(filters).filter(key => key.startsWith(prefix)).forEach(key => {
-    result[key.split(prefix).slice(1).join('')] = filters[key];
-  });
-
-  return result;
-}
-
-function getFiltersFromQueryParams(filters, prefix) {
-  const allQueryParams = router.currentRoute.query;
-  const prefixedFilters = applyPrefix(filters, prefix);
-
-  return removePrefix(_.pick(allQueryParams, Object.keys(prefixedFilters)), prefix);
-}
-
-function getInitialFiltersFromRouteParams(filters, prefix) {
-  const unprefixedQueryParams = getFiltersFromQueryParams(filters, prefix);
-  const initialFilters = { ...filters, ...unprefixedQueryParams };
-
-  return initialFilters;
-}
-
-function syncFiltersWithRouteParams(filters, prefix) {
-  const allQueryParams = router.currentRoute.query;
-  const prefixedFilters = applyPrefix(filters, prefix);
-  const newQueryParams = _.omitBy({ ...allQueryParams, ...prefixedFilters }, _.isNil);
-
-  if (!_.isEqual(newQueryParams, allQueryParams)) {
-
-    router.replace({
-      ...router.currenRoute,
-      query: newQueryParams
-    });
-
-  }
-}
-
 const defaultOptions = {
   filters: {},
   syncFiltersWithRouteParams: false,
   routeParamsPrefix: null,
+  namespaced: true
 };
 
 export default (url, opts = {}) => {
   const options = { ...defaultOptions, ...opts };
-  const filters = {...options.filters, page: null};
+  const filters = { ...options.filters, page: null };
 
   let initialFilters = filters;
   if (options.syncFiltersWithRouteParams) {
@@ -141,7 +91,7 @@ export default (url, opts = {}) => {
       load({ commit, dispatch, state, getters }) {
         const page = parseInt(getters.filtersPage);
         if (page < 1 || isNaN(page)) {
-          return dispatch('updateFilters', {page: '1'});
+          return dispatch('updateFilters', { page: '1' });
         }
         commit('LOAD_PAGE_INIT');
         return axios
@@ -184,6 +134,60 @@ export default (url, opts = {}) => {
         return dispatch('updateFilters', {});
       }
     },
-    namespaced: true,
+    namespaced: options.namespaced
+    ,
+  }
+}
+
+
+
+function applyPrefix(filters, prefix) {
+  prefix = prefix ? `${prefix}_` : '';
+  const result = {};
+
+  Object.keys(filters).forEach(key => {
+    result[prefix + key] = filters[key];
+  });
+
+  return result;
+}
+
+function removePrefix(filters, prefix) {
+  prefix = prefix ? `${prefix}_` : '';
+  const result = {};
+
+  Object.keys(filters).filter(key => key.startsWith(prefix)).forEach(key => {
+    result[key.split(prefix).slice(1).join('')] = filters[key];
+  });
+
+  return result;
+}
+
+function getFiltersFromQueryParams(filters, prefix) {
+  const allQueryParams = router.currentRoute.query;
+  const prefixedFilters = applyPrefix(filters, prefix);
+
+  return removePrefix(_.pick(allQueryParams, Object.keys(prefixedFilters)), prefix);
+}
+
+function getInitialFiltersFromRouteParams(filters, prefix) {
+  const unprefixedQueryParams = getFiltersFromQueryParams(filters, prefix);
+  const initialFilters = { ...filters, ...unprefixedQueryParams };
+
+  return initialFilters;
+}
+
+function syncFiltersWithRouteParams(filters, prefix) {
+  const allQueryParams = router.currentRoute.query;
+  const prefixedFilters = applyPrefix(filters, prefix);
+  const newQueryParams = _.omitBy({ ...allQueryParams, ...prefixedFilters }, _.isNil);
+
+  if (!_.isEqual(newQueryParams, allQueryParams)) {
+
+    router.replace({
+      ...router.currenRoute,
+      query: newQueryParams
+    });
+
   }
 }

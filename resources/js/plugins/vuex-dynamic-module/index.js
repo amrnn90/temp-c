@@ -9,7 +9,10 @@ const VueDynamicModule = {
       namespace = namespace || this.$dynamicModuleId();
       return {
         state: prop => store.state[`${namespace}/${prop}`],
-        getters: prop => store.getters[`${namespace}/${prop}`],
+        getters: (prop, payload) => {
+          const getter =  store.getters[`${namespace}/${prop}`];
+          return payload ? getter(payload) : getter;
+        },
         commit: (mutation, payload) => store.commit(`${namespace}/${mutation}`, payload),
         dispatch: (action, payload) => store.dispatch(`${namespace}/${action}`, payload),
       };

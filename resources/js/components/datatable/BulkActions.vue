@@ -13,7 +13,7 @@ export default {
       return this.tableStore.getters("items") || [];
     },
     selectedItems() {
-      return this.items.filter(item => this.tableData.selectedRows[item.id]);
+      return this.tableStore.getters('selectedRows');
     },
     anyItemSelected() {
       return this.selectedItems && this.selectedItems.length > 0;

@@ -80,7 +80,7 @@
   --cyan-hue: 184;
   @include colors('cyan');
 
-  --primary-hue: var(--cyan-hue);
+  --primary-hue: var(--blue-hue);
   @include colors('primary');
   --primary: var(--primary-7);
 
