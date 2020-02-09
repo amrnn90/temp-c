@@ -1,3 +1,5 @@
+/* NOT USED AT THE MOMENT, REPLACED WITH VUEX PAGINATION MODULE */
+
 export default {
   data() {
     filters: { }

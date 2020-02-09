@@ -39,12 +39,11 @@
 
 <script>
 import simplebar from "simplebar-vue";
-import DataTableLayoutMixin from "./DataTableLayoutMixin";
-import QueryFiltersSyncMixin from "./QueryFiltersSyncMixin";
-import { objectToQuerystring } from "@/utils";
-
-import paginationModule from "@/store/pagination";
 import { mapGetters } from "vuex";
+import DataTableLayoutMixin from "./DataTableLayoutMixin";
+import { objectToQuerystring } from "@/utils";
+import paginationModule from "@/store/pagination";
+
 
 export default {
   components: {
@@ -52,36 +51,27 @@ export default {
   },
   mixins: [
     DataTableLayoutMixin
-    //  QueryFiltersSyncMixin
   ],
   props: {
     resource: {},
     storeId: {}
   },
-  data() {
-    return {
-      // id: genId(),
-      // pageData: null,
-      // filters: {
-      //   page: null
-      // },
-      hiddenColumns: [],
-      // expandedRows: {},
-      selectedRows: {},
-      allRowsAreSelected: false
-      // isLoading: false
-    };
-  },
   provide() {
     return {
       refreshTable: this.refresh,
       tableData: this.$data,
-      tableStore: this.tableStore
+      tableStoreNamespace: this.$dynamicModuleId()
+    };
+  },
+  data() {
+    return {
+      hiddenColumns: [],
+      // expandedRows: {},
+      selectedRows: {},
+      allRowsAreSelected: false
     };
   },
   computedOnSteroids() {
-    // const storeId = `mytable`;
-
     return {
       pagingInfo() {
         return _.omit(this.pageData, ["data"]);
@@ -98,42 +88,18 @@ export default {
         this.layTable();
       });
     }
-    // filters: {
-    //   immediate: true,
-    //   handler(newFilters, oldFilters) {
-    //     if (_.isEqual(newFilters, oldFilters)) return;
-    //     this.refresh().then(() => {
-    //       this.scrollToTop();
-    //     });
-    //   }
-    // }
   },
   methods: {
     refresh(clearRowsState = true) {
-      // this.isLoading = true;
-      // return axios
-      //   .get(this.resource.api_urls.index, { params: this.activeFilters })
-      //   .then(({ data }) => {
-      //     this.pageData = data;
-
-      //     if (clearRowsState) {
-      //       this.allRowsAreSelected = false;
-      //       this.selectedRows = {};
-      //     }
-      //   })
-      //   .finally(() => {
-      //     this.isLoading = false;
-      //   });
-
-      // return this.$store.dispatch(`${this.storeId}/refresh`);
-      return this.tableStore.dispatch("refresh");
+      return this.tableStore.dispatch("refresh").then(() => {
+        if (clearRowsState) {
+          this.allRowsAreSelected = false;
+          this.selectedRows = {};
+        }
+      });
     },
 
     handlePageSelected(pageNum) {
-      // this.filters = {
-      //   ...this.filters,
-      //   page: pageNum.toString()
-      // };
       this.tableStore.dispatch("updateFilters", {
         page: pageNum.toString()
       });
@@ -164,21 +130,21 @@ export default {
     }
   },
   beforeCreate() {
-    const storeNamespace = ``;
     const url = this.$options.propsData.resource.api_urls.index;
 
     const module = paginationModule(url, {
       syncFiltersWithRouteParams: true,
       routeParamsPrefix: "table",
-      filters: { sort: "tiems", temp: null }
+      filters: {}
     });
 
-    this.tableStore = this.$dynamicModule(storeNamespace, module);
-
+    this.tableStore = this.$registerDynamicModule(module);
   },
   created() {
-
     this.refresh();
+  },
+  destroyed() {
+    this.$unregisterDynamicModule();
   }
 };
 </script>

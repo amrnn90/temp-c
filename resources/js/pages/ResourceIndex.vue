@@ -12,7 +12,6 @@ export default {
   props: ["resource"],
   data() { 
     return {
-      // pageData: {},
     };
   },
   computed: {
@@ -22,9 +21,6 @@ export default {
 
   },
   created() {
-    // axios.get(this.resource.api_urls.index).then(({ data }) => {
-    //   this.pageData = data;
-    // });
   }
 };
 </script>

@@ -4,13 +4,15 @@
 
 <script>
 export default {
-  inject: ["tableData", "tableStore"],
+  inject: ["tableData", "tableStoreNamespace"],
   computed: {
+    tableStore() {
+      return this.$dynamicModuleStore(this.tableStoreNamespace);
+    },
     items() {
       return this.tableStore.getters("items") || [];
     },
     selectedItems() {
-      this.tableData.selectedRows;
       return this.items.filter(item => this.tableData.selectedRows[item.id]);
     },
     anyItemSelected() {
