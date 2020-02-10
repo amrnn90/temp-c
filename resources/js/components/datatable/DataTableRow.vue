@@ -2,7 +2,7 @@
   <page-card class="table-row">
     <div class="table-row-upper">
       <div class="table-row-pre">
-        <checkbox-input :value="isSelectedRow" @input="toggleRow" />
+        <checkbox-input :value="isSelectedRow" @input="toggleSelectRow" />
       </div>
       <div class="table-row-cells table-cells">
         <div
@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   props: ["row", "resource"],
   inject: ["tableStoreNamespace"],
@@ -56,8 +54,8 @@ export default {
     }
   },
   methods: {
-    toggleRow() {
-      this.tableStore.dispatch("toggleRow", this.rowId);
+    toggleSelectRow() {
+      this.tableStore.dispatch("toggleSelectRow", this.rowId);
     }
   }
 };

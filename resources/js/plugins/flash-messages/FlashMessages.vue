@@ -48,7 +48,9 @@ export default {
 .flash-messages {
   position: fixed;
   z-index: 10000;
-  left: 50px;
-  bottom: 50px;
+  // right: 50px;
+  top: var(--sp-4);
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

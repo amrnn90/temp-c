@@ -1,43 +1,69 @@
 <template>
   <page-card class="table-head">
-      <div class="table-head-upper">
-        <div class="search-input-wrapper">
-          <input class="search-input" type="search" placeholder="Search" />
-          <icon name="search" strokeWidth="1" class="search-input-icon" />
-        </div>
-  
-        <button class="create-btn">Create New</button>
+    <div class="table-head-upper">
+      <div class="search-input-wrapper">
+        <input class="search-input" type="search" placeholder="Search" v-model="searchFilter" />
+        <button @click="tableStore.dispatch('refresh')" style="margin-left: var(--sp-4)" v-tooltip="'refresh'">
+          <icon name="rotate-cw" />
+        </button>
+
+        <icon name="search" strokeWidth="1" class="search-input-icon" />
       </div>
-      <div class="table-head-lower">
-        <div class="table-head-pre">
-          <checkbox-input :value="allRowsAreSelected" @input="val => $emit('selectAllRows', val)" />
-        </div>
-        <div class="table-head-cells table-cells">
-          <div
-            class="table-head-cell"
-            :class="`cell-${field.name}`"
-            style="flex-grow: 1"
-            :style="{paddingLeft: resource.title_field == field.name ? '60px' : '0'}"
-            v-for="field in resource.fields"
-            :key="field.name"
-          >
-            <strong>{{field.label}}</strong>
-            <span class="table-head-cell-sort-icons">
-              <i class="lni-chevron-up"></i>
-              <i class="lni-chevron-down"></i>
-            </span>
-          </div>
-        </div>
-        <div class="table-head-post">
-          <bulk-actions />
+
+      <button class="create-btn">Create New</button>
+    </div>
+    <div class="table-head-lower">
+      <div class="table-head-pre">
+        <checkbox-input :value="allRowsAreSelected" @input="toggleSelectAllRows" />
+      </div>
+      <div class="table-head-cells table-cells">
+        <div
+          class="table-head-cell"
+          :class="`cell-${field.name}`"
+          style="flex-grow: 1"
+          :style="{paddingLeft: resource.title_field == field.name ? '60px' : '0'}"
+          v-for="field in resource.fields"
+          :key="field.name"
+        >
+          <strong>{{field.label}}</strong>
+          <span class="table-head-cell-sort-icons">
+            <i class="lni-chevron-up"></i>
+            <i class="lni-chevron-down"></i>
+          </span>
         </div>
       </div>
+      <div class="table-head-post">
+        <bulk-actions />
+      </div>
+    </div>
   </page-card>
 </template>
 
 <script>
 export default {
-  props: ["resource", "allRowsAreSelected"]
+  props: ["resource"],
+  inject: ["tableStoreNamespace"],
+  computed: {
+    tableStore() {
+      return this.$dynamicModuleStore(this.tableStoreNamespace);
+    },
+    allRowsAreSelected() {
+      return this.tableStore.getters("allRowsAreSelected");
+    },
+    searchFilter: {
+      get() {
+        return this.tableStore.getters("filters").search;
+      },
+      set(val) {
+        this.tableStore.dispatch("updateFilters", { search: val });
+      }
+    }
+  },
+  methods: {
+    toggleSelectAllRows() {
+      this.tableStore.dispatch("toggleSelectAllRows");
+    }
+  }
 };
 </script>
 
@@ -88,7 +114,6 @@ export default {
 }
 
 .table-head {
-
   margin-bottom: var(--sp-3);
 }
 

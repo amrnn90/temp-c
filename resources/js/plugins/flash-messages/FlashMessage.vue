@@ -3,7 +3,7 @@
     <span
       style="display: flex; align-items: center; height: 1.5em; margin-right: var(--sp-4);"
     >
-      <icon name="check" size="18" style="stroke: var(--success-9);  border-radius: 50%; border: 1px solid var(--success-9); padding: var(--sp-1); box-sizing: content-box"  />
+      <icon name="check" size="18" strokeWidth="3" style="stroke: var(--success-9);  border-radius: 50%; border: 1px solid var(--success-9); padding: var(--sp-1); box-sizing: content-box"  />
     </span>
     <span>{{message.content}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ipsa natus amet in, itaque,</span>
   </div>

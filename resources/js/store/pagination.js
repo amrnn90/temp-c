@@ -26,6 +26,8 @@ export default (url, opts = {}) => {
         isLoading: false,
         error: null,
         filters: initialFilters,
+        oldFilters: {},
+        isNewPage: null,
       }
     },
     getters: {
@@ -57,34 +59,49 @@ export default (url, opts = {}) => {
         return _.get(state, 'pageData');
       },
       items(state) {
-        return _.get(state, 'pageData.data');
+        return _.get(state, 'pageData.data', []);
       },
       filters(state) {
         return state.filters;
       },
       nonEmptyFilters(state, getters) {
-        return _.omitBy(state.filters, _.isNil);
+        return _.omitBy(state.filters, _.isEmpty);
       },
       filtersPage(state, getters) {
         return getters.filters.page;
+      },
+
+      /* watch this to know if the last loaded page has different filters from previous one */
+      isNewPage(state, getters) {
+        return state.isNewPage;
       }
     },
     mutations: {
       LOAD_PAGE_INIT(state) {
         state.isLoading = true;
+        state.isNewPage = null;
         state.error = null;
       },
       LOAD_PAGE_SUCCESS(state, pageData) {
         state.pageData = { ...pageData };
         state.isLoading = false;
         state.error = null;
+
+        if (_.isEqual(state.filters, state.oldFilters)) {
+          state.isNewPage = false;
+        } else {
+          state.isNewPage = true;
+        }
+
+        state.oldFilters = {...state.filters};
       },
       LOAD_PAGE_ERROR(state, error) {
         state.isLoading = false;
         state.error = error;
       },
-      UPDATE_FILTERS(state, filters) {
-        state.filters = { ...filters };
+      UPDATE_FILTERS(state, newFilters) {
+        state.oldFilters = {...state.filters};
+        state.filters = { ...newFilters };
       }
     },
     actions: {
@@ -102,10 +119,6 @@ export default (url, opts = {}) => {
             if (getters.currentPage > getters.lastPage) {
               return dispatch('updateFilters', { page: getters.lastPage.toString() });
             }
-            // if (clearRowsState) {
-            //   this.allRowsAreSelected = false;
-            //   this.selectedRows = {};
-            // }
           })
           .catch(error => {
             commit('LOAD_PAGE_ERROR', error);
@@ -121,13 +134,13 @@ export default (url, opts = {}) => {
         }
         const oldFilters = state.filters;
 
-        commit('UPDATE_FILTERS', newFilters);
-
         if (!_.isEqual(newFilters, oldFilters)) {
+          commit('UPDATE_FILTERS', newFilters);
+
           if (options.syncFiltersWithRouteParams) {
             syncFiltersWithRouteParams(newFilters, options.routeParamsPrefix);
           }
-          return dispatch('refresh');
+          return dispatch('load');
         }
       },
       clearFilters({ dispatch }) {
@@ -180,7 +193,7 @@ function getInitialFiltersFromRouteParams(filters, prefix) {
 function syncFiltersWithRouteParams(filters, prefix) {
   const allQueryParams = router.currentRoute.query;
   const prefixedFilters = applyPrefix(filters, prefix);
-  const newQueryParams = _.omitBy({ ...allQueryParams, ...prefixedFilters }, _.isNil);
+  const newQueryParams = _.omitBy({ ...allQueryParams, ...prefixedFilters }, _.isEmpty);
 
   if (!_.isEqual(newQueryParams, allQueryParams)) {
 

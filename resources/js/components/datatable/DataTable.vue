@@ -3,8 +3,6 @@
     <div class="table" ref="table">
       <data-table-head
         :resource="resource"
-        :allRowsAreSelected="allRowsAreSelected"
-        @selectAllRows="handleSelectAllRows"
       />
 
       <div class="table-body-wrapper">
@@ -39,7 +37,6 @@
 import simplebar from "simplebar-vue";
 import { mapGetters } from "vuex";
 import DataTableLayoutMixin from "./DataTableLayoutMixin";
-import { objectToQuerystring } from "@/utils";
 import dataTableModule from "@/store/data-table";
 
 export default {
@@ -62,7 +59,6 @@ export default {
     return {
       hiddenColumns: [],
       // expandedRows: {},
-      allRowsAreSelected: false
     };
   },
   computedOnSteroids() {
@@ -70,7 +66,8 @@ export default {
       ...mapGetters(this.$dynamicModuleId(), [
         "pageData",
         "isLoading",
-        "items"
+        "items",
+        "isNewPage"
       ]),
       pagingInfo() {
         return _.omit(this.pageData, ["data"]);
@@ -82,27 +79,27 @@ export default {
       this.$nextTick(() => {
         this.layTable();
       });
+    },
+    isNewPage(isNewPage) {
+      if (isNewPage) {
+        this.tableStore.dispatch('unselectAllRows');
+        this.scrollToTop();
+      }
     }
   },
   methods: {
     refresh(clearRowsState = true) {
       return this.tableStore.dispatch("refresh").then(() => {
-        if (clearRowsState) {
-          this.allRowsAreSelected = false;
-        }
+        // if (clearRowsState) {
+          // this.allRowsAreSelected = false;
+        // }
       });
     },
-
     handlePageSelected(pageNum) {
       this.tableStore.dispatch("updateFilters", {
         page: pageNum.toString()
       });
       this.$flash("Selected: " + pageNum);
-    },
-
-    handleSelectAllRows(val) {
-      this.allRowsAreSelected = val;
-
     },
     scrollToTop() {
       if (this.$refs.simplebar) {
