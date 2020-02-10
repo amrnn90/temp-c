@@ -93,14 +93,14 @@ export default (url, opts = {}) => {
           state.isNewPage = true;
         }
 
-        state.oldFilters = {...state.filters};
+        state.oldFilters = { ...state.filters };
       },
       LOAD_PAGE_ERROR(state, error) {
         state.isLoading = false;
         state.error = error;
       },
       UPDATE_FILTERS(state, newFilters) {
-        state.oldFilters = {...state.filters};
+        state.oldFilters = { ...state.filters };
         state.filters = { ...newFilters };
       }
     },
@@ -131,9 +131,7 @@ export default (url, opts = {}) => {
         const newFilters = {
           ...state.filters,
           ...filters,
-          ...{
-            page: filters.page || '1',
-          }
+          page: filters.page || '1',
         };
 
         const oldFilters = state.filters;
