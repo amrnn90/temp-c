@@ -131,10 +131,14 @@ export default (url, opts = {}) => {
         const newFilters = {
           ...state.filters,
           ...filters
-        }
+        };
+        
         const oldFilters = state.filters;
 
         if (!_.isEqual(newFilters, oldFilters)) {
+          if (!_.isEqual(_.omit(newFilters, 'page'), _.omit(oldFilters, 'page'))) {
+            newFilters.page = '1';
+          }
           commit('UPDATE_FILTERS', newFilters);
 
           if (options.syncFiltersWithRouteParams) {
