@@ -1,6 +1,6 @@
 <template>
   <div class="checkbox-input" :class="{checked: isChecked}" @click="$emit('input', !isChecked)" tabindex="0">
-    <icon name="check" stroke="var(--primary-10)" strokeWidth="2" class="icon" size="16" />
+    <icon name="check" stroke="var(--primary-10)" strokeWidth="4" class="icon" size="12" />
   </div>
 </template>
 
