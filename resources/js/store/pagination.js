@@ -1,4 +1,5 @@
 import router from '@/router';
+import { oneRequest } from '@/utils';
 
 const defaultOptions = {
   filters: {},
@@ -10,6 +11,7 @@ const defaultOptions = {
 export default (url, opts = {}) => {
   const options = { ...defaultOptions, ...opts };
   const filters = { ...options.filters, page: null };
+  const axiosInstance = oneRequest();
 
   let initialFilters = filters;
   if (options.syncFiltersWithRouteParams) {
@@ -105,13 +107,13 @@ export default (url, opts = {}) => {
       }
     },
     actions: {
-      load: _.debounce( function({ commit, dispatch, state, getters }) {
+      load: function ({ commit, dispatch, state, getters }) {
         const page = parseInt(getters.filtersPage);
         if (page < 1 || isNaN(page)) {
           return dispatch('updateFilters', { page: '1' });
         }
         commit('LOAD_PAGE_INIT');
-        return axios
+        return axiosInstance
           .get(url, { params: { ...getters.nonEmptyFilters } })
           .then(({ data }) => {
             commit('LOAD_PAGE_SUCCESS', data);
@@ -121,9 +123,10 @@ export default (url, opts = {}) => {
             }
           })
           .catch(error => {
+            if (axios.isCancel(error)) return;
             commit('LOAD_PAGE_ERROR', error);
           });
-      }, 400, {leading: true}),
+      },
 
       refresh({ dispatch, getters }) {
         return dispatch('load');
