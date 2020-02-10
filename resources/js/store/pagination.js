@@ -105,7 +105,7 @@ export default (url, opts = {}) => {
       }
     },
     actions: {
-      load({ commit, dispatch, state, getters }) {
+      load: _.debounce( function({ commit, dispatch, state, getters }) {
         const page = parseInt(getters.filtersPage);
         if (page < 1 || isNaN(page)) {
           return dispatch('updateFilters', { page: '1' });
@@ -123,10 +123,12 @@ export default (url, opts = {}) => {
           .catch(error => {
             commit('LOAD_PAGE_ERROR', error);
           });
-      },
+      }, 400, {leading: true}),
+
       refresh({ dispatch, getters }) {
         return dispatch('load');
       },
+
       updateFilters({ commit, dispatch, state }, filters) {
         const newFilters = {
           ...state.filters,
@@ -145,6 +147,7 @@ export default (url, opts = {}) => {
           return dispatch('load');
         }
       },
+
       clearFilters({ dispatch }) {
         return dispatch('updateFilters', {});
       }
