@@ -23,7 +23,7 @@ export default (url) => {
             return false;
           }
         }
-        return true;
+        return ids.length > 0 ? true : false;
       }
     },
     mutations: {
