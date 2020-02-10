@@ -20,14 +20,22 @@
 <script>
 export default {
   props: ["item"],
-  inject: ["refreshTable"],
+  inject: ["tableStoreNamespace"],
 
   data() {
     return {
       showModal: false
     };
   },
+  computed: {
+    tableStore() {
+      return this.$dynamicModuleStore(this.tableStoreNamespace);
+    }
+  },
   methods: {
+    refreshTable() {
+      this.tableStore.dispatch("refresh");
+    },
     handleClick(isDisabled) {
       if (isDisabled) return;
       this.showModal = true;
@@ -35,7 +43,7 @@ export default {
     handleConfirm(triggerDelete) {
       triggerDelete().then(() => {
         this.showModal = false;
-        this.refreshTable(false);
+        this.refreshTable();
         this.$flash("Item deleted successfully!");
       });
     }
@@ -50,5 +58,4 @@ button:disabled {
   opacity: 0.3;
   cursor: default;
 }
-
 </style>

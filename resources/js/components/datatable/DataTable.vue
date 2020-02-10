@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="table" ref="table">
-      <data-table-head
-        :resource="resource"
-      />
+      <data-table-head :resource="resource" />
 
       <div class="table-body-wrapper">
         <!-- <spinner :show="isLoading" /> -->
@@ -14,12 +12,7 @@
           ref="simplebar"
         >
           <div class="table-body">
-            <DataTableRow
-              v-for="row in items"
-              :key="row.id"
-              :row="row"
-              :resource="resource"
-            />
+            <DataTableRow v-for="row in items" :key="row.id" :row="row" :resource="resource" />
           </div>
         </simplebar>
       </div>
@@ -50,14 +43,12 @@ export default {
   },
   provide() {
     return {
-      refreshTable: this.refresh,
-      tableData: this.$data,
       tableStoreNamespace: this.$dynamicModuleId()
     };
   },
   data() {
     return {
-      hiddenColumns: [],
+      hiddenColumns: []
       // expandedRows: {},
     };
   },
@@ -71,7 +62,7 @@ export default {
       ]),
       pagingInfo() {
         return _.omit(this.pageData, ["data"]);
-      },
+      }
     };
   },
   watch: {
@@ -82,18 +73,14 @@ export default {
     },
     isNewPage(isNewPage) {
       if (isNewPage) {
-        this.tableStore.dispatch('unselectAllRows');
+        this.tableStore.dispatch("unselectAllRows");
         this.scrollToTop();
       }
     }
   },
   methods: {
-    refresh(clearRowsState = true) {
-      return this.tableStore.dispatch("refresh").then(() => {
-        // if (clearRowsState) {
-          // this.allRowsAreSelected = false;
-        // }
-      });
+    refresh() {
+      return this.tableStore.dispatch("refresh");
     },
     handlePageSelected(pageNum) {
       this.tableStore.dispatch("updateFilters", {

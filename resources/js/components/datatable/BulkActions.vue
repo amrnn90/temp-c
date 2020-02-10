@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  inject: ["tableData", "tableStoreNamespace"],
+  inject: ["tableStoreNamespace"],
   computed: {
     tableStore() {
       return this.$dynamicModuleStore(this.tableStoreNamespace);
