@@ -1,5 +1,5 @@
 import router from '@/router';
-import { oneRequest } from '@/utils';
+import { axiosOneRequest } from '@/utils';
 
 const defaultOptions = {
   filters: {},
@@ -11,7 +11,7 @@ const defaultOptions = {
 export default (url, opts = {}) => {
   const options = { ...defaultOptions, ...opts };
   const filters = { ...options.filters, page: null };
-  const axiosInstance = oneRequest();
+  const axiosInstance = axiosOneRequest();
 
   let initialFilters = filters;
   if (options.syncFiltersWithRouteParams) {
