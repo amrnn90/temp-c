@@ -1,12 +1,12 @@
 .tooltip {
     display: block !important;
     z-index: 10000;
-    font-size: var(--fz-2xs);
+    font-size: var(--fz-xs);
     font-weight: var(--fw-semibold);
 
     .tooltip-inner {
-      background: var(--primary);
-      color: var(--primary-10);
+      background: var(--grey-4);
+      color: var(--grey-10);
       border-radius: var(--br);
       padding: var(--sp-2);
     //   box-shadow: 0 0 6px rgba(black, .1);
@@ -21,7 +21,7 @@
       border-style: solid;
       position: absolute;
       margin: 5px;
-      border-color: var(--primary);
+      border-color: var(--grey-4);
       z-index: 1;
     //   box-shadow: 0 0 6px rgba(black, .1);
 
