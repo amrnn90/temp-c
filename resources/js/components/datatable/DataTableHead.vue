@@ -27,8 +27,8 @@
         >
           <strong>{{field.label}}</strong>
           <span class="table-head-cell-sort-icons">
-            <i class="lni-chevron-up"></i>
-            <i class="lni-chevron-down"></i>
+            <icon name="chevron-up" size="10" strokeWidth="2" stroke="var(--grey-8)" style=""></icon>
+            <icon name="chevron-down" size="10" strokeWidth="2" stroke="var(--grey-6)" style=""></icon>
           </span>
         </div>
       </div>
@@ -165,12 +165,10 @@ export default {
   display: flex;
   flex-direction: column;
 
-  i {
-    font-size: 7px;
-    font-weight: bold;
+  svg {
 
     &:first-child {
-      margin-bottom: 1px;
+      margin-bottom: -2px;
     }
   }
 }

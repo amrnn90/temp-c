@@ -12,7 +12,10 @@
           ref="simplebar"
         >
           <div class="table-body">
-            <DataTableRow v-for="row in items" :key="row.id" :row="row" :resource="resource" />
+            <div v-if="items.length > 0">
+              <DataTableRow v-for="row in items" :key="row.id" :row="row" :resource="resource" />
+            </div>
+            <div v-else>You have nothing...nada</div>
           </div>
         </simplebar>
       </div>
@@ -104,7 +107,7 @@ export default {
     this.tableStore = this.$registerDynamicModule(module);
   },
   created() {
-    this.refresh();
+    // this.refresh();
   },
   destroyed() {
     this.$unregisterDynamicModule();
