@@ -36,18 +36,29 @@ const VueDynamicModule = {
 
       store.registerModule(namespace, module);
 
-      return this.$dynamicModuleStore(namespace)
+      const initAction = `${namespace}/init`;
+      if (Object.keys(store._actions).find(action => action == initAction)) {
+        store.dispatch(initAction);
+      }
+
+      return this.$dynamicModuleStore(namespace);
     }
 
     Vue.prototype.$unregisterDynamicModule = function (namespace) {
+      const store = this.$store;
       namespace = namespace || this.$dynamicModuleId();
 
-      if (typeof this.$store.state[namespace] === 'undefined') {
+      if (typeof store.state[namespace] === 'undefined') {
         console.error(`[vuex-dynamic-module] Warning: cannot unregister module (${namespace}) because it does not exist.`)
         return;
       }
 
-      return this.$store.unregisterModule(namespace);
+      const destroyAction = `${namespace}/destroy`;
+      if (Object.keys(store._actions).find(action => action == destroyAction)) {
+        store.dispatch(destroyAction);
+      }
+
+      return store.unregisterModule(namespace);
     }
   },
 };
