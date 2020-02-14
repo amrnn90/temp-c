@@ -2,9 +2,11 @@ import paginationModule from '@/store/pagination';
 
 export default (url) => {
   return {
-    state: {
+    state() {
+      return {
       selectedRowsIds: [],
       // scrollToTop: false,
+      }
     },
     getters: {
       selectedRowsIds(state) {
