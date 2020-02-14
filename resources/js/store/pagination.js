@@ -9,17 +9,10 @@ const defaultOptions = {
 };
 
 export default (url, opts = {}) => {
-  const options = { ...defaultOptions, ...opts };
-  const filters = { ...options.filters, page: null };
   const axiosInstance = axiosOneRequest();
-
-  let initialFilters = filters;
-  if (options.syncFiltersWithRouteParams) {
-
-    initialFilters = getInitialFiltersFromRouteParams(filters, options.routeParamsPrefix);
-
-    syncFiltersWithRouteParams(initialFilters, options.routeParamsPrefix);
-  }
+  const options = { ...defaultOptions, ...opts };
+  let initialFilters = { ...options.filters, page: null };
+  let removeRouteGuard = null;
 
   return {
     state() {
@@ -27,23 +20,22 @@ export default (url, opts = {}) => {
         pageData: null,
         isLoading: false,
         error: null,
-        filters: initialFilters,
+        filters: {},
         oldFilters: {},
+
+        /* WATCH THIS TO KNOW IF THE LAST LOADED PAGE HAS DIFFERENT FILTERS FROM PREVIOUS ONE */
         isNewPage: null,
       }
     },
     getters: {
-      totalPages(state) {
-        return Math.ceil(
-          _.get(state, "pageData.total", 0) /
-          _.get(state, "pageData.per_page", 10)
-        );
-      },
       currentPage(state) {
         return _.get(state, 'pageData.current_page', 1);
       },
-      lastPage(state, getters) {
-        return getters.totalPages;
+      lastPage(state) {
+        return _.get(state, 'pageData.last_page', 1);
+      },
+      totalPages(state, getters) {
+        return getters.lastPage;
       },
       isFirstPage(state, getters) {
         return getters.currentPage == 1;
@@ -72,8 +64,6 @@ export default (url, opts = {}) => {
       filtersPage(state, getters) {
         return getters.filters.page;
       },
-
-      /* watch this to know if the last loaded page has different filters from previous one */
       isNewPage(state, getters) {
         return state.isNewPage;
       }
@@ -104,14 +94,36 @@ export default (url, opts = {}) => {
       UPDATE_FILTERS(state, newFilters) {
         state.oldFilters = { ...state.filters };
         state.filters = { ...newFilters };
-      }
+      },
     },
     actions: {
-      load: function ({ commit, dispatch, state, getters }) {
-        const page = parseInt(getters.filtersPage);
-        if (page < 1 || isNaN(page)) {
-          return dispatch('updateFilters', { page: '1' });
+      /* DISPATCHED WHEN REGISTERING DYNAMIC MODULE */
+      init(context) {
+        let filters = initialFilters;
+        if (options.syncFiltersWithRouteParams) {
+          filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
+
+          const remove = router.afterEach((to, from) => {
+            console.log('afterRoute')
+            /* IF NOT EQUAL, THEN WE HAVE A NEW PAGE AND WE SHALL RESET FILTERS AND INITIALIZE THEM FROM ROUTE PARAMS */
+            if (!_.isEqual(context.getters.nonEmptyFilters, getFiltersFromQueryParams(context.getters.filters, options.routeParamsPrefix))) {
+              filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
+              context.dispatch('updateFilters', filters);
+            }
+          });
+          removeRouteGuard = remove;
         }
+
+        context.dispatch('updateFilters', filters);
+      },
+      /* DISPATCHED WHEN UNREGISTERING DYNAMIC MODULE */
+      destroy(context) {
+        if (options.syncFiltersWithRouteParams) {
+          removeRouteGuard();;
+        }
+      },
+
+      load: function ({ commit, dispatch, state, getters }) {
         commit('LOAD_PAGE_INIT');
         return axiosInstance
           .get(url, { params: { ...getters.nonEmptyFilters } })
@@ -136,13 +148,15 @@ export default (url, opts = {}) => {
         const newFilters = {
           ...state.filters,
           ...filters,
-          page: filters.page || '1',
+          page: _.isNumber(parseInt(filters.page)) ? filters.page : null,
         };
 
         const oldFilters = state.filters;
 
         if (!_.isEqual(newFilters, oldFilters)) {
           commit('UPDATE_FILTERS', newFilters);
+
+          console.log('updating-filters:', newFilters);
 
           if (options.syncFiltersWithRouteParams) {
             syncFiltersWithRouteParams(newFilters, options.routeParamsPrefix);
@@ -153,7 +167,7 @@ export default (url, opts = {}) => {
 
       clearFilters({ dispatch }) {
         return dispatch('updateFilters', {});
-      }
+      },
     },
     namespaced: options.namespaced
     ,
