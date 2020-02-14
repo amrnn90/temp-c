@@ -15,7 +15,7 @@
             <div v-if="items.length > 0">
               <DataTableRow v-for="row in items" :key="row.id" :row="row" :resource="resource" />
             </div>
-            <div v-else>You have nothing...nada</div>
+            <div v-else>There are no items</div>
           </div>
         </simplebar>
       </div>
