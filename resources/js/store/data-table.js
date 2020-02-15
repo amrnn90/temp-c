@@ -4,8 +4,7 @@ export default (url) => {
   return {
     state() {
       return {
-      selectedRowsIds: [],
-      // scrollToTop: false,
+        selectedRowsIds: [],
       }
     },
     getters: {
@@ -97,7 +96,7 @@ export default (url) => {
       page: paginationModule(url, {
         syncFiltersWithRouteParams: true,
         routeParamsPrefix: "table",
-        filters: { search: null },
+        filters: { search: null, per_page: 3},
         namespaced: false,
       }),
     },

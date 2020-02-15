@@ -2,7 +2,9 @@
   <div>
     <h1 class="resource-label">{{resource.label}}</h1>
 
-    <data-table :resource="resource" />
+    <data-table :resource="resource" v-if="temp" />
+
+    <button @click="temp = !temp">remove</button>
 
   </div>
 </template>
@@ -12,6 +14,7 @@ export default {
   props: ["resource"],
   data() { 
     return {
+      temp: true
     };
   },
   computed: {

@@ -58,8 +58,34 @@ export default (url, opts = {}) => {
       filters(state) {
         return state.filters;
       },
+      normalizedFilters(state, getters) {
+        const filters = getters.filters;
+        function walker(obj) {
+          let res = null;
+          switch (typeof obj) {
+            case 'object':
+              if (!obj) {
+                res = obj;
+              } else {
+                res = {};
+                for (let key in obj) if (obj.hasOwnProperty(key)) {
+                  res[key] = walker(obj[key]);
+                }
+              }
+              break;
+            case 'number':
+              res = obj.toString();
+              break;
+            default:
+              res = obj;
+          }
+          return res;
+        }
+        return walker(filters)
+      },
       nonEmptyFilters(state, getters) {
-        return _.omitBy(state.filters, _.isEmpty);
+
+        return _.omitBy(getters.normalizedFilters, _.isEmpty);
       },
       filtersPage(state, getters) {
         return getters.filters.page;
@@ -103,15 +129,13 @@ export default (url, opts = {}) => {
         if (options.syncFiltersWithRouteParams) {
           filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
 
-          const remove = router.afterEach((to, from) => {
-            console.log('afterRoute')
+          removeRouteGuard = router.afterEach((to, from) => {
             /* IF NOT EQUAL, THEN WE HAVE A NEW PAGE AND WE SHALL RESET FILTERS AND INITIALIZE THEM FROM ROUTE PARAMS */
             if (!_.isEqual(context.getters.nonEmptyFilters, getFiltersFromQueryParams(context.getters.filters, options.routeParamsPrefix))) {
               filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
               context.dispatch('updateFilters', filters);
             }
           });
-          removeRouteGuard = remove;
         }
 
         context.dispatch('updateFilters', filters);
@@ -131,7 +155,7 @@ export default (url, opts = {}) => {
             commit('LOAD_PAGE_SUCCESS', data);
 
             if (getters.currentPage > getters.lastPage) {
-              return dispatch('updateFilters', { page: getters.lastPage.toString() });
+              return dispatch('updateFilters', { page: getters.lastPage });
             }
           })
           .catch(error => {
@@ -144,11 +168,12 @@ export default (url, opts = {}) => {
         return dispatch('load');
       },
 
-      updateFilters({ commit, dispatch, state }, filters) {
+      updateFilters({ commit, dispatch, state, getters }, filters) {
+        const page = parseInt(filters.page);
         const newFilters = {
           ...state.filters,
           ...filters,
-          page: _.isNumber(parseInt(filters.page)) ? filters.page : null,
+          page: page > 0 ? page : null,
         };
 
         const oldFilters = state.filters;
@@ -156,10 +181,8 @@ export default (url, opts = {}) => {
         if (!_.isEqual(newFilters, oldFilters)) {
           commit('UPDATE_FILTERS', newFilters);
 
-          console.log('updating-filters:', newFilters);
-
           if (options.syncFiltersWithRouteParams) {
-            syncFiltersWithRouteParams(newFilters, options.routeParamsPrefix);
+            syncFiltersWithRouteParams(getters.normalizedFilters, options.routeParamsPrefix);
           }
           return dispatch('load');
         }
