@@ -3,6 +3,8 @@ import { ResizeObserver } from "@/utils";
 export default {
     methods: {
         layTable: _.throttle(function () {
+            if (!this.$refs.table) return;
+
             const requiredWidths = this.resource.fields.reduce((acc, field) => {
                 acc[field.name] = this.getColumnMaxWidth(field.name);
                 return acc;
