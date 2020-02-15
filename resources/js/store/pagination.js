@@ -130,11 +130,18 @@ export default (url, opts = {}) => {
           filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
 
           removeRouteGuard = router.afterEach((to, from) => {
-            /* IF NOT EQUAL, THEN WE HAVE A NEW PAGE AND WE SHALL RESET FILTERS AND INITIALIZE THEM FROM ROUTE PARAMS */
-            if (!_.isEqual(context.getters.nonEmptyFilters, getFiltersFromQueryParams(context.getters.filters, options.routeParamsPrefix))) {
-              filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
-              context.dispatch('updateFilters', filters);
-            }
+            /* GIVE A CHANCE FOR COMPONENTS destroyed() HOOK TO RUN AND UNREGISTER MODULE  */
+            setTimeout(() => {   
+              /* IF NULL THAT MEANS destroy WAS DISPATCHED */   
+              if (!removeRouteGuard) return;        
+  
+              /* IF NOT EQUAL, THEN WE HAVE A NEW PAGE AND WE SHALL RESET FILTERS AND INITIALIZE THEM FROM ROUTE PARAMS */
+              if (!_.isEqual(context.getters.nonEmptyFilters, getFiltersFromQueryParams(context.getters.filters, options.routeParamsPrefix))) {
+                filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
+                context.dispatch('updateFilters', filters);
+              }
+            }, 0);
+
           });
         }
 
@@ -143,7 +150,8 @@ export default (url, opts = {}) => {
       /* DISPATCHED WHEN UNREGISTERING DYNAMIC MODULE */
       destroy(context) {
         if (options.syncFiltersWithRouteParams) {
-          removeRouteGuard();;
+          removeRouteGuard();
+          removeRouteGuard = null;
         }
       },
 
