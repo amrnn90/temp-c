@@ -17,10 +17,13 @@ export default (url) => {
       isSelectedRow: (state) => (rowId) => {
         return !!state.selectedRowsIds.find(id => id == rowId);
       },
+      selectedRowIndex: (state) => (rowId) => {
+        return state.selectedRowsIds.findIndex(id => id == rowId);
+      },
       allRowsAreSelected(state, getters) {
         const ids = getters.items.map(item => item.id);
         for (let rowId of ids) {
-          if (!state.selectedRowsIds.find(id => id == rowId)) {
+          if (!getters.isSelectedRow(rowId)) {
             return false;
           }
         }
@@ -28,24 +31,27 @@ export default (url) => {
       }
     },
     mutations: {
-      SELECT_ROW(state, rowId) {
-        if (!!state.selectedRowsIds.find(id => id == rowId)) return;
-        state.selectedRowsIds.push(rowId);
+      SET_SELECTED_ROWS(state, rowIds) {
+        state.selectedRowsIds = rowIds;
       },
-      UNSELECT_ROW(state, rowId) {
-        const index = state.selectedRowsIds.findIndex(id => id == rowId);
-        if (index < 0) return;
+      // SELECT_ROW(state, rowId) {
+      //   if (!!state.selectedRowsIds.find(id => id == rowId)) return;
+      //   state.selectedRowsIds.push(rowId);
+      // },
+      // UNSELECT_ROW(state, rowId) {
+      //   const index = state.selectedRowsIds.findIndex(id => id == rowId);
+      //   if (index < 0) return;
 
-        state.selectedRowsIds.splice(index, 1);
-      },
-      TOGGLE_SELECT_ROW(state, rowId) {
-        const index = state.selectedRowsIds.findIndex(id => id == rowId);
-        if (index < 0) {
-          state.selectedRowsIds.push(rowId);
-          return;
-        }
-        state.selectedRowsIds.splice(index, 1);
-      },
+      //   state.selectedRowsIds.splice(index, 1);
+      // },
+      // TOGGLE_SELECT_ROW(state, rowId) {
+      //   const index = state.selectedRowsIds.findIndex(id => id == rowId);
+      //   if (index < 0) {
+      //     state.selectedRowsIds.push(rowId);
+      //     return;
+      //   }
+      //   state.selectedRowsIds.splice(index, 1);
+      // },
       SELECT_ALL_ROWS(state) {
         const ids = state.page.pageData.data.map(item => item.id);
         state.selectedRowsIds = ids;
@@ -53,34 +59,48 @@ export default (url) => {
       UNSELECT_ALL_ROWS(state) {
         state.selectedRowsIds = [];
       },
-      TOGGLE_SELECT_ALL_ROWS(state) {
-        // getters.allRowsAreSelected()
-        let allRowsAreSelected = true;
-        const ids = _.get(state, 'page.pageData.data', []).map(item => item.id);
-        for (let rowId of ids) {
-          if (!state.selectedRowsIds.find(id => id == rowId)) {
-            allRowsAreSelected = false;
-          }
-        }
-        // end getters.allRowsAreSelected()
-        if (allRowsAreSelected) {
-          // UNSELECT_ALL_ROWS
-          state.selectedRowsIds = [];
-        } else {
-          // SELECT_ALL_ROWS
-          state.selectedRowsIds = ids;
-        }
-      }
+      // TOGGLE_SELECT_ALL_ROWS(state) {
+      //   // getters.allRowsAreSelected()
+      //   let allRowsAreSelected = true;
+      //   const ids = _.get(state, 'page.pageData.data', []).map(item => item.id);
+      //   for (let rowId of ids) {
+      //     if (!state.selectedRowsIds.find(id => id == rowId)) {
+      //       allRowsAreSelected = false;
+      //     }
+      //   }
+      //   // end getters.allRowsAreSelected()
+      //   if (allRowsAreSelected) {
+      //     // UNSELECT_ALL_ROWS
+      //     state.selectedRowsIds = [];
+      //   } else {
+      //     // SELECT_ALL_ROWS
+      //     state.selectedRowsIds = ids;
+      //   }
+      // }
     },
     actions: {
-      selectRow(context, rowId) {
-        return context.commit('SELECT_ROW', rowId);
+      selectRow({ state, commit, getters }, rowId) {
+        if (!!getters.isSelectedRow(rowId)) return;
+
+        return commit('SET_SELECTED_ROWS', [
+          ...state.selectedRowsIds,
+          rowId
+        ]);
       },
-      unselectRow(context, rowId) {
-        return context.commit('UNSELECT_ROW', rowId);
+      unselectRow({ state, commit, getters }, rowId) {
+        const index = getters.selectedRowIndex(rowId);
+        if (index < 0) return;
+
+        return commit('SET_SELECTED_ROWS', [
+          ...state.selectedRowsIds.slice(0, index),
+          ...state.selectedRowsIds.slice(index + 1),
+        ]);
       },
-      toggleSelectRow(context, rowId) {
-        return context.commit('TOGGLE_SELECT_ROW', rowId);
+      toggleSelectRow({state, dispatch, getters}, rowId) {
+        if (getters.isSelectedRow(rowId)) {
+          return dispatch('unselectRow', rowId);
+        }
+        return dispatch('selectRow', rowId);
       },
       selectAllRows(context) {
         return context.commit('SELECT_ALL_ROWS');
@@ -88,15 +108,18 @@ export default (url) => {
       unselectAllRows(context) {
         return context.commit('UNSELECT_ALL_ROWS');
       },
-      toggleSelectAllRows(context) {
-        return context.commit('TOGGLE_SELECT_ALL_ROWS');
+      toggleSelectAllRows({getters, dispatch}) {
+        if (getters.allRowsAreSelected) {
+          return dispatch('unselectAllRows');
+        }
+        return dispatch('selectAllRows');
       },
     },
     modules: {
       page: paginationModule(url, {
         syncFiltersWithRouteParams: true,
         routeParamsPrefix: "table",
-        filters: { search: null, per_page: 3},
+        filters: { search: null, per_page: 3 },
         namespaced: false,
       }),
     },
