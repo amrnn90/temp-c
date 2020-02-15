@@ -13,6 +13,7 @@ export default (url, opts = {}) => {
   const options = { ...defaultOptions, ...opts };
   let initialFilters = { ...options.filters, page: null };
   let removeRouteGuard = null;
+  let moduleRunning = null;
 
   return {
     state() {
@@ -126,21 +127,23 @@ export default (url, opts = {}) => {
       /* DISPATCHED WHEN REGISTERING DYNAMIC MODULE */
       init(context) {
         let filters = initialFilters;
+        moduleRunning = true;
+
         if (options.syncFiltersWithRouteParams) {
           filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
 
           removeRouteGuard = router.afterEach((to, from) => {
+            
             /* GIVE A CHANCE FOR COMPONENTS destroyed() HOOK TO RUN AND UNREGISTER MODULE  */
             setTimeout(() => {   
-              /* IF NULL THAT MEANS destroy WAS DISPATCHED */   
-              if (!removeRouteGuard) return;        
+              if (!moduleRunning) return;        
   
               /* IF NOT EQUAL, THEN WE HAVE A NEW PAGE AND WE SHALL RESET FILTERS AND INITIALIZE THEM FROM ROUTE PARAMS */
               if (!_.isEqual(context.getters.nonEmptyFilters, getFiltersFromQueryParams(context.getters.filters, options.routeParamsPrefix))) {
                 filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
                 context.dispatch('updateFilters', filters);
               }
-            }, 0);
+            });
 
           });
         }
@@ -151,7 +154,7 @@ export default (url, opts = {}) => {
       destroy(context) {
         if (options.syncFiltersWithRouteParams) {
           removeRouteGuard();
-          removeRouteGuard = null;
+          moduleRunning = false;
         }
       },
 
@@ -160,6 +163,9 @@ export default (url, opts = {}) => {
         return axiosInstance
           .get(url, { params: { ...getters.nonEmptyFilters } })
           .then(({ data }) => {
+            /* MODULE COULD BE UNREGISTERED BEFORE PROMISE IS RESOLVED */
+            if (!moduleRunning) return;
+
             commit('LOAD_PAGE_SUCCESS', data);
 
             if (getters.currentPage > getters.lastPage) {
@@ -167,6 +173,7 @@ export default (url, opts = {}) => {
             }
           })
           .catch(error => {
+            if (!moduleRunning) return;
             if (axios.isCancel(error)) return;
             commit('LOAD_PAGE_ERROR', error);
           });
