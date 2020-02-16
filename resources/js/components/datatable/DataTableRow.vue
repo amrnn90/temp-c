@@ -23,7 +23,9 @@
       </div>
       <div class="table-row-post">
         <icon name="eye" />
-        <icon name="edit-2" />
+        <router-link :to="{name: `${resource.name}.edit`, params: {id: row.id}}">
+          <icon name="edit-2" v-tooltip="'Edit'" />
+        </router-link>
         <row-delete-button :item="row" />
       </div>
     </div>

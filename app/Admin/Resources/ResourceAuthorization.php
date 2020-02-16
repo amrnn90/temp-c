@@ -34,10 +34,10 @@ trait ResourceAuthorization
         return $this->can('create', null, $doAuthorize);
     }
 
-    // public function canView($model, $doAuthorize = false)
-    // {
-    //     return $this->can('view', $model, $doAuthorize);
-    // }
+    public function canView($model, $doAuthorize = false)
+    {
+        return $this->can('view', $model, $doAuthorize);
+    }
 
     public function canUpdate($model, $doAuthorize = false)
     {

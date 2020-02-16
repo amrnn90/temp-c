@@ -10,13 +10,14 @@ class ShortText
     protected $label;
     protected $abilities;
     protected $createRules;
-    // protected $updateRules;
+    protected $updateRules;
 
     public function __construct($name)
     {
         $this->name = $name;
         $this->label = Str::title($name);
         $this->createRules = [];
+        $this->updateRules = [];
         $this->abilities = [
             'view' => function ($user, $model) {
                 return true;
@@ -60,6 +61,15 @@ class ShortText
         $model->$name = $request->get($name);
     }
 
+    public function handleUpdate($model, $request)
+    {
+        if (!$this->checkCanSet($model)) return;
+
+        $name = $this->name();
+
+        $model->$name = $request->get($name);
+    }
+
     protected function abilitiesForModel($model)
     {
         return [
@@ -83,12 +93,27 @@ class ShortText
     public function rules($rules)
     {
         $this->createRules = $rules;
+        if (!$this->updateRules) {
+            $this->updateRules = $rules;
+        }
         return $this;
     }
+
+    public function updateRules($rules)
+    {
+        $this->updateRules = $rules;
+        return $this;
+    }
+
 
     public function getCreateRules()
     {
         return [$this->name() => $this->createRules];
+    }
+
+    public function getUpdateRules()
+    {
+        return [$this->name() => $this->updateRules];
     }
 
     public function label($label)

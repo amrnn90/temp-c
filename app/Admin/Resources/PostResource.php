@@ -56,20 +56,26 @@ class PostResource
         $items = collect($result->items());
 
         $items =  $items->map(function ($item) {
-            return [
-                'abilities' => $this->abilitiesForModel($item),
-                'api_urls' => $this->modelApiUrls($item),
-                'id' => $this->getModelId($item),
-                'fields' => collect($this->fields())->map(function ($field) use ($item) {
-                    return $field->structureForModel($item);
-                })
-            ];
+            return $this->show($item);
         });
 
         $result->setCollection(collect($items));
 
         return $result;
     }
+
+    public function show($model)
+    {
+        return [
+            'abilities' => $this->abilitiesForModel($model),
+            'api_urls' => $this->modelApiUrls($model),
+            'id' => $this->getModelId($model),
+            'fields' => collect($this->fields())->map(function ($field) use ($model) {
+                return $field->structureForModel($model);
+            })
+        ];
+    }
+
 
     public function find($id)
     {
@@ -96,6 +102,16 @@ class PostResource
         return $request->validate($rules);
     }
 
+    public function validateUpdate($request)
+    {
+        $rules = [];
+        collect($this->fields())->each(function ($field) use (&$rules) {
+            $rules = $rules + $field->getUpdateRules();
+        });
+
+        return $request->validate($rules);
+    }
+
     public function store($request)
     {
         $model = $this->model();
@@ -109,16 +125,15 @@ class PostResource
         return $model;
     }
 
-    public function show($model)
+    public function update($model, $request)
     {
-        return [
-            'abilities' => $this->abilitiesForModel($model),
-            'api_urls' => $this->modelApiUrls($model),
-            'id' => $this->getModelId($model),
-            'fields' => collect($this->fields())->map(function ($field) use ($model) {
-                return $field->structureForModel($model);
-            })
-        ];
+        collect($this->fields())->each(function ($field) use ($request, $model) {
+            $field->handleUpdate($model, $request);
+        });
+
+        $model->save();
+
+        return $model;
     }
 
     protected function fields()
@@ -129,9 +144,12 @@ class PostResource
                 ->canView(function ($user, $post) {
                     return $user->name == 'amr';
                 }),
-                
+
             ShortText::make('body')
                 ->rules('required|min:10')
+                ->canSet(function() {
+                    return true;
+                }),
 
         ];
     }
@@ -144,6 +162,7 @@ class PostResource
     protected function apiUrls()
     {
         return [
+            'base_path' => route('admin.api.index', $this->name()),
             'index' => route('admin.api.index', $this->name()),
             'store' => route('admin.api.store', $this->name()),
         ];
@@ -152,7 +171,9 @@ class PostResource
     protected function modelApiUrls($model)
     {
         return [
-            'delete' => route('admin.api.destroy', [$this->name(), $model])
+            'show' => route('admin.api.show', [$this->name(), $model]),
+            'update' => route('admin.api.update', [$this->name(), $model]),
+            'delete' => route('admin.api.destroy', [$this->name(), $model]),
         ];
     }
 

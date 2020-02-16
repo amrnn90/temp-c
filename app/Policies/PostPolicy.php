@@ -30,7 +30,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        return $user->email == 'amr@test.com' && $post->id < 3;
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        //
+        return true;
     }
 
     /**

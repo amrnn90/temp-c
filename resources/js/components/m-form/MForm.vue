@@ -9,21 +9,25 @@ import axios from "axios";
 export default {
   props: {
     action: {},
-    initialValue: { type: Object, default: () => ({}) },
+    item: { type: Object, default: null }
   },
   data() {
     return {
       sharedForm: {
-        fields: this.initialValue,
+        fields: {...this.item} || {},
+        initialFields: {...this.item},
         errors: {},
         errorComponents: []
       },
-      shouldFocus: true,
+      shouldFocus: true
     };
   },
   computed: {
     form() {
       return this.sharedForm.fields;
+    },
+    method() {
+      return this.item ? "patch" : "post";
     }
   },
   watch: {
@@ -31,12 +35,12 @@ export default {
       handler() {
         const { sharedForm } = this;
         if (sharedForm.errorComponents.length && this.shouldFocus) {
-            this.shouldFocus = false;
-            this.$nextTick(() => {
-              this.$emit('error-focus', sharedForm.errorComponents);
-              this.shouldFocus = true;
-              sharedForm.errorComponents = [];
-            });
+          this.shouldFocus = false;
+          this.$nextTick(() => {
+            this.$emit("error-focus", sharedForm.errorComponents);
+            this.shouldFocus = true;
+            sharedForm.errorComponents = [];
+          });
         }
       }
     }
@@ -44,8 +48,7 @@ export default {
   methods: {
     submit() {
       this.clearErrors();
-      axios
-        .post(this.action, this.form)
+      axios[this.method](this.action, this.form)
         .then(({ data }) => {
           this.$emit("success", data);
         })

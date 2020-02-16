@@ -30,11 +30,21 @@ export default {
         }
       };
     },
+    resourceEditRoute: (state) => (resource) => {
+      return {
+        path: state.base_path + '/' + resource.path + '/:id/edit',
+        name: resource.name + '.edit',
+        props: {
+          resource,
+        }
+      };
+    },
 
     routes(state, getters) {
       return {
         index: getters.resources.map(resource => getters.resourceIndexRoute(resource)),
         create: getters.resources.map(resource => getters.resourceCreateRoute(resource)),
+        edit: getters.resources.map(resource => getters.resourceEditRoute(resource)),
       }
     }
   },

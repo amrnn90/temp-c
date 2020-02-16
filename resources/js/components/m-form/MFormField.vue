@@ -8,6 +8,17 @@
         <span>{{error}}</span>
       </div>
     </div>
+
+    <button
+      type="button"
+      v-tooltip="'reset'"
+      style="display: inline"
+      v-if="!valueEqualsInitialValue"
+      @click="handleInput(initialValue)"
+    >
+      <icon name="rotate-cw" />
+    </button>
+    
   </div>
 </template>
 
@@ -35,6 +46,9 @@ export default {
     value() {
       return this.sharedForm.fields[this.name];
     },
+    initialValue() {
+      return this.sharedForm.initialFields[this.name];
+    },
     error() {
       return (
         this.sharedForm.errors[this.name] &&
@@ -45,6 +59,9 @@ export default {
       return this.label === undefined
         ? this.name.charAt(0).toUpperCase() + this.name.slice(1)
         : this.label;
+    },
+    valueEqualsInitialValue() {
+      return this.initialValue == this.value;
     }
   },
   watch: {
@@ -121,5 +138,4 @@ export default {
   min-height: 1.5em;
   font-size: var(--fz-xs);
 }
-
 </style>
