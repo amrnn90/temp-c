@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 namespace App\Admin\Fields;
+
 use Str;
 
 class ShortText
@@ -8,18 +9,25 @@ class ShortText
     protected $name;
     protected $label;
     protected $abilities;
+    protected $createRules;
+    // protected $updateRules;
 
     public function __construct($name)
     {
         $this->name = $name;
         $this->label = Str::title($name);
+        $this->createRules = [];
         $this->abilities = [
-            'view' => function($user, $model) {return true;},
-            'set' => function($user, $model) {return true;}
+            'view' => function ($user, $model) {
+                return true;
+            },
+            'set' => function ($user, $model) {
+                return true;
+            }
         ];
     }
 
-    public static function make($name) 
+    public static function make($name)
     {
         return new static($name);
     }
@@ -43,6 +51,15 @@ class ShortText
         ];
     }
 
+    public function handleCreate($model, $request)
+    {
+        if (!$this->checkCanSet($model)) return;
+
+        $name = $this->name();
+
+        $model->$name = $request->get($name);
+    }
+
     protected function abilitiesForModel($model)
     {
         return [
@@ -61,6 +78,17 @@ class ShortText
     {
         $this->abilities['set'] = $predicate;
         return $this;
+    }
+
+    public function rules($rules)
+    {
+        $this->createRules = $rules;
+        return $this;
+    }
+
+    public function getCreateRules()
+    {
+        return [$this->name() => $this->createRules];
     }
 
     public function label($label)

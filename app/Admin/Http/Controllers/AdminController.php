@@ -24,6 +24,17 @@ class AdminController extends Controller
         return $resource->index();
     }
 
+    public function store($resourceName)
+    {
+        $resource = $this->resource($resourceName);
+
+        $resource->canCreate(true);
+
+        $resource->validateCreate(request());
+
+        return $resource->store(request());
+    }
+
     public function destroy($resourceName, $id)
     {
         $resource = $this->resource($resourceName);

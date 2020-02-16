@@ -10,7 +10,7 @@
         <icon name="search" strokeWidth="1" class="search-input-icon" />
       </div>
 
-      <button class="create-btn">Create New</button>
+      <router-link :to="{name: `${resource.name}.create`}" class="create-btn">Create New</router-link>
     </div>
     <div class="table-head-lower">
       <div class="table-head-pre">

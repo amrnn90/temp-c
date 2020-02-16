@@ -51,6 +51,7 @@ class AdminServiceProvider extends ServiceProvider
                             ->group(function () {
                                 // Route::get('/', function(){return null;})->name('base');
                                 Route::get('{resource}', 'AdminController@index')->name('index');
+                                Route::post('{resource}', 'AdminController@store')->name('store');
                                 Route::delete('{resource}/{id}', 'AdminController@destroy')->name('destroy');
                             });
 

@@ -55,12 +55,12 @@ class PostResource
 
         $items = collect($result->items());
 
-        $items =  $items->map(function($item) {
+        $items =  $items->map(function ($item) {
             return [
                 'abilities' => $this->abilitiesForModel($item),
                 'api_urls' => $this->modelApiUrls($item),
                 'id' => $this->getModelId($item),
-                'fields' => collect($this->fields())->map(function($field) use ($item) {
+                'fields' => collect($this->fields())->map(function ($field) use ($item) {
                     return $field->structureForModel($item);
                 })
             ];
@@ -71,7 +71,7 @@ class PostResource
         return $result;
     }
 
-    public function find($id) 
+    public function find($id)
     {
         return $this->model()->find($id);
     }
@@ -86,14 +86,39 @@ class PostResource
         return $model->delete();
     }
 
+    public function validateCreate($request)
+    {
+        $rules = [];
+        collect($this->fields())->each(function ($field) use (&$rules) {
+            $rules = $rules + $field->getCreateRules();
+        });
+
+        return $request->validate($rules);
+    }
+
+    public function store($request)
+    {
+        $model = $this->model();
+
+        collect($this->fields())->each(function ($field) use ($request, $model) {
+            $field->handleCreate($model, $request);
+        });
+
+        $model->save();
+
+        return $model;
+    }
+
     protected function fields()
     {
         return [
             ShortText::make('title')
-                ->canView(function($user, $post) {
+                ->rules('required')
+                ->canView(function ($user, $post) {
                     return $user->name == 'amr';
                 }),
-            ShortText::make('body'),
+            ShortText::make('body')
+                ->rules('required|min:10')
 
         ];
     }
@@ -103,13 +128,16 @@ class PostResource
         return Str::snake(Str::pluralStudly(class_basename($this->model)));
     }
 
-    protected function apiUrls() {
+    protected function apiUrls()
+    {
         return [
             'index' => route('admin.api.index', $this->name()),
+            'store' => route('admin.api.store', $this->name()),
         ];
     }
 
-    protected function modelApiUrls($model) {
+    protected function modelApiUrls($model)
+    {
         return [
             'delete' => route('admin.api.destroy', [$this->name(), $model])
         ];
@@ -125,7 +153,7 @@ class PostResource
         return $query;
     }
 
-    protected function getModelId($model) 
+    protected function getModelId($model)
     {
         return $model->getAttribute($model->getKeyName());
     }
