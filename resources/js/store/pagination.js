@@ -133,7 +133,7 @@ export default (url, opts = {}) => {
           filters = getInitialFiltersFromRouteParams(initialFilters, options.routeParamsPrefix);
 
           removeRouteGuard = router.afterEach((to, from) => {
-            
+
             /* GIVE A CHANCE FOR COMPONENTS destroyed() HOOK TO RUN AND UNREGISTER MODULE  */
             setTimeout(() => {   
               if (!moduleRunning) return;        
@@ -154,8 +154,8 @@ export default (url, opts = {}) => {
       destroy(context) {
         if (options.syncFiltersWithRouteParams) {
           removeRouteGuard();
-          moduleRunning = false;
         }
+        moduleRunning = false;
       },
 
       load: function ({ commit, dispatch, state, getters }) {
@@ -226,7 +226,10 @@ function applyPrefix(filters, prefix) {
 }
 
 function removePrefix(filters, prefix) {
-  prefix = prefix ? `${prefix}_` : '';
+  if (!prefix) return filters;
+
+  prefix = `${prefix}_`;
+  
   const result = {};
 
   Object.keys(filters).filter(key => key.startsWith(prefix)).forEach(key => {
