@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div class="input-field-wrapper">
     <label :for="name" class="label">{{inputLabel}}</label>
 
-    <div class="mt-1">
+    <div class="input-wrapper">
       <slot :on="inputOn" :props="inputProps"></slot>
-      <div v-if="error" class="input__error" role="alert">{{error}}</div>
+      <div class="field-input__error" role="alert">
+        <span>{{error}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -88,3 +90,36 @@ export default {
   inject: ["sharedForm"]
 };
 </script>
+
+<style lang="scss" scoped>
+.input-field-wrapper {
+  display: flex;
+  margin-bottom: var(--sp-7);
+  font-size: var(--fz-sm);
+}
+
+.input-wrapper {
+  flex: 1;
+}
+
+.label {
+  width: var(--sp-14);
+  margin-right: var(--sp-11);
+  color: var(--grey-7);
+  font-weight: var(--fw-semibold);
+
+  /* SAME AS INPUT HEIGHT */
+  height: var(--sp-12);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.field-input__error {
+  margin-top: var(--sp-1);
+  color: var(--error-8);
+  min-height: 1.5em;
+  font-size: var(--fz-xs);
+}
+
+</style>

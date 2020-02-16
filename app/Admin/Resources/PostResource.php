@@ -109,6 +109,18 @@ class PostResource
         return $model;
     }
 
+    public function show($model)
+    {
+        return [
+            'abilities' => $this->abilitiesForModel($model),
+            'api_urls' => $this->modelApiUrls($model),
+            'id' => $this->getModelId($model),
+            'fields' => collect($this->fields())->map(function ($field) use ($model) {
+                return $field->structureForModel($model);
+            })
+        ];
+    }
+
     protected function fields()
     {
         return [
@@ -117,6 +129,7 @@ class PostResource
                 ->canView(function ($user, $post) {
                     return $user->name == 'amr';
                 }),
+                
             ShortText::make('body')
                 ->rules('required|min:10')
 

@@ -20,7 +20,7 @@ trait ResourceAuthorization
             'update' => $this->canUpdate($model),
             'force_delete' => $this->canForceDelete($model),
             'delete' => $this->canDelete($model),
-            'reestore' => $this->canRestore($model),
+            'restore' => $this->canRestore($model),
         ];
     }
 

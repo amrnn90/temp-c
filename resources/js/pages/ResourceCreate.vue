@@ -2,20 +2,29 @@
   <div>
     <h1 class="resource-label">Create a new {{resource.label}}</h1>
     <page-card style="margin-bottom: var(--sp-10)">
-      <m-form :action="resource.api_urls.store" @error-focus="handleErrorFocus" #default="{form}">
-        <div v-for="field in resource.fields" :key="field.name">
-          <m-form-field :name="field.name" :label="field.label" #default="{on, props}">
-            <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
-          </m-form-field>
-        </div>
-
-        <button type="submit">submit</button>
-        <pre>{{form}}</pre>
-      </m-form>
+      <div class="form-wrapper">
+        <m-form
+          :action="resource.api_urls.store"
+          @error-focus="handleErrorFocus"
+          @success="handleCreateSuccess"
+          #default="{form}"
+        >
+          <div v-for="field in resource.fields" :key="field.name">
+            <m-form-field :name="field.name" :label="field.label" #default="{on, props}">
+              <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
+            </m-form-field>
+          </div>
+  
+          <div class="actions-wrapper">
+            <button type="submit" class="create-btn">Create</button>
+          </div>
+          <!-- <pre>{{form}}</pre> -->
+        </m-form>
+      </div>
     </page-card>
-    <page-card>
+    <!-- <page-card>
       <pre>{{resource}}</pre>
-    </page-card>
+    </page-card> -->
   </div>
 </template>
 
@@ -33,6 +42,10 @@ export default {
       if (el) {
         el.focus();
       }
+    },
+    handleCreateSuccess(res) {
+      this.$flash("Item created successfully!");
+      this.$router.push({ name: `${this.resource.name}.index` });
     }
   },
   created() {}
@@ -48,4 +61,29 @@ export default {
   color: var(--grey-2);
   margin-bottom: var(--sp-6);
 }
+
+.form-wrapper {
+  max-width: var(--sp-21);
+  margin: 0 auto;
+  // display: flex;
+  // justify-content: center;
+  padding: var(--sp-10) var(--sp-4);
+}
+
+.actions-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--sp-13);
+}
+
+.create-btn {
+  // height: var(--sp-10);
+  background: var(--primary);
+  color: var(--primary-10);
+  border-radius: var(--br);
+  padding: var(--sp-3) var(--sp-7);
+  font-size: var(--fz-xs);
+  font-weight: var(--fw-bold);
+}
+
 </style>

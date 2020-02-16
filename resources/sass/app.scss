@@ -4,9 +4,10 @@
 // VARIABLES, MIXINS, FUNCTIONS
 @import 'init';
 
-// Libs
-@import '~simplebar/dist/simplebar.min.css';
+// Libs and Components
+@import './inputs';
 @import './tooltips';
+@import '~simplebar/dist/simplebar.min.css';
 
 
 html {

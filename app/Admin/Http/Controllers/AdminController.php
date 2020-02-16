@@ -32,7 +32,9 @@ class AdminController extends Controller
 
         $resource->validateCreate(request());
 
-        return $resource->store(request());
+        $model = $resource->store(request());
+
+        return $resource->show($model);
     }
 
     public function destroy($resourceName, $id)

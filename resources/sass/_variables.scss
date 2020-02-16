@@ -23,6 +23,7 @@
   --sp-18: #{pxToRem(192)};
   --sp-19: #{pxToRem(224)};
   --sp-20: #{pxToRem(256)};
+  --sp-21: #{pxToRem(512)};
 
   // FONT SIZES
   --fz-2xs:  #{pxToRem(10)};
@@ -62,6 +63,7 @@
   --grey-8:  hsl(210, 31%, 80%);
   --grey-9:  hsl(212, 33%, 89%);
   --grey-10: hsl(210, 36%, 96%);
+  --grey-11: hsl(205, 45%, 98%);
 
   --grey-v-1:  209, 61%, 16%;
   --grey-v-2:  211, 39%, 23%;
@@ -73,12 +75,17 @@
   --grey-v-8:  210, 31%, 80%;
   --grey-v-9:  212, 33%, 89%;
   --grey-v-10: 210, 36%, 96%;
+  --grey-v-11: 205, 45%, 98%;
+
 
   --blue-hue: 205;
   @include colors('blue');
 
   --cyan-hue: 184;
   @include colors('cyan');
+
+  --red-hue: 360;
+  @include colors('red');
 
   --primary-hue: var(--blue-hue);
   @include colors('primary');
@@ -87,7 +94,10 @@
   --success-hue: var(--cyan-hue);
   @include colors('success');
 
-  --body-color: hsl(var(--primary-hue), 45%, 98%);
+  --error-hue: var(--red-hue);
+  @include colors('error');
+
+  --body-color: var(--grey-11);
 
   /* LAYOUT */ 
   --header-height: var(--sp-12);
