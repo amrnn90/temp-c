@@ -73,7 +73,7 @@ export default {
 .actions-wrapper {
   display: flex;
   justify-content: flex-end;
-  margin-top: var(--sp-13);
+  margin-top: var(--sp-11);
 }
 
 .create-btn {
