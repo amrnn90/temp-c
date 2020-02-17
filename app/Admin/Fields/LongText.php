@@ -2,6 +2,6 @@
 
 namespace App\Admin\Fields;
 
-class ShortText extends Field
+class LongText extends Field
 {
 }

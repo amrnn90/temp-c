@@ -3,6 +3,7 @@
 namespace App\Admin\Resources;
 
 use App\Admin\Fields\ShortText;
+use App\Admin\Fields\LongText;
 use App\Post;
 use Str;
 
@@ -51,7 +52,7 @@ class PostResource
 
     public function index()
     {
-        $result = $this->scope($this->model()->query())->paginate();
+        $result = $this->scope($this->model()->query()->latest())->paginate();
 
         $items = collect($result->items());
 
@@ -145,12 +146,11 @@ class PostResource
                     return $user->name == 'amr';
                 }),
 
-            ShortText::make('body')
+            LongText::make('body')
                 ->rules('required|min:10')
-                ->canSet(function() {
+                ->canSet(function () {
                     return true;
                 }),
-
         ];
     }
 

@@ -4,7 +4,7 @@
 
     <data-table :resource="resource" v-if="temp" />
 
-    <button @click="temp = !temp">remove</button>
+    <!-- <button @click="temp = !temp">remove</button> -->
 
   </div>
 </template>
