@@ -9,7 +9,7 @@
          <router-view />
      </main>
 
-     <portal-target name="modals" />
+     <portal-target name="page-backdrop"  />
      <flash-messages />
  </div>
     
@@ -38,5 +38,6 @@ export default {
     padding-left: calc(var(--sidebar-width) + var(--main-horizontal-padding));
     padding-right: var(--main-horizontal-padding);
 }
+
 </style>
 

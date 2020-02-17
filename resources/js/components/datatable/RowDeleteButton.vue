@@ -1,6 +1,6 @@
 <template>
   <delete-item :item="item" #default="{trigger, isDisabled}">
-    <button
+    <!-- <button
       @click="handleClick(isDisabled)"
       v-tooltip.top="{content: isDisabled ? '' : 'Delete Item',}"
       :disabled="isDisabled"
@@ -13,7 +13,27 @@
           <button @click="showModal = false">No</button>
         </div>
       </modal>
-    </button>
+    </button> -->
+
+    <v-popover :open="showModal" @show="showModal = true" @hide="showModal = false">
+      <button
+        @click="handleClick(isDisabled)"
+        v-tooltip.top="{content: isDisabled ? '' : 'Delete Item',}"
+        :disabled="isDisabled"
+      >
+        <icon name="trash-2" />
+      </button>
+
+      <template slot="popover">
+        <div>
+          <page-backdrop v-if="showModal" @escape="showModal = false" />
+          <h2>Are you sure you want to delete this item?</h2>
+          <button @click="handleConfirm(trigger)">Yes</button>
+          <button @click="showModal = false">No</button>
+        </div>
+      </template>
+    </v-popover>
+    
   </delete-item>
 </template>
 
@@ -24,7 +44,8 @@ export default {
 
   data() {
     return {
-      showModal: false
+      showModal: false,
+      // show: false
     };
   },
   computed: {
