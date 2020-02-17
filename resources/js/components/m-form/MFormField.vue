@@ -125,11 +125,9 @@ export default {
   color: var(--grey-6);
   font-weight: var(--fw-semibold);
 
-  /* SAME AS INPUT HEIGHT */
-  height: var(--sp-12);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  /* TO BE ALIGNED WITH INPUT TEXT */
+  padding: calc(var(--input-border-size) + var(--input-vertical-padding)) 0;
+  text-align: right;
 }
 
 .field-input__error {

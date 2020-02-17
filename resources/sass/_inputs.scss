@@ -3,8 +3,8 @@
   width: 100%;
   background: hsl(var(--primary-hue), 100%, 99%);
   border-radius: var(--br);
-  padding: var(--sp-4) var(--sp-6);
-  border: 1px solid var(--primary-10);
+  padding: var(--input-vertical-padding) var(--input-horizontal-padding);
+  border: var(--input-border-size) solid var(--primary-10);
   font-size: var(--fz-sm);
   color: var(--grey-4);
 
