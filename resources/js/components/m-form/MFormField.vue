@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <button
+    <!-- <button
       type="button"
       v-tooltip="'reset'"
       style="display: inline"
@@ -17,8 +17,8 @@
       @click="handleInput(initialValue)"
     >
       <icon name="rotate-cw" />
-    </button>
-    
+    </button> -->
+
   </div>
 </template>
 
@@ -111,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 .input-field-wrapper {
   display: flex;
-  margin-bottom: var(--sp-7);
+  margin-bottom: var(--sp-6);
   font-size: var(--fz-sm);
 }
 
@@ -122,7 +122,7 @@ export default {
 .label {
   width: var(--sp-14);
   margin-right: var(--sp-11);
-  color: var(--grey-7);
+  color: var(--grey-6);
   font-weight: var(--fw-semibold);
 
   /* SAME AS INPUT HEIGHT */
