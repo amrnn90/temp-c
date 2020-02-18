@@ -2,6 +2,7 @@
 
 namespace App\Admin\Resources;
 
+use App\Admin\Fields\Date;
 use App\Admin\Fields\ShortText;
 use App\Admin\Fields\LongText;
 use App\Post;
@@ -151,6 +152,12 @@ class PostResource
                 ->canSet(function () {
                     return true;
                 }),
+
+            Date::make('published_at')
+                ->label('Publish Date')
+                ->rules('required')
+                // ->enableTime()
+                // ->format("Y-m")
         ];
     }
 

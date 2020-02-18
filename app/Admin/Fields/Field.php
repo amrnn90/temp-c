@@ -11,11 +11,13 @@ abstract class Field
   protected $abilities;
   protected $createRules;
   protected $updateRules;
+  protected $options;
 
   public function __construct($name)
   {
     $this->name = $name;
     $this->label = Str::title($name);
+    $this->options = $this->defaultOptions();
     $this->createRules = [];
     $this->updateRules = [];
     $this->abilities = [
@@ -116,7 +118,8 @@ abstract class Field
     return [
       'name' => $this->name(),
       'label' => $this->label,
-      'type' => $this->fieldType()
+      'type' => $this->fieldType(),
+      'options' => $this->options(),
     ];
   }
 
@@ -141,5 +144,20 @@ abstract class Field
   protected function fieldType()
   {
     return class_basename($this);
+  }
+
+  protected function addOption($name, $value)
+  {
+    $this->options[$name] = $value;
+  }
+
+  protected function options()
+  {
+    return $this->options;
+  }
+
+  protected function defaultOptions() 
+  {
+    return [];
   }
 }

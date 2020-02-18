@@ -12,7 +12,7 @@
           #default="{form}"
         >
           <div v-for="field in resource.fields" :key="field.name">
-            <m-form-field :name="field.name" :label="field.label" #default="{on, props}">
+            <m-form-field :field="field" #default="{on, props}">
               <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
             </m-form-field>
           </div>
@@ -20,7 +20,7 @@
           <div class="actions-wrapper">
             <button type="submit" class="create-btn">Update</button>
           </div>
-          <!-- <pre>{{form}}</pre> -->
+          <pre>{{form}}</pre>
         </m-form>
       </div>
     </page-card>
@@ -35,15 +35,17 @@ export default {
   props: ["resource"],
   data() {
     return {
-      item: null,
+      item: null
     };
   },
   computed: {
     itemData() {
-      return this.item ? this.item.fields.reduce((result, field) => {
-        result[field.name] = field.data;
-        return result;
-      }, {}) : null;
+      return this.item
+        ? this.item.fields.reduce((result, field) => {
+            result[field.name] = field.data;
+            return result;
+          }, {})
+        : null;
     }
   },
   methods: {
@@ -60,8 +62,9 @@ export default {
     }
   },
   created() {
-    axios.get(`${this.resource.api_urls.base_path}/${this.$route.params.id}`)
-      .then(({data}) => {
+    axios
+      .get(`${this.resource.api_urls.base_path}/${this.$route.params.id}`)
+      .then(({ data }) => {
         this.item = data;
       });
   }

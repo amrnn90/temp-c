@@ -1,6 +1,6 @@
 <template>
   <div class="input-field-wrapper">
-    <label :for="name" class="label">{{inputLabel}}</label>
+    <label :for="name" class="label">{{label}}</label>
 
     <div class="input-wrapper">
       <slot :on="inputOn" :props="inputProps"></slot>
@@ -25,7 +25,7 @@
 <script>
 export default {
   inheritAttrs: false,
-  props: ["name", "label"],
+  props: ['field'],
   computed: {
     inputOn() {
       return {
@@ -37,11 +37,18 @@ export default {
         id: this.name,
         name: this.name,
         value: this.value,
+        field: this.field,
         class: {
           input: true,
           "input--error": this.sharedForm.errors[this.name]
         }
       };
+    },
+    name() {
+      return _.get(this.field, 'name');
+    },
+    label() {
+      return _.get(this.field, 'label');
     },
     value() {
       return this.sharedForm.fields[this.name];
@@ -55,11 +62,7 @@ export default {
         this.sharedForm.errors[this.name][0]
       );
     },
-    inputLabel() {
-      return this.label === undefined
-        ? this.name.charAt(0).toUpperCase() + this.name.slice(1)
-        : this.label;
-    },
+
     valueEqualsInitialValue() {
       return this.initialValue == this.value;
     }
