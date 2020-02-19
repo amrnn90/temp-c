@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import PortalVue from 'portal-vue'
 import VTooltip from 'v-tooltip'
+import Sticky from 'vue-sticky-directive'
 import FlashMessages from '@/plugins/flash-messages';
 import ComputedOnSteroids from '@/plugins/computed-on-steroids';
 import router from '@/router';
@@ -13,6 +14,7 @@ Vue.use(PortalVue);
 Vue.use(VTooltip);
 Vue.use(FlashMessages);
 Vue.use(ComputedOnSteroids);
+Vue.use(Sticky);
 
 window._ = _;
 window.Vue = Vue;
@@ -42,6 +44,6 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 const app = new Vue({
     el: '#app',
     router,
-    store
+    store,
 });
 
