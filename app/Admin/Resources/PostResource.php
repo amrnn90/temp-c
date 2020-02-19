@@ -5,6 +5,7 @@ namespace App\Admin\Resources;
 use App\Admin\Fields\Date;
 use App\Admin\Fields\ShortText;
 use App\Admin\Fields\LongText;
+use App\Admin\Fields\Boolean;
 use App\Post;
 use Str;
 
@@ -155,9 +156,13 @@ class PostResource
 
             Date::make('published_at')
                 ->label('Publish Date')
-                ->rules('required')
+                ->rules('required'),
                 // ->enableTime()
                 // ->format("Y-m")
+
+            Boolean::make('featured')
+                ->rules('present')
+
         ];
     }
 

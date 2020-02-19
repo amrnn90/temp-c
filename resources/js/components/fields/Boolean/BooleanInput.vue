@@ -1,18 +1,16 @@
 <template>
-  <input
-    type="text"
-    :value="value"
+  <toggle-input
     :name="name"
     :id="id"
-    class="field-input"
     :class="{'has-error': hasError}"
+    :value="value"
     @input="(value) => $emit('input', value)"
   />
 </template>
 
 <script>
 export default {
-  props: ["field", "value", "name", "id", "hasError"],
+  props: ["field", "value", "name", "id", "hasError"]
 };
 </script>
 

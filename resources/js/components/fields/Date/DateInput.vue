@@ -2,12 +2,13 @@
   <div>
     <flat-pickr
       :value="value"
+      :name="name"
+      :id="id"
+      class="field-input"
+      :class="{'has-error': hasError}"
       @input="(value) => $emit('input', value)"
       :config="config"
-      class="field-input"
     ></flat-pickr>
-
-    <pre>{{field}}</pre>
   </div>
 </template>
 
@@ -17,7 +18,7 @@ import "flatpickr/dist/flatpickr.css";
 import l10n from "flatpickr/dist/l10n";
 
 export default {
-  props: ["value", "field"],
+  props: ["field", "value", "name", "id", "hasError"],
   data() {
     return {};
   },

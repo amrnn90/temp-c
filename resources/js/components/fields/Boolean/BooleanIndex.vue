@@ -1,8 +1,6 @@
 <template>
     <div style="max-width: 300px; display: flex; align-items: center">
-        <span>
-            {{field.data === null ? 'EMPTY' : field.data}} 
-        </span>
+        {{field.data ? 'True' : 'False'}}
     </div>
 </template>
 

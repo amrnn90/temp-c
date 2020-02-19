@@ -94,8 +94,8 @@
   --success-hue: var(--cyan-hue);
   @include colors('success');
 
-  --error-hue: var(--red-hue);
-  @include colors('error');
+  --danger-hue: var(--red-hue);
+  @include colors('danger');
 
   --body-color: var(--grey-11);
 

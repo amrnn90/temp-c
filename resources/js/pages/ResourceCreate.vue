@@ -9,16 +9,18 @@
           @success="handleCreateSuccess"
           #default="{form}"
         >
-          <div v-for="field in resource.fields" :key="field.name">
-            <m-form-field :field="field" #default="{on, props}">
-              <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
-            </m-form-field>
+          <div :style="{opacity: form.isLoading ? .5 : 1, pointerEvents: form.isLoading ? 'none' : 'auto'}">
+            <div v-for="field in resource.fields" :key="field.name">
+              <m-form-field :field="field" #default="{on, props}">
+                <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
+              </m-form-field>
+            </div>
+    
+            <div class="actions-wrapper">
+              <button type="submit" class="create-btn" :style="{}">Create</button>
+            </div>
+            <pre>{{form}}</pre>
           </div>
-  
-          <div class="actions-wrapper">
-            <button type="submit" class="create-btn">Create</button>
-          </div>
-          <pre>{{form}}</pre>
         </m-form>
       </div>
     </page-card>

@@ -1,12 +1,18 @@
 <template>
-  <div class="checkbox-input" :class="{checked: isChecked}" @click="$emit('input', !isChecked)" tabindex="0">
+  <div
+    class="checkbox-input"
+    :class="{checked: isChecked}"
+    @click="$emit('input', !isChecked)"
+    tabindex="0"
+  >
     <icon name="check" stroke="var(--primary-10)" strokeWidth="4" class="icon" size="12" />
+    <input type="checkbox" :name="name" :id="id" :value="value" style="display: none" />
   </div>
 </template>
 
 <script>
 export default {
-  props: ['value'],
+  props: ["value", "name", "id"],
   computed: {
     isChecked() {
       return !!this.value;

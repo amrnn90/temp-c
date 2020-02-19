@@ -17,7 +17,8 @@ export default {
         fields: {...this.item} || {},
         initialFields: {...this.item},
         errors: {},
-        errorComponents: []
+        errorComponents: [],
+        isLoading: false,
       },
       shouldFocus: true
     };
@@ -48,6 +49,7 @@ export default {
   methods: {
     submit() {
       this.clearErrors();
+      this.sharedForm.isLoading = true;
       axios[this.method](this.action, this.form)
         .then(({ data }) => {
           this.$emit("success", data);
@@ -55,7 +57,10 @@ export default {
         .catch(({ response }) => {
           this.sharedForm.errors = response.data.errors;
           this.$emit("fail", response);
-        });
+        })
+        .finally(() => {
+          this.sharedForm.isLoading = false;
+        })
     },
     clearErrors() {
       this.sharedForm.errors = {};

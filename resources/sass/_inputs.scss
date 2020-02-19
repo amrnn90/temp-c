@@ -8,7 +8,7 @@
   font-size: var(--fz-sm);
   color: var(--grey-4);
 
-  &.input--error {
-    border-color: var(--error-8);
+  &.has-error {
+    border-color: var(--danger-8);
   }
 }
