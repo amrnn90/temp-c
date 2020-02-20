@@ -2,19 +2,10 @@
 
 namespace App\Admin\Http\Controllers;
 
-use App\Admin;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    protected $admin;
-
-    public function __construct(Admin $admin)
-    {
-        $this->admin = $admin;
-    }
-
     public function index($resourceName)
     {
         $resource = $this->resource($resourceName);
@@ -80,12 +71,7 @@ class AdminController extends Controller
     
     public function spa()
     {
-        $structure = $this->admin->structure();
+        $structure = $this->admin()->structure();
         return view('admin.index')->with('structure', $structure);
-    }
-
-    protected function resource($resourceName) 
-    {
-       return $this->admin->getResource($resourceName);
     }
 }

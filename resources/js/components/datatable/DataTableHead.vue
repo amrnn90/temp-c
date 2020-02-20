@@ -138,6 +138,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .table-head-post {
@@ -146,6 +147,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .table-head-cells {

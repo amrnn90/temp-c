@@ -6,6 +6,7 @@ use App\Admin\Fields\Date;
 use App\Admin\Fields\ShortText;
 use App\Admin\Fields\LongText;
 use App\Admin\Fields\Boolean;
+use App\Admin\Fields\Image;
 use App\Post;
 use Str;
 
@@ -142,26 +143,29 @@ class PostResource
     protected function fields()
     {
         return [
-            ShortText::make('title')
+            ShortText::make('title', $this)
                 ->rules('required')
                 ->canView(function ($user, $post) {
                     return $user->name == 'amr';
                 }),
 
-            LongText::make('body')
+            LongText::make('body', $this)
                 ->rules('required|min:10')
                 ->canSet(function () {
                     return true;
                 }),
 
-            Date::make('published_at')
+            Date::make('published_at', $this)
                 ->label('Publish Date')
                 ->rules('required'),
                 // ->enableTime()
                 // ->format("Y-m")
 
-            Boolean::make('featured')
-                ->rules('present')
+            Boolean::make('featured', $this)
+                ->rules('present'),
+
+            Image::make('image', $this)
+                ->rules('required')
 
         ];
     }

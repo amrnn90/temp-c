@@ -20,7 +20,7 @@ export default {
                 this.setColumnsWidths(adjustedWidths);
                 // this.isLoading = false;
             });
-        }, 150),
+        }, 150, {trailing: true}),
         getColumnMaxWidth(column) {
             const table = this.$refs.table;
 
@@ -87,7 +87,9 @@ export default {
     },
     mounted() {
         this.resizeObserver = new ResizeObserver((entries, observer) => {
-            this.layTable();
+            this.$nextTick(() => {
+                this.layTable();
+            });
         });
 
         this.resizeObserver.observe(this.$refs.table);

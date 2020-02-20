@@ -3,6 +3,7 @@
     class="toggle-input"
     :class="{checked: isChecked}"
     @click="$emit('input', !isChecked)"
+    @keydown.enter.space.prevent="$emit('input', !isChecked)"
     tabindex="0"
   >
     <input type="checkbox" :name="name" :id="id" :value="value" style="display: none">

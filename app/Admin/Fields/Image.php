@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Admin\Fields;
+
+class Image extends Field
+{
+  public function __construct(...$args)
+  {
+    parent::__construct(...$args);
+
+    $this->addOption('upload_url', route('admin.api.upload', [$this->resource->name(), $this->name()]));
+  }
+
+  public function multiple()
+  {
+    $this->addOption('multiple', true);
+    return $this;
+  }
+}

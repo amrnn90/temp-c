@@ -89,10 +89,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .table-row-post {
   width: var(--table-row-post-width);
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -109,7 +111,7 @@ export default {
 
 .table-row-cell {
   font-size: var(--fz-xs);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-semibold);
   color: var(--grey-5);
 }
 </style>

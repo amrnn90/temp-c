@@ -6,6 +6,7 @@ use Str;
 
 abstract class Field
 {
+  protected $resource;
   protected $name;
   protected $label;
   protected $abilities;
@@ -13,8 +14,9 @@ abstract class Field
   protected $updateRules;
   protected $options;
 
-  public function __construct($name)
+  public function __construct($name, $resource)
   {
+    $this->resource = $resource;
     $this->name = $name;
     $this->label = Str::title($name);
     $this->options = $this->defaultOptions();
@@ -30,9 +32,9 @@ abstract class Field
     ];
   }
 
-  public static function make($name)
+  public static function make($name, $resource)
   {
-    return new static($name);
+    return new static($name, $resource);
   }
 
   public function name()
