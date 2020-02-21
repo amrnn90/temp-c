@@ -8,7 +8,7 @@ class Date extends Field
   protected function defaultOptions() 
   {
     return [
-      'enableTime' => true,
+      'enableTime' => false,
       // 'altInput' => true,
       // 'altFormat' => "j-n-Y - H:i",
     ];

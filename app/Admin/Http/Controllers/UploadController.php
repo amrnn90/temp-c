@@ -31,10 +31,7 @@ class UploadController extends Controller
 
     // $fileCopy = new UploadedFile(Storage::disk($fileData['disk'])->path($fileData['path']), $fileData['originalName']);
 
-    return [
-      'value' => $fileData,
-      'preview' => $this->preview($fileData)
-    ];
+    return $fileData + ['preview' => $this->preview($fileData)];
   }
 
   public function preview($fileData)
