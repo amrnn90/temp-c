@@ -1,10 +1,6 @@
 <template>
   <div class="image-upload">
-    <div
-      ref="upload-wrapper"
-      class="image-upload-wrapper"
-      :class="inputClass"
-    >
+    <div ref="upload-wrapper" class="image-upload-wrapper" :class="inputClass">
       <div class="image-holder" v-for="(image) in images" :key="image.id">
         <img class="image-preview" :src="image.preview" />
         <span
@@ -70,7 +66,6 @@ export default {
             (itemsCount - 1) * gridGap +
             "px";
         });
-
       }
     },
     value: {
@@ -79,15 +74,13 @@ export default {
         value = value || [];
 
         let newValues = value.filter(image => {
-          return !this.images.find(
-            img => image.path == _.get(img, "value.path")
-          );
+          return !this.images.find(img => _.isEqual(image, img.value));
         });
 
         let notRemovedImages = this.images.filter(img => {
           return (
             img.state !== "persisted" ||
-            value.find(image => image.path == _.get(img, "value.path"))
+            value.find(image => _.isEqual(image, img.value))
           );
         });
 
@@ -260,7 +253,7 @@ export default {
 }
 
 .image-preview {
-  // max-width: 100%;
+  max-width: 100px;
   border-radius: var(--br);
   // object-fit: cover;
   border: 1px solid var(--grey-9);
