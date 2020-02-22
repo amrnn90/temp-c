@@ -130,12 +130,13 @@ export default {
 <style lang="scss" scoped>
 .input-field-wrapper {
   // display: flex;
+  width: 100%;
   margin-bottom: var(--sp-5);
   font-size: var(--fz-sm);
 }
 
 .input-wrapper {
-  flex: 1;
+  width: 100%;
 }
 
 .field-header {

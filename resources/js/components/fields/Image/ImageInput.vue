@@ -5,8 +5,7 @@
     :multiple="field.options.multiple"
     :name="name"
     :id="id"
-    class="field-input"
-    :class="{'has-error': hasError}"
+    :input-class="`field-input ${hasError ? 'has-error' : ''}`"
     :value="value"
     @input="(value) => $emit('input', value)"
     />

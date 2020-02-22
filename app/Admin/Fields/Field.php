@@ -131,8 +131,13 @@ abstract class Field
 
     return $this->structure() + [
       'abilities' => $this->abilitiesForModel($model),
-      'data' => $abilities['view'] ? $model->{$this->name} : null,
+      'data' => $abilities['view'] ? $this->getDataForModel($model) : null,
     ];
+  }
+
+  protected function getDataForModel($model)
+  {
+    return $model->{$this->name};
   }
 
   protected function abilitiesForModel($model)

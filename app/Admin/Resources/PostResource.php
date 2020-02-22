@@ -165,8 +165,8 @@ class PostResource
                 ->rules('present'),
 
             Image::make('image', $this)
-                ->multiple()
-                ->rules('required')
+                // ->multiple()
+                // ->rules('required')
 
         ];
     }

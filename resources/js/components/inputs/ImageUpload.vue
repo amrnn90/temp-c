@@ -1,8 +1,18 @@
 <template>
   <div class="image-upload">
-    <div class="image-upload-wrapper">
+    <div
+      ref="upload-wrapper"
+      class="image-upload-wrapper"
+      :class="inputClass"
+      :style="{'width': wrapperWidth}"
+    >
       <div class="image-holder" v-for="(image, index) in images" :key="index">
         <img class="image-preview" :src="image.preview" />
+        <span
+          class="upload-progress"
+          v-if="image.state == 'uploading'"
+          :style="{width: image.progress + '%'}"
+        ></span>
       </div>
       <div class="image-upload-actions">
         <button v-if="multiple || images.length == 0" type="button" @click="triggerFileInput">
@@ -21,7 +31,7 @@
       :name="name"
       :id="id"
       style="display: none"
-      multiple
+      :multiple="multiple"
     />
   </div>
 </template>
@@ -30,10 +40,11 @@
 import { genId } from "@/utils";
 
 export default {
-  props: ["value", "name", "id", "uploadUrl", "multiple"],
+  props: ["value", "name", "id", "uploadUrl", "multiple", "inputClass"],
   data() {
     return {
-      previews: {}
+      previews: {},
+      hasMounted: false
     };
   },
   computed: {
@@ -42,6 +53,29 @@ export default {
         ...image,
         preview: this.previews[image.id] || image.preview
       }));
+    },
+    wrapperWidth() {
+      /* https://stackoverflow.com/q/60346823/4765497 */
+
+      /* HACK TO FORCE RECOMPUTATION */
+      this.hasMounted;
+
+      const wrapper = this.$refs["upload-wrapper"];
+      if (!wrapper) return 0;
+
+      const itemsCount = this.images.length + 1;
+      const wrapperOuterWidth =
+        (parseFloat(window.getComputedStyle(wrapper).paddingLeft) +
+          parseFloat(window.getComputedStyle(wrapper).borderLeftWidth)) *
+        2;
+      const gridGap = 20;
+      const minItemWidth = 100;
+      return (
+        itemsCount * minItemWidth +
+        wrapperOuterWidth +
+        (itemsCount - 1) * gridGap +
+        "px"
+      );
     }
   },
   watch: {
@@ -99,7 +133,8 @@ export default {
 
       const image = {
         id: genId(),
-        state: "uploading"
+        state: "uploading",
+        progress: 0
       };
 
       const reader = new FileReader();
@@ -117,6 +152,12 @@ export default {
         .post(this.uploadUrl, formData, {
           headers: {
             "Content-Type": "multipart/formdata"
+          },
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            image.progress = percentCompleted;
           }
         })
         .then(({ data }) => {
@@ -135,6 +176,11 @@ export default {
           console.log("error", error);
         });
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.hasMounted = true;
+    });
   }
 };
 </script>
@@ -143,42 +189,31 @@ export default {
 @import "resources/sass/init";
 
 .image-upload {
-  width: auto;
-  display: inline-block;
+  // width: 100%;
+  // display: inline-flex;
+  // display: inline-flex;
+  width: 100%;
 }
 
 .image-upload-wrapper {
-  align-items: center;
-  display: inline-flex;
-  // justify-content: center;
-  transition: all 0.5s ease;
+  display: grid;
+  max-width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 20px;
 
-  flex-wrap: wrap;
-  justify-content: space-between;
   min-height: var(--sp-15);
-  min-width: var(--sp-15);
-
-  margin-bottom: calc(-1 * var(--sp-4));
 }
 
-// .images {
-//   display: flex;
-//   flex-wrap: wrap;
-//   width: 100%;
-// }
-
 .image-upload-actions {
-  // margin-left: auto;
-  width: var(--sp-15);
-  height: var(--sp-15);
-  margin-bottom: var(--sp-4);
-  // margin-right: auto;
-  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   button {
-    width: 100%;
-    height: 100%;
-    width: var(--sp-15);
-    height: var(--sp-15);
+    width: 100px;
+    height: 100px;
+    // width: var(--sp-15);
+    // height: var(--sp-15);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -188,15 +223,27 @@ export default {
 }
 
 .image-holder {
-  margin-right: var(--sp-5);
-  margin-bottom: var(--sp-4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .upload-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    background: var(--primary-4);
+    opacity: .5;
+    border-radius: var(--br);
+    // width: 100%;
+  }
 }
 
 .image-preview {
-  width: var(--sp-15);
-  height: var(--sp-15);
+  // max-width: 100%;
   border-radius: var(--br);
-  object-fit: cover;
+  // object-fit: cover;
   border: 1px solid var(--grey-9);
   box-shadow: 1px 1px 4px hsla(var(--primary-v-6), 0.1);
 }
