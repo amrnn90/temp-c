@@ -4,7 +4,6 @@
       ref="upload-wrapper"
       class="image-upload-wrapper"
       :class="inputClass"
-      :style="{'width': wrapperWidth}"
     >
       <div class="image-holder" v-for="(image) in images" :key="image.id">
         <img class="image-preview" :src="image.preview" />
@@ -14,12 +13,9 @@
           :style="{width: image.progress + '%'}"
         ></span>
       </div>
-      <div class="image-upload-actions">
-        <button v-if="multiple || images.length == 0" type="button" @click="triggerFileInput">
+      <div class="image-upload-actions" v-if="multiple || images.length == 0">
+        <button type="button" @click="triggerFileInput">
           <icon name="plus" stroke="var(--grey-6)" strokeWidth="2" size="32" />
-        </button>
-        <button v-else type="button" @click="$emit('input', null)">
-          <icon name="x" stroke="var(--grey-6)" strokeWidth="2" size="32" />
         </button>
       </div>
     </div>
@@ -43,43 +39,40 @@ export default {
   props: ["value", "name", "id", "uploadUrl", "multiple", "inputClass"],
   data() {
     return {
-      // previews: {},
       images: [],
       hasMounted: false
     };
   },
   computed: {
-    // images() {
-    //   return (this.value || []).map(image => ({
-    //     ...image,
-    //     preview: this.previews[image.id] || image.preview
-    //   }));
-    // },
-    wrapperWidth() {
-      /* https://stackoverflow.com/q/60346823/4765497 */
-
-      /* HACK TO FORCE RECOMPUTATION */
-      this.hasMounted;
-
-      const wrapper = this.$refs["upload-wrapper"];
-      if (!wrapper) return 0;
-
-      const itemsCount = this.images.length + 1;
-      const wrapperOuterWidth =
-        (parseFloat(window.getComputedStyle(wrapper).paddingLeft) +
-          parseFloat(window.getComputedStyle(wrapper).borderLeftWidth)) *
-        2;
-      const gridGap = 20;
-      const minItemWidth = 100;
-      return (
-        itemsCount * minItemWidth +
-        wrapperOuterWidth +
-        (itemsCount - 1) * gridGap +
-        "px"
-      );
-    }
+    wrapperWidth() {}
   },
   watch: {
+    images: {
+      immediate: true,
+      handler(images) {
+        /* https://stackoverflow.com/q/60346823/4765497 */
+
+        this.$nextTick(() => {
+          const wrapper = this.$refs["upload-wrapper"];
+          if (!wrapper) return;
+
+          const itemsCount = wrapper.children.length;
+          const wrapperOuterWidth =
+            (parseFloat(window.getComputedStyle(wrapper).paddingLeft) +
+              parseFloat(window.getComputedStyle(wrapper).borderLeftWidth)) *
+            2;
+          const gridGap = 20;
+          const minItemWidth = 100;
+
+          wrapper.style.width =
+            itemsCount * minItemWidth +
+            wrapperOuterWidth +
+            (itemsCount - 1) * gridGap +
+            "px";
+        });
+
+      }
+    },
     value: {
       immediate: true,
       handler(value) {
@@ -154,10 +147,7 @@ export default {
         progress: 0
       };
 
-      this.images = [
-        ...this.images,
-        image,
-      ];
+      this.images = [...this.images, image];
 
       const reader = new FileReader();
 
