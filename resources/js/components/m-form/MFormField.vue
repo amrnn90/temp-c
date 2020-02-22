@@ -16,8 +16,8 @@
         <button
           type="button"
           style="display: inline; font-size: var(--fz-xs); color: var(--grey-8); "
-          v-if="typeof value === 'string' && value.length > 0"
-          @click="handleInput('')"
+          v-if="valueHasLength"
+          @click="handleInput(typeof value == 'array' ? [] : '')"
         >clear</button>
       </div>
     </div>
@@ -61,6 +61,9 @@ export default {
     },
     initialValue() {
       return this.sharedForm.initialFields[this.name];
+    },
+    valueHasLength() {
+      return _.get(this.value, 'length') > 0
     },
     error() {
       return (

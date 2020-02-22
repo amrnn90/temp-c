@@ -6,7 +6,7 @@
       :class="inputClass"
       :style="{'width': wrapperWidth}"
     >
-      <div class="image-holder" v-for="(image, index) in images" :key="index">
+      <div class="image-holder" v-for="(image) in images" :key="image.id">
         <img class="image-preview" :src="image.preview" />
         <span
           class="upload-progress"
@@ -43,17 +43,18 @@ export default {
   props: ["value", "name", "id", "uploadUrl", "multiple", "inputClass"],
   data() {
     return {
-      previews: {},
+      // previews: {},
+      images: [],
       hasMounted: false
     };
   },
   computed: {
-    images() {
-      return (this.value || []).map(image => ({
-        ...image,
-        preview: this.previews[image.id] || image.preview
-      }));
-    },
+    // images() {
+    //   return (this.value || []).map(image => ({
+    //     ...image,
+    //     preview: this.previews[image.id] || image.preview
+    //   }));
+    // },
     wrapperWidth() {
       /* https://stackoverflow.com/q/60346823/4765497 */
 
@@ -82,15 +83,30 @@ export default {
     value: {
       immediate: true,
       handler(value) {
-        let modValue = (value || []).map(image => ({
-          ...image,
-          id: image.id || genId(),
-          state: image.state || "persisted"
-        }));
+        value = value || [];
 
-        if (!_.isEqual(value, modValue)) {
-          this.$emit("input", modValue);
-        }
+        let newValues = value.filter(image => {
+          return !this.images.find(
+            img => image.path == _.get(img, "value.path")
+          );
+        });
+
+        let notRemovedImages = this.images.filter(img => {
+          return (
+            img.state !== "persisted" ||
+            value.find(image => image.path == _.get(img, "value.path"))
+          );
+        });
+
+        this.images = [
+          ...notRemovedImages,
+          ...newValues.map(image => ({
+            id: genId(),
+            state: "persisted",
+            preview: image.preview,
+            value: { ...image }
+          }))
+        ];
       }
     }
   },
@@ -131,18 +147,25 @@ export default {
 
       formData.append(this.name, file);
 
-      const image = {
+      let image = {
         id: genId(),
         state: "uploading",
+        preview: null,
         progress: 0
       };
+
+      this.images = [
+        ...this.images,
+        image,
+      ];
 
       const reader = new FileReader();
 
       reader.onload = ev => {
         this.resize(ev.target.result, 127, dataURL => {
-          this.previews[image.id] = dataURL;
-          this.$emit("input", [...(this.value || []), image]);
+          image.preview = dataURL;
+          // this.previews[image.id] = dataURL;
+          // this.$emit("input", [...(this.value || []), image]);
         });
       };
 
@@ -153,7 +176,7 @@ export default {
           headers: {
             "Content-Type": "multipart/formdata"
           },
-          onUploadProgress: (progressEvent) => {
+          onUploadProgress: progressEvent => {
             const percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
@@ -161,15 +184,21 @@ export default {
           }
         })
         .then(({ data }) => {
-          const index = this.value.findIndex(img => img.id == image.id);
+          const index = this.images.findIndex(img => img.id == image.id);
 
-          image.state = "success";
+          image = {
+            ...image,
+            value: { ...data },
+            state: "persisted"
+          };
 
-          this.$emit("input", [
-            ...this.value.slice(0, index),
-            { ...data, ...image },
-            ...this.value.slice(index + 1)
-          ]);
+          this.images = [
+            ...this.images.slice(0, index),
+            image,
+            ...this.images.slice(index + 1)
+          ];
+
+          this.$emit("input", [...(this.value || []), data]);
         })
         .catch(error => {
           image.state = "error";
@@ -234,7 +263,7 @@ export default {
     bottom: 0;
     height: 100%;
     background: var(--primary-4);
-    opacity: .5;
+    opacity: 0.5;
     border-radius: var(--br);
     // width: 100%;
   }
