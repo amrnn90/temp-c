@@ -7,6 +7,7 @@ use App\Admin\Fields\ShortText;
 use App\Admin\Fields\LongText;
 use App\Admin\Fields\Boolean;
 use App\Admin\Fields\Image;
+use App\Admin\Fields\Json;
 use App\Post;
 use Str;
 
@@ -15,8 +16,8 @@ class PostResource
     use ResourceAuthorization;
 
     protected $model = Post::class;
-
     protected $titleField = 'title';
+    protected $fields = null;
 
     public static function make()
     {
@@ -32,7 +33,7 @@ class PostResource
             'api_urls' => $this->apiUrls(),
             'title_field' => $this->titleField,
             'abilities' => $this->abilities(),
-            'fields' => collect($this->fields())->map->structure()->all(),
+            'fields' => $this->getFields()->map->structure()->all(),
         ];
     }
 
@@ -48,9 +49,28 @@ class PostResource
 
     public function getField($name)
     {
-        return collect($this->fields())->filter(function ($field) use ($name) {
-            return $field->name() == $name;
-        })->first();
+        $resultField = null;
+
+        $this->walkFields(function($field) use (&$resultField, $name) {
+            if ($field->nestedName() == $name) {
+                $resultField = $field;
+            }
+        });
+
+        return $resultField;
+        // return $this->getFields()->filter(function ($field) use ($name) {
+        //     return $field->name() == $name;
+        // })->first();
+    }
+
+    public function walkFields($callback)
+    {
+        $this->getFields()->each(function ($field) use ($callback) {
+            $callback($field);
+            if (method_exists($field, 'walkFields')) {
+                $field->walkFields($callback);
+            }
+        });
     }
 
     public function index()
@@ -74,7 +94,7 @@ class PostResource
             'abilities' => $this->abilitiesForModel($model),
             'api_urls' => $this->modelApiUrls($model),
             'id' => $this->getModelId($model),
-            'fields' => collect($this->fields())->map(function ($field) use ($model) {
+            'fields' => $this->getFields()->map(function ($field) use ($model) {
                 return $field->structureForModel($model);
             })
         ];
@@ -99,7 +119,7 @@ class PostResource
     public function validateCreate($request)
     {
         $rules = [];
-        collect($this->fields())->each(function ($field) use (&$rules) {
+        $this->getFields()->each(function ($field) use (&$rules) {
             $rules = $rules + $field->getCreateRules();
         });
 
@@ -109,7 +129,7 @@ class PostResource
     public function validateUpdate($request)
     {
         $rules = [];
-        collect($this->fields())->each(function ($field) use (&$rules) {
+        $this->getFields()->each(function ($field) use (&$rules) {
             $rules = $rules + $field->getUpdateRules();
         });
 
@@ -120,8 +140,8 @@ class PostResource
     {
         $model = $this->model();
 
-        collect($this->fields())->each(function ($field) use ($request, $model) {
-            $field->handleCreate($model, $request);
+        $this->getFields()->each(function ($field) use ($request, $model) {
+            $field->handleCreate($model, $request->get($field->name()));
         });
 
         $model->save();
@@ -131,8 +151,8 @@ class PostResource
 
     public function update($model, $request)
     {
-        collect($this->fields())->each(function ($field) use ($request, $model) {
-            $field->handleUpdate($model, $request);
+        $this->getFields()->each(function ($field) use ($request, $model) {
+            $field->handleUpdate($model, $request->get($field->name()));
         });
 
         $model->save();
@@ -143,32 +163,55 @@ class PostResource
     protected function fields()
     {
         return [
-            ShortText::make('title', $this)
+            ShortText::make('title')
                 ->rules('required')
                 ->canView(function ($user, $post) {
                     return $user->name == 'amr';
                 }),
 
-            LongText::make('body', $this)
+            LongText::make('body')
                 ->rules('required|min:10')
                 ->canSet(function () {
                     return true;
                 }),
 
-            Date::make('published_at', $this)
-                ->label('Publish Date')
+            Date::make('published_at')
+                // ->label('Publish Date')
                 ->rules('required'),
                 // ->enableTime()
                 // ->format("Y-m")
 
-            Boolean::make('featured', $this)
+            Boolean::make('featured')
                 ->rules('present'),
 
-            Image::make('image', $this)
-                ->multiple()
+            Image::make('image')
+                ->multiple(),
                 // ->rules('required')
 
+            Json::make('sections')
+                ->fields(function() {
+                    return [
+                        ShortText::make('heading')
+                            ->rules('required'),
+                        Date::make('scheduled_at'),
+                        Image::make('thumbs')
+                        ->rules('required'),
+                    ];
+                }),
+
         ];
+    }
+
+    public function getFields()
+    {
+        if (!!$this->fields) return $this->fields;
+
+        $this->fields = collect($this->fields())->map(function($field) {
+            $field->setResource($this)->init();
+            return $field;
+        });
+
+        return $this->fields;
     }
 
     protected function path()

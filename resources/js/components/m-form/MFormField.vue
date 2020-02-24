@@ -1,5 +1,10 @@
 <template>
-  <div class="input-field-wrapper" :class="{'has-error': hasError}" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+  <div
+    class="input-field-wrapper"
+    :class="{'has-error': hasError}"
+    @mouseenter="isHovered = true"
+    @mouseleave="isHovered = false"
+  >
     <div class="field-header">
       <label :for="name" class="label">{{label}}</label>
       <div class="actions">
@@ -7,7 +12,7 @@
           type="button"
           style="display: inline; font-size: var(--fz-xs); color: var(--grey-8); "
           v-if="!valueEqualsInitialValue"
-          @click="handleInput(initialValue)"
+          @click="reset"
         >reset</button>
         <span
           v-if="!valueEqualsInitialValue && (typeof value === 'string' && value.length > 0)"
@@ -47,7 +52,7 @@ export default {
         name: this.name,
         value: this.value,
         field: this.field,
-        hasError: this.hasError,
+        hasError: this.hasError
       };
     },
     name() {
@@ -57,19 +62,17 @@ export default {
       return _.get(this.field, "label");
     },
     value() {
-      return this.sharedForm.fields[this.name];
+      return _.get(this.sharedForm.fields, this.name);
     },
     initialValue() {
-      return this.sharedForm.initialFields[this.name];
+      return _.get(this.sharedForm.initialFields, this.name);
     },
     valueHasLength() {
-      return _.get(this.value, 'length') > 0
+      return _.get(this.value, "length") > 0;
     },
     error() {
-      return (
-        this.sharedForm.errors[this.name] &&
-        this.sharedForm.errors[this.name][0]
-      );
+      const errors = this.sharedForm.errors[this.name];
+      return errors && errors[0];
     },
 
     hasError() {
@@ -77,7 +80,7 @@ export default {
     },
 
     valueEqualsInitialValue() {
-      return this.initialValue == this.value;
+      return _.isEqual(this.initialValue, this.value);
     }
   },
   watch: {
@@ -98,11 +101,12 @@ export default {
   methods: {
     initValue() {
       const { sharedForm } = this;
-      const current = sharedForm.fields[this.name];
-      sharedForm.fields = {
-        ...sharedForm.fields,
-        [this.name]: Object.is(current, undefined) ? null : current
-      };
+      const current = this.value;
+      const newFields = {...sharedForm.fields};
+
+      _.set(newFields, this.name, Object.is(current, undefined) ? null : current);
+
+      sharedForm.fields = newFields;
     },
     handleInput(evOrValue) {
       let newValue;
@@ -116,11 +120,18 @@ export default {
       newValue = newValue === "" || newValue === undefined ? null : newValue;
 
       const { sharedForm } = this;
-      sharedForm.fields = {
-        ...sharedForm.fields,
-        [this.name]: newValue
+
+      const newFields = { ...sharedForm.fields };
+      _.set(newFields, this.name, newValue);
+      sharedForm.fields = newFields;
+  
+      sharedForm.errors = {
+        ...sharedForm.errors,
+        [this.name]: null
       };
-      sharedForm.errors[this.name] = null;
+    },
+    reset() {
+      this.handleInput(_.cloneDeep(this.initialValue));
     }
   },
   mounted() {

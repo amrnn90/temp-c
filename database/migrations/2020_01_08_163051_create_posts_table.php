@@ -20,6 +20,9 @@ class CreatePostsTable extends Migration
             $table->timestamp('published_at')->nullable();
             $table->boolean('featured')->default(false);
             $table->json('image')->nullable();
+
+            $table->json('sections')->nullable();
+
             $table->timestamps();
         });
     }

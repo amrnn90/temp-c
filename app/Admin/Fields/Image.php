@@ -7,18 +7,16 @@ use Illuminate\Support\Facades\Storage;
 
 class Image extends Field
 {
-  protected function defaultOptions() 
+  protected function defaultOptions()
   {
     return [
       'multiple' => false,
     ];
   }
 
-  public function __construct(...$args)
+  public function init()
   {
-    parent::__construct(...$args);
-
-    $this->addOption('upload_url', route('admin.api.upload', [$this->resource->name(), $this->name()]));
+    $this->addOption('upload_url', route('admin.api.upload', [$this->resource->name(), $this->nestedName()]));
   }
 
   public function multiple()
@@ -27,13 +25,13 @@ class Image extends Field
     return $this;
   }
 
-  public function handleCreate($model, $request)
+  public function handleCreate($model, $value)
   {
     if (!$this->checkCanSet($model)) return;
 
     $name = $this->name();
 
-    $files = collect($request->get($name)) ?? [];
+    $files = collect($value) ?? [];
 
     $files = $files->map(function ($file) {
       return Arr::only($file, ['path', 'disk', 'meta']);
@@ -47,13 +45,13 @@ class Image extends Field
     $model->{$name} =  $files;
   }
 
-  public function handleUpdate($model, $request)
+  public function handleUpdate($model, $value)
   {
     if (!$this->checkCanSet($model)) return;
 
     $name = $this->name();
 
-    $files = collect($request->get($name)) ?? [];
+    $files = collect($value) ?? [];
 
 
     $files = $files->map(function ($file) {
@@ -70,11 +68,14 @@ class Image extends Field
 
   protected function getDataForModel($model)
   {
-    $files = $model->{$this->name};
+    $files = parent::getDataForModel($model);
 
     if (!$files) {
       return [];
     }
+
+    $files = is_string($files) ? json_decode($files, true): (array) $files;
+
 
     if (!isset($files[0])) {
       $files = [$files];

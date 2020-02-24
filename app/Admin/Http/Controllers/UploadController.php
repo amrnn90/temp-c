@@ -17,9 +17,11 @@ class UploadController extends Controller
 
     $field = $resource->getField($fieldName);
 
-    $file = request()->file($fieldName);
+    $file = request()->file('file');
 
-    $path = Storage::disk('public')->putFile("${resourceName}/${fieldName}", $file);
+    $fieldPath = str_replace('.', '/', $fieldName);
+
+    $path = Storage::disk('public')->putFile("${resourceName}/${fieldPath}", $file);
 
     $fileData = [
       'path' => $path,

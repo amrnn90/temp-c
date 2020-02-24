@@ -14,8 +14,8 @@ export default {
   data() {
     return {
       sharedForm: {
-        fields: {...this.item} || {},
-        initialFields: {...this.item},
+        fields: _.cloneDeep(this.item),
+        initialFields: _.cloneDeep(this.item),
         errors: {},
         errorComponents: [],
         isLoading: false,

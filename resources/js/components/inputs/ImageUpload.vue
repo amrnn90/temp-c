@@ -19,6 +19,7 @@
       ref="fileInput"
       accept="image/*"
       @change="handleFileChange"
+      @click="(ev) => !multiple && images.length > 0 && ev.preventDefault()"
       type="file"
       :name="name"
       :id="id"
@@ -46,25 +47,9 @@ export default {
     images: {
       immediate: true,
       handler(images) {
-        /* https://stackoverflow.com/q/60346823/4765497 */
-
-        this.$nextTick(() => {
-          const wrapper = this.$refs["upload-wrapper"];
-          if (!wrapper) return;
-
-          const itemsCount = wrapper.children.length;
-          const wrapperOuterWidth =
-            (parseFloat(window.getComputedStyle(wrapper).paddingLeft) +
-              parseFloat(window.getComputedStyle(wrapper).borderLeftWidth)) *
-            2;
-          const gridGap = 20;
-          const minItemWidth = 100;
-
-          wrapper.style.width =
-            itemsCount * minItemWidth +
-            wrapperOuterWidth +
-            (itemsCount - 1) * gridGap +
-            "px";
+        setTimeout(() => {
+          /* https://stackoverflow.com/q/60346823/4765497 */
+          this.setWrapperSize();
         });
       }
     },
@@ -131,7 +116,7 @@ export default {
 
       const formData = new FormData();
 
-      formData.append(this.name, file);
+      formData.append('file', file);
 
       let image = {
         id: genId(),
@@ -187,13 +172,27 @@ export default {
           image.state = "error";
           console.log("error", error);
         });
+    },
+    setWrapperSize() {
+      const wrapper = this.$refs["upload-wrapper"];
+      if (!wrapper) return;
+
+      const itemsCount = wrapper.children.length;
+      const wrapperOuterWidth =
+        (parseFloat(window.getComputedStyle(wrapper).paddingLeft) +
+          parseFloat(window.getComputedStyle(wrapper).borderLeftWidth)) *
+        2;
+      const gridGap = 20;
+      const minItemWidth = 100;
+
+      wrapper.style.width =
+        itemsCount * minItemWidth +
+        wrapperOuterWidth +
+        (itemsCount - 1) * gridGap +
+        "px";
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.hasMounted = true;
-    });
-  }
+  mounted() {}
 };
 </script>
 

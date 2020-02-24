@@ -7,6 +7,7 @@ use Str;
 abstract class Field
 {
   protected $resource;
+  protected $parentField;
   protected $name;
   protected $label;
   protected $abilities;
@@ -14,9 +15,8 @@ abstract class Field
   protected $updateRules;
   protected $options;
 
-  public function __construct($name, $resource)
+  public function __construct($name)
   {
-    $this->resource = $resource;
     $this->name = $name;
     $this->label = Str::title($name);
     $this->options = $this->defaultOptions();
@@ -32,14 +32,36 @@ abstract class Field
     ];
   }
 
-  public static function make($name, $resource)
+  public static function make($name)
   {
-    return new static($name, $resource);
+    return new static($name);
+  }
+
+  public function init()
+  {
+    return $this;
+  }
+
+  public function setResource($resource)
+  {
+    $this->resource = $resource;
+    return $this; 
+  }
+
+  public function setParentField($parentField)
+  {
+    $this->parentField = $parentField;
+    return $this;
   }
 
   public function name()
   {
     return $this->name;
+  }
+
+  public function nestedName()
+  {
+    return $this->parentField ? "{$this->parentField->nestedName()}.{$this->name()}" : $this->name();
   }
 
   public function label($label)
@@ -97,28 +119,25 @@ abstract class Field
     return [$this->name() => $this->updateRules];
   }
 
-  public function handleCreate($model, $request)
+  public function handleCreate($model, $value)
   {
     if (!$this->checkCanSet($model)) return;
 
-    $name = $this->name();
-
-    $model->$name = $request->get($name);
+    $model->{$this->name()} = $value;
   }
 
-  public function handleUpdate($model, $request)
+  public function handleUpdate($model, $value)
   {
     if (!$this->checkCanSet($model)) return;
 
-    $name = $this->name();
-
-    $model->$name = $request->get($name);
+    $model->{$this->name()} = $value;
   }
 
   public function structure()
   {
     return [
       'name' => $this->name(),
+      'nested_name' => $this->nestedName(),
       'label' => $this->label,
       'type' => $this->fieldType(),
       'options' => $this->options(),
@@ -137,7 +156,7 @@ abstract class Field
 
   protected function getDataForModel($model)
   {
-    return $model->{$this->name};
+    return $model->{$this->name} ?? null;
   }
 
   protected function abilitiesForModel($model)
