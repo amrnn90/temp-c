@@ -102,9 +102,13 @@ export default {
     initValue() {
       const { sharedForm } = this;
       const current = this.value;
-      const newFields = {...sharedForm.fields};
+      const newFields = { ...sharedForm.fields };
 
-      _.set(newFields, this.name, Object.is(current, undefined) ? null : current);
+      _.set(
+        newFields,
+        this.name,
+        Object.is(current, undefined) ? null : current
+      );
 
       sharedForm.fields = newFields;
     },
@@ -124,7 +128,7 @@ export default {
       const newFields = { ...sharedForm.fields };
       _.set(newFields, this.name, newValue);
       sharedForm.fields = newFields;
-  
+
       sharedForm.errors = {
         ...sharedForm.errors,
         [this.name]: null
@@ -145,8 +149,10 @@ export default {
 .input-field-wrapper {
   // display: flex;
   width: 100%;
-  margin-bottom: var(--sp-5);
   font-size: var(--fz-sm);
+  &:not(:last-child) {
+    margin-bottom: var(--sp-5);
+  }
 }
 
 .input-wrapper {

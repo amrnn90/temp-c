@@ -8,6 +8,7 @@ use App\Admin\Fields\LongText;
 use App\Admin\Fields\Boolean;
 use App\Admin\Fields\Image;
 use App\Admin\Fields\Json;
+use App\Admin\Fields\JsonArray;
 use App\Post;
 use Str;
 
@@ -18,6 +19,12 @@ class PostResource
     protected $model = Post::class;
     protected $titleField = 'title';
     protected $fields = null;
+    protected $fieldsMap = [];
+
+    public function __construct()
+    {
+        $this->getFields();
+    }
 
     public static function make()
     {
@@ -49,28 +56,7 @@ class PostResource
 
     public function getField($name)
     {
-        $resultField = null;
-
-        $this->walkFields(function($field) use (&$resultField, $name) {
-            if ($field->nestedName() == $name) {
-                $resultField = $field;
-            }
-        });
-
-        return $resultField;
-        // return $this->getFields()->filter(function ($field) use ($name) {
-        //     return $field->name() == $name;
-        // })->first();
-    }
-
-    public function walkFields($callback)
-    {
-        $this->getFields()->each(function ($field) use ($callback) {
-            $callback($field);
-            if (method_exists($field, 'walkFields')) {
-                $field->walkFields($callback);
-            }
-        });
+        return $this->fieldsMap[$name];
     }
 
     public function index()
@@ -95,7 +81,9 @@ class PostResource
             'api_urls' => $this->modelApiUrls($model),
             'id' => $this->getModelId($model),
             'fields' => $this->getFields()->map(function ($field) use ($model) {
-                return $field->structureForModel($model);
+                return array_merge($field->structureForModel($model), [
+                    'data' => $field->getDataForModel($model),
+                ]);
             })
         ];
     }
@@ -141,7 +129,8 @@ class PostResource
         $model = $this->model();
 
         $this->getFields()->each(function ($field) use ($request, $model) {
-            $field->handleCreate($model, $request->get($field->name()));
+            // $field->handleCreate($model, $request->get($field->name()));
+            $field->createDataForModel($request->get($field->name()), $model);
         });
 
         $model->save();
@@ -152,7 +141,8 @@ class PostResource
     public function update($model, $request)
     {
         $this->getFields()->each(function ($field) use ($request, $model) {
-            $field->handleUpdate($model, $request->get($field->name()));
+            // $field->handleUpdate($model, $request->get($field->name()));
+            $field->updateDataForModel($request->get($field->name()), $model);
         });
 
         $model->save();
@@ -178,27 +168,37 @@ class PostResource
             Date::make('published_at')
                 // ->label('Publish Date')
                 ->rules('required'),
-                // ->enableTime()
-                // ->format("Y-m")
+            // ->enableTime()
+            // ->format("Y-m")
 
             Boolean::make('featured')
                 ->rules('present'),
 
             Image::make('image')
                 ->multiple(),
-                // ->rules('required')
+            // ->rules('required')
 
             Json::make('sections')
-                ->fields(function() {
+                ->fields(function () {
                     return [
-                        ShortText::make('heading')
-                            ->rules('required'),
-                        Date::make('scheduled_at'),
+                        JsonArray::make('listo')
+                            ->templateField(function () {
+                                return ShortText::make('hola');
+                            }),
+
+                        Date::make('scheduled_at')
+                            ->canSet(function () {
+                                return false;
+                            }),
+
                         Image::make('thumbs')
-                        ->rules('required'),
+                            ->rules('required'),
                     ];
                 }),
-
+            JsonArray::make('listo')
+                ->templateField(function () {
+                    return ShortText::make('hola');
+                }),
         ];
     }
 
@@ -206,12 +206,17 @@ class PostResource
     {
         if (!!$this->fields) return $this->fields;
 
-        $this->fields = collect($this->fields())->map(function($field) {
-            $field->setResource($this)->init();
+        $this->fields = collect($this->fields())->map(function ($field) {
+            $field->init($this);
             return $field;
         });
 
         return $this->fields;
+    }
+
+    public function addToFieldsMap($name, $field)
+    {
+        $this->fieldsMap[$name] = $field;
     }
 
     protected function path()

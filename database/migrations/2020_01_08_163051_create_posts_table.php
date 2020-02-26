@@ -22,6 +22,7 @@ class CreatePostsTable extends Migration
             $table->json('image')->nullable();
 
             $table->json('sections')->nullable();
+            $table->json('listo')->nullable();
 
             $table->timestamps();
         });

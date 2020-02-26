@@ -4,7 +4,6 @@ namespace App\Admin\Http\Controllers;
 
 use App\Admin\Models\UploadedMedia;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 

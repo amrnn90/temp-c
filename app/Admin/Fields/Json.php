@@ -10,15 +10,14 @@ class Json extends Field
   protected $fields = [];
   protected $fieldsCallback = null;
 
-  protected function defaultOptions()
+  public function init($resource, $parentField = null)
   {
-    return [];
-  }
+    parent::init($resource, $parentField);
 
-  // public function init()
-  // {
-  //   return $this;
-  // }
+    $this->getFields()->each(function ($field) use ($resource) {
+      $field->init($resource, $this);
+    });
+  }
 
   public function structure()
   {
@@ -29,11 +28,11 @@ class Json extends Field
 
   public function structureForModel($model)
   {
-    return parent::structureForModel($model) + [
+    return array_merge(parent::structureForModel($model), [
       'fields' => $this->getFields()->map(function ($field) use ($model) {
         return $field->structureForModel($model);
-      }),
-    ];
+      })
+    ]);
   }
 
   public function fields($callback)
@@ -46,44 +45,67 @@ class Json extends Field
   {
     if (!!$this->fields) return $this->fields;
 
-    $this->fields = collect(($this->fieldsCallback)())->map(function ($field) {
-      $field->setResource($this->resource);
-      $field->setParentField($this);
-      $field->init();
-      return $field;
-    });
-
+    $this->fields = collect(($this->fieldsCallback)());
     return $this->fields;
   }
 
-  public function walkFields($callback)
+  public function getChildNestedName($child)
   {
-    $this->getFields()->each(function ($field) use ($callback) {
-      $callback($field);
-      if (method_exists($field, 'walkFields')) {
-        $field->walkFields($callback);
-      }
-    });
+    return "{$this->nestedName()}.{$child->name()}";
   }
-
-
 
   /* MUST REFACTOR */
 
 
-  public function handleCreate($model, $value)
+  public function getDataForModel($model, $currentSlice = null)
   {
-    if (!$this->checkCanSet($model)) return;
+    $data = parent::getDataForModel($model, $currentSlice = null);
 
-    $nestedModel = new stdClass();
+    if (!$data) return $data;
 
-    $this->getFields()->each(function ($field) use ($value, $nestedModel) {
-      $field->handleCreate($nestedModel, data_get($value, $field->name()));
+    $data = is_string($data) ? json_decode($data) : (object) $data;
+
+    $this->getFields()->each(function ($field) use ($model, &$data) {
+      $data->{$field->name()} = $field->getDataForModel($model, $data);
     });
 
-    $model->{$this->name()} = json_encode($nestedModel);
+    return $data;
   }
 
+  public function createDataForModel($data, $model, $currentSlice = null)
+  {
+    $this->setDataForModel('create', $data, $model, $currentSlice);
+
+  }
+
+  public function updateDataForModel($data, $model, $currentSlice = null)
+  {
+    $this->setDataForModel('update', $data, $model, $currentSlice);
+  }
+
+  public function setDataForModel($method, $data, $model, $currentSlice = null)
+  {
+    $currentSlice = $currentSlice ?? $model;
+
+    if (!$this->checkCanSet($model)) return;
+
+    $nestedSlice = $currentSlice->{$this->name()};
+
+    $nestedSlice = is_string($nestedSlice) ? json_decode($nestedSlice) : ($nestedSlice ?? (new stdClass()) );
+
+    $this->getFields()->each(function ($field) use ($method, $data, $model, $nestedSlice) {
+      $field->{"{$method}DataForModel"}(data_get($data, $field->name()), $model, $nestedSlice);
+    });
+
+    $data = $nestedSlice;
+
+    $this->setDataToSlice($data, $currentSlice);
+  }
+
+  public function setDataToSlice($data, $currentSlice)
+  {
+    $currentSlice->{$this->name()} = json_encode($data);
+  }
 
   public function getCreateRules()
   {
@@ -100,20 +122,6 @@ class Json extends Field
     return $rules;
   }
 
-
-  public function handleUpdate($model, $value)
-  {
-    if (!$this->checkCanSet($model)) return;
-
-    $nestedModel = new stdClass();
-
-    $this->getFields()->each(function ($field) use ($value, $nestedModel) {
-      $field->handleCreate($nestedModel, data_get($value, $field->name()));
-    });
-
-    $model->{$this->name()} = json_encode($nestedModel);
-  }
-
   public function getUpdateRules()
   {
     $rules = [$this->name() => $this->updateRules];
@@ -127,19 +135,5 @@ class Json extends Field
     }
 
     return $rules;
-  }
-
-
-  protected function getDataForModel($model)
-  {
-    $data = parent::getDataForModel($model);
-    
-    $data = is_string($data) ? json_decode($data) : (object) $data;
-
-    $this->getFields()->each(function($field) use(&$data) {
-      $data->{$field->name()} = $field->getDataForModel($data);
-    });
-
-    return $data;
   }
 }

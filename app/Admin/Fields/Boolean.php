@@ -4,21 +4,8 @@ namespace App\Admin\Fields;
 
 class Boolean extends Field
 {
-  public function handleCreate($model, $value)
+  protected function setDataToSlice($data, $currentSlice)
   {
-    if (!$this->checkCanSet($model)) return;
-
-    $name = $this->name();
-
-    $model->$name = !!$value;
-  }
-
-  public function handleUpdate($model, $value)
-  {
-    if (!$this->checkCanSet($model)) return;
-
-    $name = $this->name();
-
-    $model->$name = !!$value;
+    $currentSlice->{$this->name()} = !!$data;
   }
 }

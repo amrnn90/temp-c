@@ -9,13 +9,18 @@
           @success="handleCreateSuccess"
           #default="{form}"
         >
-          <div :style="{opacity: form.isLoading ? .5 : 1, pointerEvents: form.isLoading ? 'none' : 'auto'}">
-            <div v-for="field in resource.fields" :key="field.name">
-              <m-form-field :field="field" #default="{on, props}">
-                <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
-              </m-form-field>
-            </div>
-    
+          <div
+            :style="{opacity: form.isLoading ? .5 : 1, pointerEvents: form.isLoading ? 'none' : 'auto'}"
+          >
+            <m-form-field
+              :field="field"
+              #default="{on, props}"
+              v-for="field in resource.fields"
+              :key="field.name"
+            >
+              <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
+            </m-form-field>
+
             <div class="actions-wrapper">
               <button type="submit" class="create-btn" :style="{}">Create</button>
             </div>
@@ -26,7 +31,7 @@
     </page-card>
     <!-- <page-card>
       <pre>{{resource}}</pre>
-    </page-card> -->
+    </page-card>-->
   </div>
 </template>
 
@@ -40,7 +45,7 @@ export default {
   methods: {
     handleErrorFocus(errorComponents) {
       const inputName = errorComponents[0].name;
-      const el = this.$el.querySelector(`[name=${inputName}]`);
+      const el = this.$el.querySelector(`[name="${inputName}"]`);
       if (el) {
         el.focus();
       }
@@ -87,5 +92,4 @@ export default {
   font-size: var(--fz-xs);
   font-weight: var(--fw-bold);
 }
-
 </style>

@@ -55,7 +55,7 @@ export default {
           this.$emit("success", data);
         })
         .catch(({ response }) => {
-          this.sharedForm.errors = response.data.errors;
+          this.sharedForm.errors = response.data.errors || {};
           this.$emit("fail", response);
         })
         .finally(() => {

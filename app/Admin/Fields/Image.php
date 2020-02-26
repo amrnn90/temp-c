@@ -14,8 +14,9 @@ class Image extends Field
     ];
   }
 
-  public function init()
+  public function init($resource, $parentField = null)
   {
+    parent::init($resource, $parentField);
     $this->addOption('upload_url', route('admin.api.upload', [$this->resource->name(), $this->nestedName()]));
   }
 
@@ -66,15 +67,15 @@ class Image extends Field
     $model->{$name} =  $files;
   }
 
-  protected function getDataForModel($model)
+  public function getDataFromSlice($currentSlice)
   {
-    $files = parent::getDataForModel($model);
+    $files = parent::getDataFromSlice($currentSlice);
 
     if (!$files) {
       return [];
     }
 
-    $files = is_string($files) ? json_decode($files, true): (array) $files;
+    $files = is_string($files) ? json_decode($files, true): json_decode(json_encode($files), true);
 
 
     if (!isset($files[0])) {

@@ -37,20 +37,18 @@ abstract class Field
     return new static($name);
   }
 
-  public function init()
+  public function init($resource, $parentField = null)
   {
+    $this->resource = $resource;
+    $this->parentField = $parentField;
+
+    $this->resource->addToFieldsMap($this->nestedName(), $this);
     return $this;
   }
 
   public function setResource($resource)
   {
     $this->resource = $resource;
-    return $this; 
-  }
-
-  public function setParentField($parentField)
-  {
-    $this->parentField = $parentField;
     return $this;
   }
 
@@ -61,7 +59,7 @@ abstract class Field
 
   public function nestedName()
   {
-    return $this->parentField ? "{$this->parentField->nestedName()}.{$this->name()}" : $this->name();
+    return $this->parentField ? $this->parentField->getChildNestedName($this) : $this->name();
   }
 
   public function label($label)
@@ -119,19 +117,50 @@ abstract class Field
     return [$this->name() => $this->updateRules];
   }
 
-  public function handleCreate($model, $value)
+  public function getDataForModel($model, $currentSlice = null)
   {
-    if (!$this->checkCanSet($model)) return;
-
-    $model->{$this->name()} = $value;
+    $currentSlice = $currentSlice ?? $model;
+    return  $this->checkCanView($model) ? $this->getDataFromSlice($currentSlice) : null;
   }
 
-  public function handleUpdate($model, $value)
+  protected function getDataFromSlice($currentSlice)
   {
+    return $currentSlice->{$this->name} ?? null;
+  }
+
+  public function createDataForModel($data, $model, $currentSlice = null)
+  {
+    $this->updateDataForModel($data, $model, $currentSlice);
+  }
+
+  public function updateDataForModel($data, $model, $currentSlice = null)
+  {
+    $currentSlice = $currentSlice ?? $model;
+
     if (!$this->checkCanSet($model)) return;
 
-    $model->{$this->name()} = $value;
+    $this->setDataToSlice($data, $currentSlice);
   }
+
+  protected function setDataToSlice($data, $currentSlice)
+  {
+    $currentSlice->{$this->name()} = $data;
+  }
+
+
+  // public function handleCreate($model, $value)
+  // {
+  //   if (!$this->checkCanSet($model)) return;
+
+  //   $model->{$this->name()} = $value;
+  // }
+
+  // public function handleUpdate($model, $value)
+  // {
+  //   if (!$this->checkCanSet($model)) return;
+
+  //   $model->{$this->name()} = $value;
+  // }
 
   public function structure()
   {
@@ -146,17 +175,9 @@ abstract class Field
 
   public function structureForModel($model)
   {
-    $abilities = $this->abilitiesForModel($model);
-
-    return $this->structure() + [
+    return array_merge($this->structure(), [
       'abilities' => $this->abilitiesForModel($model),
-      'data' => $abilities['view'] ? $this->getDataForModel($model) : null,
-    ];
-  }
-
-  protected function getDataForModel($model)
-  {
-    return $model->{$this->name} ?? null;
+    ]);
   }
 
   protected function abilitiesForModel($model)
@@ -182,7 +203,7 @@ abstract class Field
     return $this->options;
   }
 
-  protected function defaultOptions() 
+  protected function defaultOptions()
   {
     return [];
   }

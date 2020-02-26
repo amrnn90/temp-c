@@ -1,19 +1,13 @@
 <template>
-  <div style="padding: var(--sp-6); border: 3px solid var(--grey-10)">
-    <!-- <toggle-input
-      :name="name"
-      :id="id"
-      :class="{'has-error': hasError}"
-      :value="value"
-      @input="(value) => $emit('input', value)"
-    /> -->
-
-    <div v-for="field in nestedFields" :key="field.name">
-      <m-form-field :field="field" #default="{on, props}">
-        <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
-      </m-form-field>
-    </div>
-
+  <div style="padding: var(--sp-6); border: 3px solid var(--grey-10); border-radius: var(--br)">
+    <m-form-field
+      :field="field"
+      #default="{on, props}"
+      v-for="field in nestedFields"
+      :key="field.name"
+    >
+      <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
+    </m-form-field>
 
     <!-- <pre>{{field}}</pre> -->
   </div>
@@ -28,8 +22,8 @@ export default {
         return {
           ...field,
           name: `${this.name}.${field.name}`
-        }
-      })
+        };
+      });
     }
   }
 };

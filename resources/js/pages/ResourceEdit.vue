@@ -11,11 +11,9 @@
           @success="handleCreateSuccess"
           #default="{form}"
         >
-          <div v-for="field in resource.fields" :key="field.name">
-            <m-form-field :field="field" #default="{on, props}">
+            <m-form-field :field="field" #default="{on, props}" v-for="field in resource.fields" :key="field.name">
               <component v-bind="props" v-on="on" :is="`${field.type}Input`" />
             </m-form-field>
-          </div>
 
           <div class="actions-wrapper">
             <button type="submit" class="create-btn">Update</button>
@@ -51,7 +49,7 @@ export default {
   methods: {
     handleErrorFocus(errorComponents) {
       const inputName = errorComponents[0].name;
-      const el = this.$el.querySelector(`[name=${inputName}]`);
+      const el = this.$el.querySelector(`[name="${inputName}"]`);
       if (el) {
         el.focus();
       }
