@@ -10,6 +10,13 @@ class JsonArray extends Field
   protected $templateFieldCallback;
 
 
+  public function init($resource, $parentField = null)
+  {
+    parent::init($resource, $parentField);
+
+    $this->getTemplateField()->init($resource, $this);
+  }
+
   public function structure()
   {
     return parent::structure() + [
@@ -17,14 +24,13 @@ class JsonArray extends Field
     ];
   }
 
-  // public function structureForModel($model)
-  // {
-  //   return parent::structureForModel($model) + [
-  //     'fields' => $this->getFields()->map(function ($field) use ($model) {
-  //       return $field->structureForModel($model);
-  //     }),
-  //   ];
-  // }
+  public function structureForModel($model)
+  {
+    return array_merge(parent::structureForModel($model), [
+      'template_field' => $this->getTemplateField()->structureForModel($model),
+    ]);
+  }
+
 
   public function templateField($callback)
   {
@@ -36,14 +42,7 @@ class JsonArray extends Field
   {
     if (!!$this->templateField) return $this->templateField;
 
-    $templateField = ($this->templateFieldCallback)();
-
-    // $templateField->setResource($this->resource);
-    // $templateField->setParentField($this);
-    // $templateField->setNestedName("{$this->name()}.*");
-    $templateField->init($this->resource, $this);
-
-    $this->templateField = $templateField;
+    $this->templateField =  ($this->templateFieldCallback)();
 
     return $this->templateField;
   }
@@ -54,111 +53,21 @@ class JsonArray extends Field
   }
 
 
+  // do stuff
 
-
-  // public function fields($callback)
+  // public function getDataForModel($model, $currentSlice = null)
   // {
-  //   $this->fieldsCallback = $callback;
-  //   return $this;
-  // }
+  //   $data = parent::getDataForModel($model, $currentSlice = null);
 
-  // public function getFields()
-  // {
-  //   if (!!$this->fields) return $this->fields;
+  //   if (!$data) return $data;
 
-  //   $this->fields = collect(($this->fieldsCallback)())->map(function ($field) {
-  //     $field->setResource($this->resource);
-  //     $field->setParentField($this);
-  //     $field->init();
-  //     return $field;
-  //   });
+  //   $data = is_string($data) ? json_decode($data, true) : (array) $data;
 
-  //   return $this->fields;
-  // }
-
-  // public function walkFields($callback)
-  // {
-  //   $field = $this->getTemplateField();
-  //   $callback($field);
-  //   if (method_exists($field, 'walkFields')) {
-  //     $field->walkFields($callback);
+  //   for ($i=0; $i < count($data); $i++) {
+  //     $data[$i] =$this->getTemplateField()->getDataForModel($model, $data[$i]);
   //   }
-  // }
-
-
-
-  // /* MUST REFACTOR */
-
-
-  // public function handleCreate($model, $value)
-  // {
-  //   if (!$this->checkCanSet($model)) return;
-
-  //   $nestedModel = new stdClass();
-
-  //   $this->getFields()->each(function ($field) use ($value, $nestedModel) {
-  //     $field->handleCreate($nestedModel, data_get($value, $field->name()));
-  //   });
-
-  //   $model->{$this->name()} = json_encode($nestedModel);
-  // }
-
-
-  // public function getCreateRules()
-  // {
-  //   $rules = [$this->name() => $this->createRules];
-  //   $nestedRules = [];
-  //   $this->getFields()->each(function ($field) use (&$nestedRules) {
-  //     $nestedRules = $nestedRules + $field->getCreateRules();
-  //   });
-
-  //   foreach (array_keys($nestedRules) as $key) {
-  //     $rules["{$this->name()}.{$key}"] = $nestedRules[$key];
-  //   }
-
-  //   return $rules;
-  // }
-
-
-  // public function handleUpdate($model, $value)
-  // {
-  //   if (!$this->checkCanSet($model)) return;
-
-  //   $nestedModel = new stdClass();
-
-  //   $this->getFields()->each(function ($field) use ($value, $nestedModel) {
-  //     $field->handleCreate($nestedModel, data_get($value, $field->name()));
-  //   });
-
-  //   $model->{$this->name()} = json_encode($nestedModel);
-  // }
-
-  // public function getUpdateRules()
-  // {
-  //   $rules = [$this->name() => $this->updateRules];
-  //   $nestedRules = [];
-  //   $this->getFields()->each(function ($field) use (&$nestedRules) {
-  //     $nestedRules = $nestedRules + $field->getUpdateRules();
-  //   });
-
-  //   foreach (array_keys($nestedRules) as $key) {
-  //     $rules["{$this->name()}.{$key}"] = $nestedRules[$key];
-  //   }
-
-  //   return $rules;
-  // }
-
-
-  // protected function getDataForModel($model)
-  // {
-  //   $data = parent::getDataForModel($model);
-
-  //   $data = is_string($data) ? json_decode($data) : (object) $data;
-
-  //   $this->getFields()->each(function($field) use(&$data) {
-  //     $data->{$field->name()} = $field->getDataForModel($data);
-  //   });
 
   //   return $data;
   // }
+
 }

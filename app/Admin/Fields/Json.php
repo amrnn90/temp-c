@@ -29,9 +29,7 @@ class Json extends Field
   public function structureForModel($model)
   {
     return array_merge(parent::structureForModel($model), [
-      'fields' => $this->getFields()->map(function ($field) use ($model) {
-        return $field->structureForModel($model);
-      })
+      'fields' => $this->getFields()->map->structureForModel($model),
     ]);
   }
 
@@ -46,6 +44,7 @@ class Json extends Field
     if (!!$this->fields) return $this->fields;
 
     $this->fields = collect(($this->fieldsCallback)());
+    
     return $this->fields;
   }
 

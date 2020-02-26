@@ -147,21 +147,6 @@ abstract class Field
     $currentSlice->{$this->name()} = $data;
   }
 
-
-  // public function handleCreate($model, $value)
-  // {
-  //   if (!$this->checkCanSet($model)) return;
-
-  //   $model->{$this->name()} = $value;
-  // }
-
-  // public function handleUpdate($model, $value)
-  // {
-  //   if (!$this->checkCanSet($model)) return;
-
-  //   $model->{$this->name()} = $value;
-  // }
-
   public function structure()
   {
     return [
