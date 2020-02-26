@@ -117,34 +117,21 @@ abstract class Field
     return [$this->name() => $this->updateRules];
   }
 
-  public function getDataForModel($model, $currentSlice = null)
+  public function getViewValue($model, $path)
   {
-    $currentSlice = $currentSlice ?? $model;
-    return  $this->checkCanView($model) ? $this->getDataFromSlice($currentSlice) : null;
+    return $this->checkCanView($model) ? data_get($model, $path) : null;
   }
 
-  protected function getDataFromSlice($currentSlice)
+  public function getCreateValue($model, $path, $value) 
   {
-    return $currentSlice->{$this->name} ?? null;
+    return $this->getUpdateValue($model, $path, $value);
   }
 
-  public function createDataForModel($data, $model, $currentSlice = null)
+  public function getUpdateValue($model, $path, $value) 
   {
-    $this->updateDataForModel($data, $model, $currentSlice);
-  }
+    if (!$this->checkCanSet($model)) return data_get($model, $path);
 
-  public function updateDataForModel($data, $model, $currentSlice = null)
-  {
-    $currentSlice = $currentSlice ?? $model;
-
-    if (!$this->checkCanSet($model)) return;
-
-    $this->setDataToSlice($data, $currentSlice);
-  }
-
-  protected function setDataToSlice($data, $currentSlice)
-  {
-    $currentSlice->{$this->name()} = $data;
+    return $value;
   }
 
   public function structure()

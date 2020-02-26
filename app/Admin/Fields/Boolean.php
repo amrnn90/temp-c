@@ -4,8 +4,13 @@ namespace App\Admin\Fields;
 
 class Boolean extends Field
 {
-  protected function setDataToSlice($data, $currentSlice)
+  public function getCreateValue($model, $path, $value)
   {
-    $currentSlice->{$this->name()} = !!$data;
+    return $this->getUpdateValue($model, $path, $value);
+  }
+
+  public function getUpdateValue($model, $path, $value)
+  {
+    return !!parent::getUpdateValue($model, $path, $value);
   }
 }

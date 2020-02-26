@@ -82,7 +82,7 @@ class PostResource
             'id' => $this->getModelId($model),
             'fields' => $this->getFields()->map(function ($field) use ($model) {
                 return array_merge($field->structureForModel($model), [
-                    'data' => $field->getDataForModel($model),
+                    'data' => $field->getViewValue($model, $field->nestedName()),
                 ]);
             })
         ];
@@ -129,8 +129,8 @@ class PostResource
         $model = $this->model();
 
         $this->getFields()->each(function ($field) use ($request, $model) {
-            // $field->handleCreate($model, $request->get($field->name()));
-            $field->createDataForModel($request->get($field->name()), $model);
+            // $field->createDataForModel($request->get($field->name()), $model);
+            $model->{$field->name()} = $field->getCreateValue($model, $field->nestedName(), $request->get($field->name()));
         });
 
         $model->save();
@@ -141,8 +141,8 @@ class PostResource
     public function update($model, $request)
     {
         $this->getFields()->each(function ($field) use ($request, $model) {
-            // $field->handleUpdate($model, $request->get($field->name()));
-            $field->updateDataForModel($request->get($field->name()), $model);
+            // $field->updateDataForModel($request->get($field->name()), $model);
+            $model->{$field->name()} = $field->getUpdateValue($model, $field->nestedName(), $request->get($field->name()));
         });
 
         $model->save();
@@ -188,7 +188,7 @@ class PostResource
 
                         Date::make('scheduled_at')
                             ->canSet(function () {
-                                return false;
+                                return true;
                             }),
 
                         Image::make('thumbs')

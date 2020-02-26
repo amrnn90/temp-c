@@ -26,56 +26,15 @@ class Image extends Field
     return $this;
   }
 
-  public function handleCreate($model, $value)
+  public function getViewValue($model, $path)
   {
-    if (!$this->checkCanSet($model)) return;
-
-    $name = $this->name();
-
-    $files = collect($value) ?? [];
-
-    $files = $files->map(function ($file) {
-      return Arr::only($file, ['path', 'disk', 'meta']);
-    });
-
-    if (!$this->options['multiple']) {
-      $model->{$name} = $files[0] ?? [];
-      return;
-    }
-
-    $model->{$name} =  $files;
-  }
-
-  public function handleUpdate($model, $value)
-  {
-    if (!$this->checkCanSet($model)) return;
-
-    $name = $this->name();
-
-    $files = collect($value) ?? [];
-
-
-    $files = $files->map(function ($file) {
-      return Arr::only($file, ['path', 'disk', 'meta']);
-    });
-
-    if (!$this->options['multiple']) {
-      $model->{$name} = $files[0] ?? [];
-      return;
-    }
-
-    $model->{$name} =  $files;
-  }
-
-  public function getDataFromSlice($currentSlice)
-  {
-    $files = parent::getDataFromSlice($currentSlice);
+    $files = parent::getViewValue($model, $path);
 
     if (!$files) {
       return [];
     }
 
-    $files = is_string($files) ? json_decode($files, true): json_decode(json_encode($files), true);
+    $files = is_string($files) ? json_decode($files, true) : json_decode(json_encode($files), true);
 
 
     if (!isset($files[0])) {
@@ -85,5 +44,25 @@ class Image extends Field
     return collect($files ?? [])->map(function ($fileData) {
       return $fileData + ['preview' => Storage::disk($fileData['disk'])->url($fileData['path'])];
     });
+  }
+
+  public function getCreateValue($model, $path, $value)
+  {
+    return $this->getUpdateValue($model, $path, $value);
+  }
+
+  public function getUpdateValue($model, $path, $value)
+  {
+    if (!$this->checkCanSet($model)) return data_get($model, $path);
+
+    $name = $this->name();
+
+    $files = collect($value) ?? [];
+
+    $files = $files->map(function ($file) {
+      return Arr::only($file, ['path', 'disk', 'meta']);
+    });
+
+    return $this->options['multiple'] ? $files : ($files[0] ?? []);
   }
 }

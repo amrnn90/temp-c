@@ -44,7 +44,7 @@ class Json extends Field
     if (!!$this->fields) return $this->fields;
 
     $this->fields = collect(($this->fieldsCallback)());
-    
+
     return $this->fields;
   }
 
@@ -55,55 +55,43 @@ class Json extends Field
 
   /* MUST REFACTOR */
 
-
-  public function getDataForModel($model, $currentSlice = null)
+  public function getViewValue($model, $path)
   {
-    $data = parent::getDataForModel($model, $currentSlice = null);
+    $data = parent::getViewValue($model, $path);
 
     if (!$data) return $data;
 
     $data = is_string($data) ? json_decode($data) : (object) $data;
 
-    $this->getFields()->each(function ($field) use ($model, &$data) {
-      $data->{$field->name()} = $field->getDataForModel($model, $data);
-    });
+    $this->getFields()->each(function ($field) use ($model, $path, &$data) {
+      $data->{$field->name()} = $field->getViewValue($model, $field->nestedName());
+    }); 
 
     return $data;
   }
 
-  public function createDataForModel($data, $model, $currentSlice = null)
+  public function getCreateValue($model, $path, $value)
   {
-    $this->setDataForModel('create', $data, $model, $currentSlice);
-
+    return $this->getMutationValue($model, $path, $value, 'create');
   }
 
-  public function updateDataForModel($data, $model, $currentSlice = null)
+
+  public function getUpdateValue($model, $path, $value)
   {
-    $this->setDataForModel('update', $data, $model, $currentSlice);
+    return $this->getMutationValue($model, $path, $value, 'update');
   }
 
-  public function setDataForModel($method, $data, $model, $currentSlice = null)
+  public function getMutationValue($model, $path, $value, $method)
   {
-    $currentSlice = $currentSlice ?? $model;
+    if (!$this->checkCanSet($model)) return data_get($model, $path);
 
-    if (!$this->checkCanSet($model)) return;
+    $result = [];
 
-    $nestedSlice = $currentSlice->{$this->name()};
-
-    $nestedSlice = is_string($nestedSlice) ? json_decode($nestedSlice) : ($nestedSlice ?? (new stdClass()) );
-
-    $this->getFields()->each(function ($field) use ($method, $data, $model, $nestedSlice) {
-      $field->{"{$method}DataForModel"}(data_get($data, $field->name()), $model, $nestedSlice);
+    $this->getFields()->each(function ($field) use ($model, $value,  $method, &$result) {
+      $result[$field->name()] = $field->{"get{$method}Value"}($model, $field->nestedName(), data_get($value, $field->name()));
     });
 
-    $data = $nestedSlice;
-
-    $this->setDataToSlice($data, $currentSlice);
-  }
-
-  public function setDataToSlice($data, $currentSlice)
-  {
-    $currentSlice->{$this->name()} = json_encode($data);
+    return $result;
   }
 
   public function getCreateRules()
