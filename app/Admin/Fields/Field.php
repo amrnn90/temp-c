@@ -102,7 +102,7 @@ abstract class Field
 
   public function getCreateRules()
   {
-    return [$this->name() => $this->createRules];
+    return [$this->nestedName() => $this->createRules];
   }
 
 
@@ -114,7 +114,7 @@ abstract class Field
 
   public function getUpdateRules()
   {
-    return [$this->name() => $this->updateRules];
+    return [$this->nestedName() => $this->updateRules];
   }
 
   public function getViewValue($model, $path)

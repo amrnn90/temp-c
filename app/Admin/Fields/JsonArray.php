@@ -52,22 +52,65 @@ class JsonArray extends Field
     return "{$this->nestedName()}.*";
   }
 
+  public function getViewValue($model, $path)
+  {
+    $data = parent::getViewValue($model, $path);
 
-  // do stuff
+    if (!$data) return $data;
 
-  // public function getDataForModel($model, $currentSlice = null)
-  // {
-  //   $data = parent::getDataForModel($model, $currentSlice = null);
+    $data = is_string($data) ? json_decode($data, true) : (array) $data;
 
-  //   if (!$data) return $data;
+    for ($i = 0; $i < count($data); $i++) {
+      $itemPath = $path . '.' . $i;
+      $data[$i] = $this->getTemplateField()->getViewValue($model, $itemPath);
+    }
 
-  //   $data = is_string($data) ? json_decode($data, true) : (array) $data;
+    return $data;
+  }
 
-  //   for ($i=0; $i < count($data); $i++) {
-  //     $data[$i] =$this->getTemplateField()->getDataForModel($model, $data[$i]);
-  //   }
 
-  //   return $data;
-  // }
+
+  public function getCreateValue($model, $path, $value)
+  {
+    return $this->getMutationValue($model, $path, $value, 'create');
+  }
+
+
+  public function getUpdateValue($model, $path, $value)
+  {
+    return $this->getMutationValue($model, $path, $value, 'update');
+  }
+
+  public function getMutationValue($model, $path, $value, $method)
+  {
+    if (!$this->checkCanSet($model)) return data_get($model, $path);
+
+    $result = [];
+
+    for ($i = 0; $i < count($value); $i++) {
+      $itemPath = $path . '.' . $i;
+      $result[$i] = $this->getTemplateField()->{"get{$method}Value"}($model, $itemPath, data_get($value, $i));
+    }
+
+    return $result;
+  }
+
+  public function getCreateRules()
+  {
+    $rules = parent::getCreateRules();
+
+    $rules = array_merge($rules, $this->getTemplateField()->getCreateRules());
+
+    return $rules;
+  }
+
+  public function getUpdateRules()
+  {
+    $rules = parent::getUpdateRules();
+
+    $rules = array_merge($rules, $this->getTemplateField()->getUpdateRules());
+
+    return $rules;
+  }
 
 }

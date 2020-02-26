@@ -2,8 +2,6 @@
 
 namespace App\Admin\Fields;
 
-use stdClass;
-
 class Json extends Field
 {
 
@@ -53,8 +51,6 @@ class Json extends Field
     return "{$this->nestedName()}.{$child->name()}";
   }
 
-  /* MUST REFACTOR */
-
   public function getViewValue($model, $path)
   {
     $data = parent::getViewValue($model, $path);
@@ -96,30 +92,22 @@ class Json extends Field
 
   public function getCreateRules()
   {
-    $rules = [$this->name() => $this->createRules];
-    $nestedRules = [];
-    $this->getFields()->each(function ($field) use (&$nestedRules) {
-      $nestedRules = $nestedRules + $field->getCreateRules();
-    });
+    $rules = parent::getCreateRules();
 
-    foreach (array_keys($nestedRules) as $key) {
-      $rules["{$this->name()}.{$key}"] = $nestedRules[$key];
-    }
+    $this->getFields()->each(function ($field) use (&$rules) {
+      $rules = array_merge($rules, $field->getCreateRules());
+    });
 
     return $rules;
   }
 
   public function getUpdateRules()
   {
-    $rules = [$this->name() => $this->updateRules];
-    $nestedRules = [];
-    $this->getFields()->each(function ($field) use (&$nestedRules) {
-      $nestedRules = $nestedRules + $field->getUpdateRules();
-    });
+    $rules = parent::getUpdateRules();
 
-    foreach (array_keys($nestedRules) as $key) {
-      $rules["{$this->name()}.{$key}"] = $nestedRules[$key];
-    }
+    $this->getFields()->each(function ($field) use (&$rules) {
+      $rules = array_merge($rules, $field->getUpdateRules());
+    });
 
     return $rules;
   }

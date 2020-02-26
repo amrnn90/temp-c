@@ -181,10 +181,10 @@ class PostResource
             Json::make('sections')
                 ->fields(function () {
                     return [
-                        // JsonArray::make('listo')
-                        //     ->templateField(function () {
-                        //         return ShortText::make('hola');
-                        //     }),
+                        JsonArray::make('lisss')
+                            ->templateField(function () {
+                                return ShortText::make('');
+                            }),
 
                         Date::make('scheduled_at')
                             ->canSet(function () {
@@ -197,7 +197,8 @@ class PostResource
                 }),
             JsonArray::make('listo')
                 ->templateField(function () {
-                    return ShortText::make('hola');
+                    return ShortText::make('hola')
+                        ->rules('required');
                 }),
         ];
     }
