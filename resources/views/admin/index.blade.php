@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script>
-        window.structure = {!! json_encode($structure) !!}
+        window.structure = @json($structure)
     </script>
     <script src="{{ mix('js/admin.js') }}" defer></script>
 

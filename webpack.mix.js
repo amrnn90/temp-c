@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /*
  |--------------------------------------------------------------------------
@@ -24,5 +25,8 @@ mix.js('resources/js/app.js', 'public/js')
         )
       }
     },
+    plugins: [
+      // new BundleAnalyzerPlugin()
+    ],
     devtool: 'source-map'
   });

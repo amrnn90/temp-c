@@ -10,6 +10,7 @@ class Admin
     {
         return [
             'resources' => collect($this->resources())->map->structure()->all(),
+            'locales' => $this->locales(),
             'base_path' => '/admin',
             'base_api_path' => '/admin/api',
             'api_urls' => $this->apiUrls()
@@ -21,6 +22,11 @@ class Admin
         return [
             PostResource::make(),
         ];
+    }
+
+    public function locales()
+    {
+        return ['en', 'ar', 'sp'];
     }
 
     public function getResource($name)

@@ -85,6 +85,8 @@ class JsonArray extends Field
   {
     if (!$this->checkCanSet($model)) return data_get($model, $path);
 
+    $value = $value ?? [];
+    
     $result = [];
 
     for ($i = 0; $i < count($value); $i++) {

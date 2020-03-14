@@ -7,6 +7,9 @@
   >
     <div class="field-header">
       <label :for="name" class="label">{{label}}</label>
+      <select name="" id="" v-if="field.translatable" v-model="sharedForm.locale">
+        <option v-for="locale in sharedForm.locales" :key="locale" :value="locale">{{locale}}</option>
+      </select>
       <div class="actions">
         <button
           type="button"
@@ -50,7 +53,7 @@ export default {
       return {
         id: this.name,
         name: this.name,
-        value: this.value,
+        value: this.passedValue,
         field: this.field,
         hasError: this.hasError
       };
@@ -61,11 +64,17 @@ export default {
     label() {
       return _.get(this.field, "label");
     },
+    isTranslatable() {
+      return this.field.translatable;
+    },
     value() {
       return _.get(this.sharedForm.fields, this.name);
     },
     initialValue() {
       return _.get(this.sharedForm.initialFields, this.name);
+    },
+    passedValue() {
+      return this.isTranslatable ? _.get(this.value, this.sharedForm.locale) : this.value;
     },
     valueHasLength() {
       return _.get(this.value, "length") > 0;
@@ -123,6 +132,8 @@ export default {
 
       newValue = newValue === "" || newValue === undefined ? null : newValue;
 
+      newValue = this.isTranslatable ? {...(this.value||{}), [this.sharedForm.locale]: newValue} : newValue;
+
       const { sharedForm } = this;
 
       const newFields = { ...sharedForm.fields };
@@ -136,6 +147,9 @@ export default {
     },
     reset() {
       this.handleInput(_.cloneDeep(this.initialValue));
+    },
+    handleFocus() {
+      console.log('here focusing');
     }
   },
   mounted() {

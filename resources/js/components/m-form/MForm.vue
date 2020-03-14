@@ -9,11 +9,13 @@ import axios from "axios";
 export default {
   props: {
     action: {},
-    item: { type: Object, default: null }
+    item: { type: Object, default: null },
   },
   data() {
     return {
       sharedForm: {
+        locale: 'en',
+        locales: this.$store.state.structure.locales,
         fields: _.cloneDeep(this.item),
         initialFields: _.cloneDeep(this.item),
         errors: {},
@@ -29,7 +31,7 @@ export default {
     },
     method() {
       return this.item ? "patch" : "post";
-    }
+    },
   },
   watch: {
     "sharedForm.errorComponents": {

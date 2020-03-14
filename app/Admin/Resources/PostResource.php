@@ -108,7 +108,7 @@ class PostResource
     {
         $rules = [];
         $this->getFields()->each(function ($field) use (&$rules) {
-            $rules = $rules + $field->getCreateRules();
+            $rules = array_merge($rules, $field->getCreateRules());
         });
 
         return $request->validate($rules);
@@ -118,7 +118,7 @@ class PostResource
     {
         $rules = [];
         $this->getFields()->each(function ($field) use (&$rules) {
-            $rules = $rules + $field->getUpdateRules();
+            $rules = array_merge($rules, $field->getUpdateRules());
         });
 
         return $request->validate($rules);
@@ -156,8 +156,9 @@ class PostResource
             ShortText::make('title')
                 ->rules('required')
                 ->canView(function ($user, $post) {
-                    return $user->name == 'amr';
+                    return true;
                 }),
+            ShortText::make('trans'),
 
             LongText::make('body')
                 ->rules('required|min:10')
@@ -243,7 +244,7 @@ class PostResource
         ];
     }
 
-    protected function model()
+    public function model()
     {
         return (new $this->model);
     }
