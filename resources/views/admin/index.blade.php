@@ -13,14 +13,14 @@
     <script>
         window.structure = @json($structure)
     </script>
-    <script src="{{ mix('js/admin.js') }}" defer></script>
+    <script src="{{ asset('js/admin.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,600,700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 
 </head>
 <body>
