@@ -20,8 +20,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .spinner {
   position: absolute;
   left: 0;

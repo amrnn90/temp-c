@@ -35,7 +35,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "resources/sass/init";
 .modal {
   flex: 1;
   background: white;

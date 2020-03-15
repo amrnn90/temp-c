@@ -65,8 +65,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .sidebar {
   position: fixed;
   left: 0;

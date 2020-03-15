@@ -35,8 +35,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-/* @import "resources/sass/init"; */
-
 .main {
   padding-top: calc(var(--header-height) + var(--main-top-padding));
   padding-left: calc(var(--sidebar-width) + var(--main-horizontal-padding));

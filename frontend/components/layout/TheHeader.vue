@@ -37,8 +37,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .header {
   overflow: hidden;
   position: fixed;

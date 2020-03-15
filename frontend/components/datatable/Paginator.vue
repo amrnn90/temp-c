@@ -87,8 +87,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .paginator {
   padding-top: var(--sp-3);
   padding-bottom: var(--sp-3);

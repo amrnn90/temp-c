@@ -42,8 +42,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .flash-messages {
   position: fixed;
   z-index: 10000;

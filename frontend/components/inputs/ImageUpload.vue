@@ -221,8 +221,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .image-upload {
   // width: 100%;
   // display: inline-flex;

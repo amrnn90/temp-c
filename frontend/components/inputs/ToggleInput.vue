@@ -42,8 +42,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .toggle-input {
   width: var(--sp-13);
   height: var(--sp-8);

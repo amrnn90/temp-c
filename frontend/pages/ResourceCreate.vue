@@ -70,8 +70,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .resource-label {
   font-size: var(--fz-2xl);
   color: var(--grey-2);

@@ -101,8 +101,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .search-input-wrapper {
   position: relative;
   .search-input-icon {

@@ -1,13 +1,25 @@
 <template>
   <div
     class="checkbox-input"
-    :class="{checked: isChecked}"
+    :class="{ checked: isChecked }"
     @click="$emit('input', !isChecked)"
     @keydown.enter.space.prevent="$emit('input', !isChecked)"
     tabindex="0"
   >
-    <icon name="check" stroke="var(--primary-10)" strokeWidth="4" class="icon" size="12" />
-    <input type="checkbox" :name="name" :id="id" :value="value" style="display: none" />
+    <icon
+      name="check"
+      stroke="var(--primary-10)"
+      strokeWidth="4"
+      class="icon"
+      size="12"
+    />
+    <input
+      type="checkbox"
+      :name="name"
+      :id="id"
+      :value="value"
+      style="display: none"
+    />
   </div>
 </template>
 
@@ -23,8 +35,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "resources/sass/init";
-
 .checkbox-input {
   width: var(--sp-5);
   height: var(--sp-5);

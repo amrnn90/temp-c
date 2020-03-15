@@ -81,8 +81,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "resources/sass/init";
-
 button:disabled {
   opacity: 0.3;
   cursor: default;
