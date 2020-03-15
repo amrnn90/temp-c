@@ -1,5 +1,5 @@
 <template>
-  <page-card class="table-head">
+  <app-card class="table-head">
     <div class="table-head-upper">
       <div class="search-input-wrapper">
         <input
@@ -13,10 +13,10 @@
           style="margin-left: var(--sp-4)"
           @click="tableStore.dispatch('refresh')"
         >
-          <icon name="rotate-cw" />
+          <app-icon name="rotate-cw" />
         </button>
 
-        <icon name="search" stroke-width="1" class="search-input-icon" />
+        <app-icon name="search" stroke-width="1" class="search-input-icon" />
       </div>
 
       <router-link :to="{ name: `${resource.name}.create` }" class="create-btn"
@@ -43,20 +43,20 @@
         >
           <strong>{{ field.label }}</strong>
           <span class="table-head-cell-sort-icons">
-            <icon
+            <app-icon
               name="chevron-up"
               size="10"
               stroke-width="2"
               stroke="var(--grey-8)"
               style=""
-            ></icon>
-            <icon
+            />
+            <app-icon
               name="chevron-down"
               size="10"
               stroke-width="2"
               stroke="var(--grey-6)"
               style=""
-            ></icon>
+            />
           </span>
         </div>
       </div>
@@ -64,11 +64,18 @@
         <bulk-actions />
       </div>
     </div>
-  </page-card>
+  </app-card>
 </template>
 
 <script>
+import CheckboxInput from "@/components/inputs/CheckboxInput";
+import BulkActions from "./BulkActions";
+
 export default {
+  components: {
+    CheckboxInput,
+    BulkActions
+  },
   props: {
     resource: {
       type: Object,
@@ -154,6 +161,7 @@ export default {
   justify-content: space-between;
   margin-bottom: var(--sp-6);
 }
+
 .table-head-lower {
   display: flex;
   align-items: center;

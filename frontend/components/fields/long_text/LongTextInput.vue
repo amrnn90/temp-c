@@ -1,12 +1,12 @@
 <template>
   <textarea
+    :id="id"
     type="text"
     :value="value"
     :name="name"
-    :id="id"
     class="field-input"
-    :class="{'has-error': hasError}"
-    @input="(value) => $emit('input', value)"
+    :class="{ 'has-error': hasError }"
+    @input="value => $emit('input', value)"
   />
 </template>
 

@@ -11,7 +11,12 @@
       </div>
       <div v-if="multiple || images.length == 0" class="image-upload-actions">
         <button type="button" @click="triggerFileInput">
-          <icon name="plus" stroke="var(--grey-6)" stroke-width="2" size="32" />
+          <app-icon
+            name="plus"
+            stroke="var(--grey-6)"
+            stroke-width="2"
+            size="32"
+          />
         </button>
       </div>
     </div>

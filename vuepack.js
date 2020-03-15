@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 const path = require("path");
 const run = require("@amrnn/vuepack");
 

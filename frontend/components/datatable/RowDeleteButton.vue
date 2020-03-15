@@ -25,7 +25,7 @@
         :disabled="isDisabled"
         @click="handleClick(isDisabled)"
       >
-        <icon name="trash-2" />
+        <app-icon name="trash-2" />
       </button>
 
       <template slot="popover">
@@ -41,7 +41,14 @@
 </template>
 
 <script>
+import DeleteItem from "@/components/DeleteItem";
+import PageBackdrop from "@/components/modals/PageBackdrop";
+
 export default {
+  components: {
+    DeleteItem,
+    PageBackdrop
+  },
   props: {
     item: {
       type: Object,

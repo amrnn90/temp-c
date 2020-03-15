@@ -1,9 +1,9 @@
 <template>
   <div>
     <h1 class="resource-label">Create a new {{ resource.label }}</h1>
-    <page-card style="margin-bottom: var(--sp-10)">
+    <app-card style="margin-bottom: var(--sp-10)">
       <div class="form-wrapper">
-        <m-form
+        <resource-form
           #default="{form}"
           :action="resource.api_urls.store"
           @error-focus="handleErrorFocus"
@@ -15,14 +15,14 @@
               pointerEvents: form.isLoading ? 'none' : 'auto'
             }"
           >
-            <m-form-field
+            <resource-form-field
               v-for="field in resource.fields"
               #default="{on, props}"
               :key="field.name"
               :field="field"
             >
               <component :is="`${field.type}Input`" v-bind="props" v-on="on" />
-            </m-form-field>
+            </resource-form-field>
 
             <div class="actions-wrapper">
               <button type="submit" class="create-btn" :style="{}">
@@ -31,9 +31,9 @@
             </div>
             <pre>{{ form }}</pre>
           </div>
-        </m-form>
+        </resource-form>
       </div>
-    </page-card>
+    </app-card>
     <!-- <page-card>
       <pre>{{resource}}</pre>
     </page-card>-->
@@ -41,7 +41,28 @@
 </template>
 
 <script>
+import ResourceForm from "@/components/resource-form/ResourceForm";
+import ResourceFormField from "@/components/resource-form/ResourceFormField";
+import BooleanInput from "@/components/fields/boolean/BooleanInput";
+import DateInput from "@/components/fields/date/DateInput";
+import ImageInput from "@/components/fields/image/ImageInput";
+import JsonInput from "@/components/fields/json/JsonInput";
+import JsonArrayInput from "@/components/fields/json_array/JsonArrayInput";
+import LongTextInput from "@/components/fields/long_text/LongTextInput";
+import ShortTextInput from "@/components/fields/short_text/ShortTextInput";
+
 export default {
+  components: {
+    ResourceForm,
+    ResourceFormField,
+    BooleanInput,
+    DateInput,
+    ImageInput,
+    JsonInput,
+    JsonArrayInput,
+    LongTextInput,
+    ShortTextInput
+  },
   props: {
     resource: {
       type: Object,

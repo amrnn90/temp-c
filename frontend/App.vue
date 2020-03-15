@@ -1,8 +1,8 @@
 <template>
   <div>
-    <TheHeader />
+    <the-header />
 
-    <TheSidebar />
+    <the-sidebar />
 
     <main class="main">
       <router-view />
@@ -12,7 +12,7 @@
 
     <flash-messages />
 
-    <IconSprite />
+    <icon-sprite />
   </div>
 </template>
 
@@ -23,7 +23,9 @@ import TheSidebar from "@/components/layout/TheSidebar";
 export default {
   components: {
     IconSprite: () =>
-      import(/* webpackChunkName: "icon-sprite" */ "@/components/IconSprite"),
+      import(
+        /* webpackChunkName: "icon-sprite" */ "@/components/icon/IconSprite"
+      ),
     TheHeader,
     TheSidebar
   },

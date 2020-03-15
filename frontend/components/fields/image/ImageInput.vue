@@ -13,7 +13,12 @@
 </template>
 
 <script>
+import ImageUpload from "@/components/inputs/ImageUpload";
+
 export default {
+  components: {
+    ImageUpload
+  },
   props: ["field", "value", "name", "id", "hasError"]
 };
 </script>

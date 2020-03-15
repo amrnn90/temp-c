@@ -2,21 +2,21 @@
   <div
     class="checkbox-input"
     :class="{ checked: isChecked }"
+    tabindex="0"
     @click="$emit('input', !isChecked)"
     @keydown.enter.space.prevent="$emit('input', !isChecked)"
-    tabindex="0"
   >
-    <icon
+    <app-icon
       name="check"
       stroke="var(--primary-10)"
-      strokeWidth="4"
+      stroke-width="4"
       class="icon"
       size="12"
     />
     <input
+      :id="id"
       type="checkbox"
       :name="name"
-      :id="id"
       :value="value"
       style="display: none"
     />

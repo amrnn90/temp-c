@@ -1,5 +1,5 @@
 <template>
-  <page-card class="table-row">
+  <app-card class="table-row">
     <div class="table-row-upper">
       <div class="table-row-pre">
         <checkbox-input :value="isSelectedRow" @input="toggleSelectRow" />
@@ -22,11 +22,11 @@
         </div>
       </div>
       <div class="table-row-post">
-        <icon name="eye" />
+        <app-icon name="eye" />
         <router-link
           :to="{ name: `${resource.name}.edit`, params: { id: row.id } }"
         >
-          <icon v-tooltip="'Edit'" name="edit-2" />
+          <app-icon v-tooltip="'Edit'" name="edit-2" />
         </router-link>
         <row-delete-button :item="row" />
       </div>
@@ -34,11 +34,34 @@
     <div class="table-row-expand">
       <expand :show="isExpanded">hello</expand>
     </div>
-  </page-card>
+  </app-card>
 </template>
 
 <script>
+import RowDeleteButton from "./RowDeleteButton";
+import Expand from "@/components/Expand";
+import CheckboxInput from "@/components/inputs/CheckboxInput";
+import BooleanIndex from "@/components/fields/boolean/BooleanIndex";
+import DateIndex from "@/components/fields/date/DateIndex";
+import ImageIndex from "@/components/fields/image/ImageIndex";
+import JsonIndex from "@/components/fields/json/JsonIndex";
+import JsonArrayIndex from "@/components/fields/json_array/JsonArrayIndex";
+import LongTextIndex from "@/components/fields/long_text/LongTextIndex";
+import ShortTextIndex from "@/components/fields/short_text/ShortTextIndex";
+
 export default {
+  components: {
+    RowDeleteButton,
+    Expand,
+    CheckboxInput,
+    BooleanIndex,
+    DateIndex,
+    ImageIndex,
+    JsonIndex,
+    JsonArrayIndex,
+    LongTextIndex,
+    ShortTextIndex
+  },
   props: {
     row: {
       type: Object,

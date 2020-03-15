@@ -13,7 +13,7 @@
         >
           <div class="table-body">
             <div v-if="items.length > 0">
-              <DataTableRow
+              <data-table-row
                 v-for="row in items"
                 :key="row.id"
                 :row="row"
@@ -35,7 +35,10 @@
 </template>
 
 <script>
-import simplebar from "simplebar-vue";
+import DataTableHead from "./DataTableHead";
+import DataTableRow from "./DataTableRow";
+import Paginator from "./Paginator";
+import Simplebar from "simplebar-vue";
 import { mapGetters } from "vuex";
 import DataTableLayoutMixin from "./DataTableLayoutMixin";
 import dataTableModule from "@/store/data-table";
@@ -43,7 +46,10 @@ import _ from "@/lodash";
 
 export default {
   components: {
-    simplebar
+    DataTableHead,
+    DataTableRow,
+    Simplebar,
+    Paginator
   },
   mixins: [DataTableLayoutMixin],
   props: {

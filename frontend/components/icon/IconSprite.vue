@@ -1,5 +1,5 @@
 <template>
-  <FeatherSprite />
+  <FeatherSprite style="display: none;" />
 </template>
 
 <script>

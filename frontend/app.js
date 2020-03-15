@@ -33,7 +33,7 @@ console.info("structure:", window.structure);
  */
 
 // eslint-disable-next-line no-undef
-const files = require.context("./", true, /\.vue$/i);
+const files = require.context("./", true, /App[A-Z]\w+\.vue$/i);
 files.keys().map(key =>
   Vue.component(
     key

@@ -1,10 +1,14 @@
 <template>
   <div style="padding: var(--sp-6); border: 1px solid var(--primary-8)">
     <div v-for="(field, index) in nestedFields" :key="index">
-      <m-form-field v-if="index < 100" #default="{on, props}" :field="field">
+      <resource-form-field
+        v-if="index < 100"
+        #default="{on, props}"
+        :field="field"
+      >
         <component :is="`${field.type}Input`" v-bind="props" v-on="on" />
         <button type="button" @click="() => remove(index)">remove</button>
-      </m-form-field>
+      </resource-form-field>
     </div>
 
     <button type="button" @click="add">add</button>
@@ -14,7 +18,26 @@
 </template>
 
 <script>
+import ResourceFormField from "@/components/resource-form/ResourceFormField";
+import BooleanInput from "@/components/fields/boolean/BooleanInput";
+import DateInput from "@/components/fields/date/DateInput";
+import ImageInput from "@/components/fields/image/ImageInput";
+import JsonInput from "@/components/fields/json/JsonInput";
+import JsonArrayInput from "@/components/fields/json_array/JsonArrayInput";
+import LongTextInput from "@/components/fields/long_text/LongTextInput";
+import ShortTextInput from "@/components/fields/short_text/ShortTextInput";
+
 export default {
+  components: {
+    ResourceFormField,
+    BooleanInput,
+    DateInput,
+    ImageInput,
+    JsonInput,
+    JsonArrayInput,
+    LongTextInput,
+    ShortTextInput
+  },
   props: ["field", "value", "name", "id", "hasError"],
   computed: {
     nestedFields() {

@@ -8,7 +8,7 @@
       >
         <router-link :to="{ name: resource.name + '.index' }">
           <span class="icon-wrapper">
-            <icon name="folder" size="24" class="menu-icon" />
+            <app-icon name="folder" size="24" class="menu-icon" />
           </span>
           <span>{{ resource.label }}</span>
         </router-link>
@@ -16,7 +16,7 @@
       <li class="sidebar-items__item">
         <a href="#">
           <span class="icon-wrapper">
-            <icon name="share" size="24" class="menu-icon" />
+            <app-icon name="share" size="24" class="menu-icon" />
           </span>
           <span>Sharing</span>
         </a>
@@ -24,7 +24,7 @@
       <li class="sidebar-items__item">
         <a href="#">
           <span class="icon-wrapper">
-            <icon name="file" size="24" class="menu-icon" />
+            <app-icon name="file" size="24" class="menu-icon" />
           </span>
           <span>File Requests</span>
         </a>
@@ -32,7 +32,7 @@
       <li class="sidebar-items__item">
         <a href="#">
           <span class="icon-wrapper">
-            <icon name="users" size="24" class="menu-icon" />
+            <app-icon name="users" size="24" class="menu-icon" />
           </span>
           <span>Users</span>
         </a>
@@ -40,7 +40,7 @@
       <li class="sidebar-items__item">
         <a href="#">
           <span class="icon-wrapper">
-            <icon name="trash-2" size="24" class="menu-icon" />
+            <app-icon name="trash-2" size="24" class="menu-icon" />
           </span>
           <span>Deleted Files</span>
         </a>
@@ -50,12 +50,7 @@
 </template>
 
 <script>
-import Icon from "@/components/Icon";
-
 export default {
-  components: {
-    Icon
-  },
   computed: {
     resources() {
       return window.structure.resources;

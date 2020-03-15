@@ -9,7 +9,12 @@
 </template>
 
 <script>
+import DataTable from "@/components/datatable/DataTable";
+
 export default {
+  components: {
+    DataTable
+  },
   props: {
     resource: {
       type: Object,
