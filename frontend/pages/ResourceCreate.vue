@@ -2,7 +2,28 @@
   <div>
     <h1 class="resource-label">Create a new {{ resource.label }}</h1>
     <app-card style="margin-bottom: var(--sp-10)">
-      <div class="form-wrapper">
+      <base-form
+        #default="{form}"
+        :validate="onTempValidate"
+        @submit="onTempSubmit"
+      >
+        <base-form-field #default="{inputListeners, inputProps}" name="title">
+          <input type="text" v-bind="inputProps" v-on="inputListeners" />
+        </base-form-field>
+
+        <base-form-field
+          #default="{inputListeners, inputProps}"
+          name="description"
+          label="DescDesc"
+        >
+          <input type="text" v-bind="inputProps" v-on="inputListeners" />
+        </base-form-field>
+
+        <button type="submit">submit</button>
+        <pre>{{ form }}</pre>
+      </base-form>
+
+      <!-- <div class="form-wrapper">
         <resource-form
           #default="{form}"
           :action="resource.api_urls.store"
@@ -32,36 +53,37 @@
             <pre>{{ form }}</pre>
           </div>
         </resource-form>
-      </div>
+      </div> -->
     </app-card>
-    <!-- <page-card>
-      <pre>{{resource}}</pre>
-    </page-card>-->
   </div>
 </template>
 
 <script>
-import ResourceForm from "@/components/resource-form/ResourceForm";
-import ResourceFormField from "@/components/resource-form/ResourceFormField";
-import BooleanInput from "@/components/fields/boolean/BooleanInput";
-import DateInput from "@/components/fields/date/DateInput";
-import ImageInput from "@/components/fields/image/ImageInput";
-import JsonInput from "@/components/fields/json/JsonInput";
-import JsonArrayInput from "@/components/fields/json_array/JsonArrayInput";
-import LongTextInput from "@/components/fields/long_text/LongTextInput";
-import ShortTextInput from "@/components/fields/short_text/ShortTextInput";
+import BaseForm from "@/components/base-form/BaseForm";
+import BaseFormField from "@/components/base-form/BaseFormField";
+// import ResourceForm from "@/components/resource-form/ResourceForm";
+// import ResourceFormField from "@/components/resource-form/ResourceFormField";
+// import BooleanInput from "@/components/fields/boolean/BooleanInput";
+// import DateInput from "@/components/fields/date/DateInput";
+// import ImageInput from "@/components/fields/image/ImageInput";
+// import JsonInput from "@/components/fields/json/JsonInput";
+// import JsonArrayInput from "@/components/fields/json_array/JsonArrayInput";
+// import LongTextInput from "@/components/fields/long_text/LongTextInput";
+// import ShortTextInput from "@/components/fields/short_text/ShortTextInput";
 
 export default {
   components: {
-    ResourceForm,
-    ResourceFormField,
-    BooleanInput,
-    DateInput,
-    ImageInput,
-    JsonInput,
-    JsonArrayInput,
-    LongTextInput,
-    ShortTextInput
+    BaseForm,
+    BaseFormField
+    // ResourceForm,
+    // ResourceFormField,
+    // BooleanInput,
+    // DateInput,
+    // ImageInput,
+    // JsonInput,
+    // JsonArrayInput,
+    // LongTextInput,
+    // ShortTextInput
   },
   props: {
     resource: {
@@ -75,6 +97,26 @@ export default {
   computed: {},
   created() {},
   methods: {
+    onTempSubmit({ data, onError }) {
+      setTimeout(() => {
+        alert(JSON.stringify(data, null, 2));
+        onError({ title: "yo bad" });
+      }, 500);
+    },
+    onTempValidate(data) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const errors = {};
+          if (data.title !== "shit") {
+            errors.title = "must be 💩";
+          }
+          if (!data.description) {
+            errors.description = "need something here";
+          }
+          resolve(errors);
+        }, 1000);
+      });
+    },
     handleErrorFocus(errorComponents) {
       const inputName = errorComponents[0].name;
       const el = this.$el.querySelector(`[name="${inputName}"]`);

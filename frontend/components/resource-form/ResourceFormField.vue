@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="input-field-wrapper"
-    :class="{ 'has-error': hasError }"
-    @mouseenter="isHovered = true"
-    @mouseleave="isHovered = false"
-  >
+  <div class="input-field-wrapper" :class="{ 'has-error': hasError }">
     <div class="field-header">
       <label :for="name" class="label">{{ label }}</label>
       <select
@@ -32,7 +27,8 @@
         <span
           v-if="
             !valueEqualsInitialValue &&
-              typeof value === 'string' && value.length > 0
+              typeof value === 'string' &&
+              value.length > 0
           "
           style="display: inline; font-size: var(--fz-xs); color: var(--grey-8);"
           >|</span
@@ -60,17 +56,11 @@
 <script>
 import _ from "@/lodash";
 export default {
-  inheritAttrs: false,
   props: {
     field: {
       type: Object,
       required: true
     }
-  },
-  data() {
-    return {
-      isHovered: false
-    };
   },
   computed: {
     inputOn() {

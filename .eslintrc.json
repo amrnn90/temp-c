@@ -18,6 +18,8 @@
     "SharedArrayBuffer": "readonly"
   },
   "plugins": ["vue"],
-  "rules": {},
+  "rules": {
+    "no-debugger": "warn"
+  },
   "settings": {}
 }
