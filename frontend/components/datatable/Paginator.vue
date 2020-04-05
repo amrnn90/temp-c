@@ -1,11 +1,11 @@
 <template>
-  <page-card
+  <app-card
     v-if="totalPages > 1"
     class="paginator"
     :class="{ 'is-disabled': isDisabled }"
   >
     <button class="prev" :disabled="isFirstPage" @click="handlePrev">
-      <icon name="chevron-left" stroke-width="2" size="22" />
+      <app-icon name="chevron-left" stroke-width="2" size="22" />
     </button>
     <span class="pages">
       <button
@@ -19,10 +19,10 @@
       </button>
     </span>
     <button class="next" :disabled="isLastPage" @click="handleNext">
-      <icon name="chevron-right" stroke-width="2" size="22" />
+      <app-icon name="chevron-right" stroke-width="2" size="22" />
     </button>
     <!-- <pre>{{pagingInfo}}</pre> -->
-  </page-card>
+  </app-card>
 </template>
 
 <script>
