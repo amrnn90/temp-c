@@ -1,179 +1,96 @@
 <template>
-  <div class="input-field-wrapper" :class="{ 'has-error': hasError }">
-    <div class="field-header">
-      <label :for="name" class="label">{{ label }}</label>
-      <select
-        v-if="field.translatable"
-        id=""
-        v-model="sharedForm.locale"
-        name=""
-      >
-        <option
-          v-for="locale in sharedForm.locales"
-          :key="locale"
-          :value="locale"
-          >{{ locale }}</option
+  <div class="input-field-wrapper" :class="{ 'has-error': formField.hasError }">
+    <div v-if="showHeader" class="field-header">
+      <label :for="formField.name" class="label">
+        {{ formField.label }}
+      </label>
+      <!-- <select
+          v-if="field.translatable"
+          id=""
+          v-model="sharedForm.locale"
+          name=""
         >
-      </select>
+          <option
+            v-for="locale in sharedForm.locales"
+            :key="locale"
+            :value="locale"
+            >{{ locale }}</option
+          >
+        </select> -->
       <div class="actions">
         <button
-          v-if="!valueEqualsInitialValue"
+          v-if="showResetButton && formField.isUpdated"
           type="button"
-          style="display: inline; font-size: var(--fz-xs); color: var(--grey-8); "
-          @click="reset"
+          style="
+            display: inline;
+            font-size: var(--fz-xs);
+            color: var(--grey-8);
+          "
+          @click="formField.reset"
         >
           reset
-        </button>
-        <span
-          v-if="
-            !valueEqualsInitialValue &&
-              typeof value === 'string' &&
-              value.length > 0
-          "
-          style="display: inline; font-size: var(--fz-xs); color: var(--grey-8);"
-          >|</span
-        >
-        <button
-          v-if="valueHasLength"
-          type="button"
-          style="display: inline; font-size: var(--fz-xs); color: var(--grey-8); "
-          @click="handleInput(typeof value == 'array' ? [] : '')"
-        >
-          clear
         </button>
       </div>
     </div>
 
     <div class="input-wrapper">
-      <slot :on="inputOn" :props="inputProps"></slot>
+      <slot v-bind="formField"></slot>
+
       <div class="field-input__error" role="alert">
-        <span>{{ error }}</span>
+        <span>{{ formField.error }}</span>
       </div>
     </div>
+
+    <!-- <pre>{{ formField }}</pre> -->
   </div>
 </template>
 
 <script>
+import { useFormField } from "@amrnn/vue-form";
+import { reactive, computed, inject } from "@vue/composition-api";
 import _ from "@/lodash";
 export default {
   props: {
     field: {
       type: Object,
-      required: true
+      required: true,
+    },
+    showHeader: {
+      type: Boolean,
+      default: true,
+    },
+    showResetButton: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props, { attrs }) {
+    const state = reactive({
+      isTranslatable: computed(() => !!props.field.translatable),
+      resourceFormLocales: inject("RESOURCE_FORM_LOCALES"),
+    });
+
+    state.formField = useFormField(props.field.name, {
+      getValue,
+      setValue,
+      label: props.field.label,
+      ...attrs,
+    });
+
+    function getValue(value) {
+      return state.isTranslatable
+        ? _.get(value, state.resourceFormLocales.locale)
+        : value;
     }
-  },
-  computed: {
-    inputOn() {
-      return {
-        input: this.handleInput
-      };
-    },
-    inputProps() {
-      return {
-        id: this.name,
-        name: this.name,
-        value: this.passedValue,
-        field: this.field,
-        hasError: this.hasError
-      };
-    },
-    name() {
-      return _.get(this.field, "name");
-    },
-    label() {
-      return _.get(this.field, "label");
-    },
-    isTranslatable() {
-      return this.field.translatable;
-    },
-    value() {
-      return _.get(this.sharedForm.fields, this.name);
-    },
-    initialValue() {
-      return _.get(this.sharedForm.initialFields, this.name);
-    },
-    passedValue() {
-      return this.isTranslatable
-        ? _.get(this.value, this.sharedForm.locale)
-        : this.value;
-    },
-    valueHasLength() {
-      return _.get(this.value, "length") > 0;
-    },
-    error() {
-      const errors = this.sharedForm.errors[this.name];
-      return errors && errors[0];
-    },
 
-    hasError() {
-      return !!this.error;
-    },
-
-    valueEqualsInitialValue() {
-      return _.isEqual(this.initialValue, this.value);
-    }
-  },
-  watch: {
-    error(newState) {
-      if (newState) {
-        this.sharedForm.errorComponents = [
-          ...this.sharedForm.errorComponents,
-          { name: this.name }
-        ];
-      }
-    }
-  },
-  mounted() {
-    this.initValue();
-  },
-  methods: {
-    initValue() {
-      const { sharedForm } = this;
-      const current = this.value;
-      const newFields = { ...sharedForm.fields };
-
-      _.set(
-        newFields,
-        this.name,
-        Object.is(current, undefined) ? null : current
-      );
-
-      sharedForm.fields = newFields;
-    },
-    handleInput(evOrValue) {
-      let newValue;
-
-      if (evOrValue && typeof evOrValue === "object" && evOrValue.target) {
-        newValue = evOrValue.target.value;
-      } else {
-        newValue = evOrValue;
-      }
-
-      newValue = newValue === "" || newValue === undefined ? null : newValue;
-
-      newValue = this.isTranslatable
-        ? { ...(this.value || {}), [this.sharedForm.locale]: newValue }
+    function setValue(newValue, oldValue) {
+      return state.isTranslatable
+        ? { ...(oldValue || {}), [state.resourceFormLocales.locale]: newValue }
         : newValue;
-
-      const { sharedForm } = this;
-
-      const newFields = { ...sharedForm.fields };
-      _.set(newFields, this.name, newValue);
-      sharedForm.fields = newFields;
-
-      sharedForm.errors = {
-        ...sharedForm.errors,
-        [this.name]: null
-      };
-    },
-    reset() {
-      this.handleInput(_.cloneDeep(this.initialValue));
-    },
-    handleFocus() {
-      console.log("here focusing");
     }
+
+    return state;
   },
-  inject: ["sharedForm"]
 };
 </script>
 

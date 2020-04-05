@@ -1,25 +1,33 @@
 <template>
-  <div>
+  <resource-form-field
+    #default="{inputProps, inputListeners, hasError}"
+    :field="field"
+  >
     <image-upload
-      :id="id"
       :upload-url="field.options.upload_url"
       :multiple="field.options.multiple"
-      :name="name"
       :input-class="`field-input ${hasError ? 'has-error' : ''}`"
-      :value="value"
-      @input="value => $emit('input', value)"
+      v-bind="inputProps"
+      v-on="inputListeners"
     />
-  </div>
+  </resource-form-field>
 </template>
 
 <script>
+import ResourceFormField from "@/components/resource-form/ResourceFormField";
 import ImageUpload from "@/components/inputs/ImageUpload";
 
 export default {
   components: {
-    ImageUpload
+    ResourceFormField,
+    ImageUpload,
   },
-  props: ["field", "value", "name", "id", "hasError"]
+  props: {
+    field: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 

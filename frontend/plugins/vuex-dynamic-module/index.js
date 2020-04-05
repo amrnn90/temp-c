@@ -8,15 +8,17 @@ const VueDynamicModule = {
       const store = this.$store;
       namespace = namespace || this.$dynamicModuleId();
       return {
-        state: prop => store.state[`${namespace}/${prop}`],
+        state: (prop) => store.state[`${namespace}/${prop}`],
         getters: (prop, payload) => {
-          const getter =  store.getters[`${namespace}/${prop}`];
+          const getter = store.getters[`${namespace}/${prop}`];
           return payload ? getter(payload) : getter;
         },
-        commit: (mutation, payload) => store.commit(`${namespace}/${mutation}`, payload),
-        dispatch: (action, payload) => store.dispatch(`${namespace}/${action}`, payload),
+        commit: (mutation, payload) =>
+          store.commit(`${namespace}/${mutation}`, payload),
+        dispatch: (action, payload) =>
+          store.dispatch(`${namespace}/${action}`, payload),
       };
-    }
+    };
 
     Vue.prototype.$registerDynamicModule = function (namespace, module) {
       const store = this.$store;
@@ -28,8 +30,10 @@ const VueDynamicModule = {
 
       namespace = namespace || this.$dynamicModuleId();
 
-      if (typeof store.state[namespace] !== 'undefined') {
-        console.error(`[vuex-dynamic-module] Warning: cannot register module (${namespace}) because it already exists.`)
+      if (typeof store.state[namespace] !== "undefined") {
+        console.error(
+          `[vuex-dynamic-module] Warning: cannot register module (${namespace}) because it already exists.`
+        );
 
         return this.$dynamicModuleStore(namespace);
       }
@@ -37,29 +41,33 @@ const VueDynamicModule = {
       store.registerModule(namespace, module);
 
       const initAction = `${namespace}/init`;
-      if (Object.keys(store._actions).find(action => action == initAction)) {
+      if (Object.keys(store._actions).find((action) => action == initAction)) {
         store.dispatch(initAction);
       }
 
       return this.$dynamicModuleStore(namespace);
-    }
+    };
 
     Vue.prototype.$unregisterDynamicModule = function (namespace) {
       const store = this.$store;
       namespace = namespace || this.$dynamicModuleId();
 
-      if (typeof store.state[namespace] === 'undefined') {
-        console.error(`[vuex-dynamic-module] Warning: cannot unregister module (${namespace}) because it does not exist.`)
+      if (typeof store.state[namespace] === "undefined") {
+        console.error(
+          `[vuex-dynamic-module] Warning: cannot unregister module (${namespace}) because it does not exist.`
+        );
         return;
       }
 
       const destroyAction = `${namespace}/destroy`;
-      if (Object.keys(store._actions).find(action => action == destroyAction)) {
+      if (
+        Object.keys(store._actions).find((action) => action == destroyAction)
+      ) {
         store.dispatch(destroyAction);
       }
 
       return store.unregisterModule(namespace);
-    }
+    };
   },
 };
 

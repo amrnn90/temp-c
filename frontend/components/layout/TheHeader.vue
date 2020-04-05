@@ -1,10 +1,17 @@
 <template>
   <header class="header">
-    <v-popover style="margin-left: auto; ">
+    <v-popover style="margin-left: auto;">
       <img
         src="https://i.pravatar.cc/40?u=amr"
         alt
-        style="border-radius: 50%; flex-shrink: 0; width: var(--sp-9); height: var(--sp-9); border: 1px solid var(--grey-9); cursor: pointer"
+        style="
+          border-radius: 50%;
+          flex-shrink: 0;
+          width: var(--sp-9);
+          height: var(--sp-9);
+          border: 1px solid var(--grey-9);
+          cursor: pointer;
+        "
       />
 
       <template slot="popover">
@@ -22,7 +29,7 @@ export default {
   data() {
     return {
       logoutUrl: window.structure.api_urls.logout,
-      csrfToken: null
+      csrfToken: null,
     };
   },
   mounted() {
@@ -31,8 +38,8 @@ export default {
       .getAttribute("content");
   },
   methods: {
-    handleLogout() {}
-  }
+    handleLogout() {},
+  },
 };
 </script>
 

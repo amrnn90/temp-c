@@ -47,26 +47,26 @@ import PageBackdrop from "@/components/modals/PageBackdrop";
 export default {
   components: {
     DeleteItem,
-    PageBackdrop
+    PageBackdrop,
   },
   props: {
     item: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   inject: ["tableStoreNamespace"],
 
   data() {
     return {
-      showModal: false
+      showModal: false,
       // show: false
     };
   },
   computed: {
     tableStore() {
       return this.$dynamicModuleStore(this.tableStoreNamespace);
-    }
+    },
   },
   methods: {
     refreshTable() {
@@ -82,8 +82,8 @@ export default {
         this.refreshTable();
         this.$flash("Item deleted successfully!");
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

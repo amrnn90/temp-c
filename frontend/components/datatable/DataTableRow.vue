@@ -10,14 +10,14 @@
           :key="field.name"
           class="table-row-cell"
           :class="`cell-${field.name}`"
-          style="flex-grow: 1"
+          style="flex-grow: 1;"
           @click="isExpanded = !isExpanded"
         >
           <component
             :is="`${field.type}Index`"
-            :field="row.fields.find(f => f.name == field.name)"
+            :field="row.fields.find((f) => f.name == field.name)"
             :item="row"
-            :is_title_field="resource.title_field == field.name"
+            :is-title-field="resource.title_field == field.name"
           />
         </div>
       </div>
@@ -60,22 +60,22 @@ export default {
     JsonIndex,
     JsonArrayIndex,
     LongTextIndex,
-    ShortTextIndex
+    ShortTextIndex,
   },
   props: {
     row: {
       type: Object,
-      required: true
+      required: true,
     },
     resource: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   inject: ["tableStoreNamespace"],
   data() {
     return {
-      isExpanded: false
+      isExpanded: false,
     };
   },
   computed: {
@@ -87,13 +87,13 @@ export default {
     },
     isSelectedRow() {
       return this.tableStore.getters("isSelectedRow", this.rowId);
-    }
+    },
   },
   methods: {
     toggleSelectRow() {
       this.tableStore.dispatch("toggleSelectRow", this.rowId);
-    }
-  }
+    },
+  },
 };
 </script>
 

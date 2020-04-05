@@ -1,13 +1,24 @@
 <template>
   <div class="flash-message" @click="handleClick">
     <span
-      style="display: flex; align-items: center; height: 1.5em; margin-right: var(--sp-4);"
+      style="
+        display: flex;
+        align-items: center;
+        height: 1.5em;
+        margin-right: var(--sp-4);
+      "
     >
-      <icon
+      <app-icon
         name="check"
         size="18"
         stroke-width="3"
-        style="stroke: var(--success-9);  border-radius: 50%; border: 1px solid var(--success-9); padding: var(--sp-1); box-sizing: content-box"
+        style="
+          stroke: var(--success-9);
+          border-radius: 50%;
+          border: 1px solid var(--success-9);
+          padding: var(--sp-1);
+          box-sizing: content-box;
+        "
       />
     </span>
     <span>{{ message.content }}</span>
@@ -19,8 +30,8 @@ export default {
   props: {
     message: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   created() {
     this.timeoutHandle = setTimeout(() => {
@@ -34,8 +45,8 @@ export default {
     },
     dismiss() {
       this.$emit("dismiss");
-    }
-  }
+    },
+  },
 };
 </script>
 

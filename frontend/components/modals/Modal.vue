@@ -1,5 +1,6 @@
 <template>
   <page-backdrop
+    v-if="show"
     :transition="{ name: 'modal', duaration: 200, appear: true }"
     @click="handleBackdropClick"
     @escape="dismiss"
@@ -11,7 +12,9 @@
 </template>
 
 <script>
+import PageBackdrop from "./PageBackdrop";
 export default {
+  components: { PageBackdrop },
   props: {
     dismissOnBackdropClick: { type: Boolean, default: true },
     show: { type: Boolean, default: false }

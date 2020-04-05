@@ -13,22 +13,22 @@ import DataTable from "@/components/datatable/DataTable";
 
 export default {
   components: {
-    DataTable
+    DataTable,
   },
   props: {
     resource: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      temp: true
+      temp: true,
     };
   },
   computed: {},
   created() {},
-  methods: {}
+  methods: {},
 };
 </script>
 

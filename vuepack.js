@@ -26,7 +26,23 @@ const options = {
   staticPath: "static",
 
   /** proxies: each item is an array of: [from, target] */
-  proxies: [["*", "http://localhost:8000"]]
+  proxies: [["*", "http://localhost:8000"]],
+
+  extendConfig: (config) => {
+    config.module.rules = config.module.rules.map((rule) => {
+      if (rule.exclude && rule.exclude.toString().match(/node_modules/)) {
+        rule.exclude = [/node_modules/, /vue-form/];
+      }
+      return rule;
+    });
+
+    config.resolve.modules = [
+      "node_modules",
+      path.resolve(__dirname, "node_modules"),
+    ];
+
+    return config;
+  },
 };
 
 run(options);

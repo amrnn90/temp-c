@@ -5,7 +5,9 @@
         "build": "node vuepack.js build"
     },
     "dependencies": {
+        "@amrnn/vue-form": "^1.0.8",
         "@juggle/resize-observer": "^3.0.2",
+        "@vue/composition-api": "^0.5.0",
         "animejs": "^3.1.0",
         "axios": "^0.19",
         "lodash": "^4.17.13",
@@ -21,7 +23,7 @@
         "vuex": "^3.1.2"
     },
     "devDependencies": {
-        "@amrnn/vuepack": "^1.0.7",
+        "@amrnn/vuepack": "^1.0.8",
         "eslint-config-prettier": "^6.10.0",
         "vue-template-compiler": "^2.6.10"
     }

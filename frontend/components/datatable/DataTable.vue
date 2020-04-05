@@ -49,23 +49,23 @@ export default {
     DataTableHead,
     DataTableRow,
     Simplebar,
-    Paginator
+    Paginator,
   },
   mixins: [DataTableLayoutMixin],
   props: {
     resource: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   provide() {
     return {
-      tableStoreNamespace: this.$dynamicModuleId()
+      tableStoreNamespace: this.$dynamicModuleId(),
     };
   },
   data() {
     return {
-      hiddenColumns: []
+      hiddenColumns: [],
       // expandedRows: {},
     };
   },
@@ -75,11 +75,11 @@ export default {
         "pageData",
         "isLoading",
         "items",
-        "isNewPage"
+        "isNewPage",
       ]),
       pagingInfo() {
         return _.omit(this.pageData, ["data"]);
-      }
+      },
     };
   },
   watch: {
@@ -93,7 +93,7 @@ export default {
         this.tableStore.dispatch("unselectAllRows");
         this.scrollToTop();
       }
-    }
+    },
   },
   beforeCreate() {
     const url = this.$options.propsData.resource.api_urls.index;
@@ -114,7 +114,7 @@ export default {
     },
     handlePageSelected(pageNum) {
       this.tableStore.dispatch("updateFilters", {
-        page: pageNum.toString()
+        page: pageNum.toString(),
       });
       this.$flash("Selected: " + pageNum);
     },
@@ -124,8 +124,8 @@ export default {
           ".simplebar-content-wrapper"
         ).scrollTop = 0;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

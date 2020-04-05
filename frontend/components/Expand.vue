@@ -18,8 +18,8 @@ export default {
   props: {
     show: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {},
   methods: {
@@ -34,7 +34,7 @@ export default {
         height: [0, height],
         duration: 400,
         easing: "easeOutElastic(1, .5)",
-        complete: () => this.complete(el)
+        complete: () => this.complete(el),
       });
     },
     handleLeave(el, done) {
@@ -47,7 +47,7 @@ export default {
         height: 0,
         duration: 400,
         easing: "easeInElastic(1, .5)",
-        complete: () => this.complete(el)
+        complete: () => this.complete(el),
       });
     },
     handleCancel() {
@@ -61,8 +61,8 @@ export default {
       this.done();
       this.done = null;
       this.animation = null;
-    }
-  }
+    },
+  },
 };
 </script>
 

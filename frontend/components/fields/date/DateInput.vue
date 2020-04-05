@@ -1,36 +1,41 @@
 <template>
-  <div>
+  <resource-form-field
+    #default="{inputProps, inputListeners, hasError}"
+    :field="field"
+  >
     <flat-pickr
-      :id="id"
-      :value="value"
-      :name="name"
+      v-bind="inputProps"
       class="field-input"
       :class="{ 'has-error': hasError }"
       :config="config"
-      @input="value => $emit('input', value)"
+      v-on="inputListeners"
     ></flat-pickr>
-  </div>
+  </resource-form-field>
 </template>
 
 <script>
+import ResourceFormField from "@/components/resource-form/ResourceFormField";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import l10n from "flatpickr/dist/l10n";
 
 export default {
   components: {
-    flatPickr
+    ResourceFormField,
+    flatPickr,
   },
-  props: ["field", "value", "name", "id", "hasError"],
-  data() {
-    return {};
+  props: {
+    field: {
+      type: Object,
+      required: true,
+    },
   },
   computed: {
     config() {
       // return this.field.options || {};
       return { ...this.field.options, locale: l10n.ar };
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -10,7 +10,7 @@
         />
         <button
           v-tooltip="'refresh'"
-          style="margin-left: var(--sp-4)"
+          style="margin-left: var(--sp-4);"
           @click="tableStore.dispatch('refresh')"
         >
           <app-icon name="rotate-cw" />
@@ -36,9 +36,9 @@
           :key="field.name"
           class="table-head-cell"
           :class="`cell-${field.name}`"
-          style="flex-grow: 1"
+          style="flex-grow: 1;"
           :style="{
-            paddingLeft: resource.title_field == field.name ? '60px' : '0'
+            paddingLeft: resource.title_field == field.name ? '60px' : '0',
           }"
         >
           <strong>{{ field.label }}</strong>
@@ -74,13 +74,13 @@ import BulkActions from "./BulkActions";
 export default {
   components: {
     CheckboxInput,
-    BulkActions
+    BulkActions,
   },
   props: {
     resource: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   inject: ["tableStoreNamespace"],
   computed: {
@@ -96,14 +96,14 @@ export default {
       },
       set(val) {
         this.tableStore.dispatch("updateFilters", { search: val });
-      }
-    }
+      },
+    },
   },
   methods: {
     toggleSelectAllRows() {
       this.tableStore.dispatch("toggleSelectAllRows");
-    }
-  }
+    },
+  },
 };
 </script>
 

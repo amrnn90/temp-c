@@ -18,19 +18,32 @@
       type="checkbox"
       :name="name"
       :value="value"
-      style="display: none"
+      style="display: none;"
     />
   </div>
 </template>
 
 <script>
 export default {
-  props: ["value", "name", "id"],
+  props: {
+    value: {
+      type: Boolean,
+      default: false,
+    },
+    name: {
+      type: String,
+      default: null,
+    },
+    id: {
+      type: String,
+      default: null,
+    },
+  },
   computed: {
     isChecked() {
       return !!this.value;
-    }
-  }
+    },
+  },
 };
 </script>
 

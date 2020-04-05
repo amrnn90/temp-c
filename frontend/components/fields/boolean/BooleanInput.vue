@@ -1,20 +1,30 @@
 <template>
-  <toggle-input
-    :id="id"
-    :name="name"
-    :class="{ 'has-error': hasError }"
-    :value="value"
-    @input="value => $emit('input', value)"
-  />
+  <resource-form-field
+    #default="{inputProps, inputListeners, hasError}"
+    :field="field"
+  >
+    <toggle-input
+      :class="{ 'has-error': hasError }"
+      v-bind="inputProps"
+      v-on="inputListeners"
+    />
+  </resource-form-field>
 </template>
 
 <script>
+import ResourceFormField from "@/components/resource-form/ResourceFormField";
 import ToggleInput from "@/components/inputs/ToggleInput";
 export default {
   components: {
-    ToggleInput
+    ResourceFormField,
+    ToggleInput,
   },
-  props: ["field", "value", "name", "id", "hasError"]
+  props: {
+    field: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 

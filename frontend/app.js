@@ -1,4 +1,5 @@
 import Vue from "vue";
+import CompositionApi from "@vue/composition-api";
 import PortalVue from "portal-vue";
 import VTooltip from "v-tooltip";
 import Sticky from "vue-sticky-directive";
@@ -12,6 +13,7 @@ import App from "@/App";
 import "@/assets/styles/app.scss";
 
 Vue.config.productionTip = false;
+Vue.use(CompositionApi);
 Vue.use(PortalVue);
 Vue.use(VTooltip);
 Vue.use(FlashMessages);
@@ -34,15 +36,11 @@ console.info("structure:", window.structure);
 
 // eslint-disable-next-line no-undef
 const files = require.context("./", true, /App[A-Z]\w+\.vue$/i);
-files.keys().map(key =>
-  Vue.component(
-    key
-      .split("/")
-      .pop()
-      .split(".")[0],
-    files(key).default
-  )
-);
+files
+  .keys()
+  .map((key) =>
+    Vue.component(key.split("/").pop().split(".")[0], files(key).default)
+  );
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -51,7 +49,7 @@ files.keys().map(key =>
  */
 
 new Vue({
-  render: h => h(App),
+  render: (h) => h(App),
   router,
-  store
+  store,
 }).$mount("#app");

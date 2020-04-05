@@ -1,64 +1,43 @@
 <template>
   <div>
     <h1 class="resource-label">Edit {{ resource.label }}</h1>
-    <page-card style="margin-bottom: var(--sp-10)">
+    <app-card style="margin-bottom: var(--sp-10);">
       <div class="form-wrapper">
-        <m-form
+        <resource-form
           v-if="item"
-          #default="{form}"
-          :item="itemData"
-          :action="item.api_urls.update"
-          @error-focus="handleErrorFocus"
-          @success="handleCreateSuccess"
-        >
-          <m-form-field
-            v-for="field in resource.fields"
-            #default="{on, props}"
-            :key="field.name"
-            :field="field"
-          >
-            <component :is="`${field.type}Input`" v-bind="props" v-on="on" />
-          </m-form-field>
-
-          <div class="actions-wrapper">
-            <button type="submit" class="create-btn" :disabled="form.isLoading">
-              Update
-            </button>
-          </div>
-          <!-- <pre>{{form}}</pre> -->
-        </m-form>
+          :resource="resource"
+          :item="item"
+          :locales="locales"
+          @success="onSubmitSuccess"
+        />
       </div>
-    </page-card>
-    <!-- <page-card>
-      <pre>{{resource}}</pre>
-    </page-card>-->
+    </app-card>
   </div>
 </template>
 
 <script>
 import axios from "@/axios";
+import ResourceForm from "@/components/resource-form/ResourceForm";
 
 export default {
+  components: {
+    ResourceForm,
+  },
   props: {
     resource: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      item: null
+      item: null,
     };
   },
   computed: {
-    itemData() {
-      return this.item
-        ? this.item.fields.reduce((result, field) => {
-            result[field.name] = field.data;
-            return result;
-          }, {})
-        : null;
-    }
+    locales() {
+      return this.$store.state.structure.locales;
+    },
   },
   created() {
     axios
@@ -68,18 +47,11 @@ export default {
       });
   },
   methods: {
-    handleErrorFocus(errorComponents) {
-      const inputName = errorComponents[0].name;
-      const el = this.$el.querySelector(`[name="${inputName}"]`);
-      if (el) {
-        el.focus();
-      }
-    },
-    handleCreateSuccess() {
+    onSubmitSuccess() {
       this.$flash("Item updated successfully!");
       this.$router.push({ name: `${this.resource.name}.index` });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -96,21 +68,5 @@ export default {
   // display: flex;
   // justify-content: center;
   padding: var(--sp-10) var(--sp-4);
-}
-
-.actions-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: var(--sp-10);
-}
-
-.create-btn {
-  // height: var(--sp-10);
-  background: var(--primary);
-  color: var(--primary-10);
-  border-radius: var(--br);
-  padding: var(--sp-3) var(--sp-7);
-  font-size: var(--fz-xs);
-  font-weight: var(--fw-bold);
 }
 </style>

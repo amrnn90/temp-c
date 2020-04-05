@@ -17,27 +17,29 @@ const messages = [];
 export function flash(message) {
   messages.push({
     id: genId(),
-    content: message
+    content: message,
   });
 }
 
 export default {
   data() {
     return {
-      messages: messages
+      messages: messages,
     };
   },
   computed: {
     orderedMessages() {
       return [...this.messages].reverse();
-    }
+    },
   },
   methods: {
     dismiss(messageId) {
-      const index = this.messages.findIndex(message => message.id == messageId);
+      const index = this.messages.findIndex(
+        (message) => message.id == messageId
+      );
       messages.splice(index, 1);
-    }
-  }
+    },
+  },
 };
 </script>
 

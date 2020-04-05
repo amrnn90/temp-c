@@ -11,7 +11,7 @@
       type="checkbox"
       :name="name"
       :value="value"
-      style="display: none"
+      style="display: none;"
     />
   </div>
 </template>
@@ -21,23 +21,23 @@ export default {
   props: {
     value: {
       type: Boolean,
-      default: false
+      default: false,
     },
     name: {
       type: String,
-      default: null
+      default: null,
     },
     id: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   computed: {
     isChecked() {
       return !!this.value;
-    }
+    },
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

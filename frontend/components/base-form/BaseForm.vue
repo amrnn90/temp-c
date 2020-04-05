@@ -23,7 +23,8 @@ export default {
         touched: {},
         errors: {},
         // errorComponents: [],
-        focusTarget: null,
+        // focusTarget: null,
+        waitingForErrorFocus: false,
         isValidating: false,
         isSubmitting: false,
         hasSubmitted: false,
@@ -60,7 +61,7 @@ export default {
         const onError = errors => {
           this.setErrors(errors);
           this.sharedForm.isSubmitting = false;
-          this.focusError();
+          this.waitForErrorFocus();
         };
 
         this.$emit("submit", {
@@ -72,7 +73,7 @@ export default {
 
       this.runValidate().then(() => {
         if (this.hasErrors) {
-          this.focusError();
+          this.waitForErrorFocus();
           return;
         }
         runSubmit();
@@ -87,29 +88,11 @@ export default {
     clearErrors() {
       this.sharedForm.errors = {};
     },
-    focusError() {
-      const focusTarget = this.sharedForm.focusTarget;
-      if (focusTarget) {
-        let el = this.$el.querySelector(`[name=${focusTarget}`);
-        console.log(el);
-        while (el) {
-          if (el.__vue__ && typeof el.__vue__.focus === "function") {
-            el.__vue__.focus();
-            el = null;
-          } else if (
-            el.matches(
-              "input:not([type=hidden]):not([disabled]),textarea:not([disabled]),select:not([disabled]), [tabindex], [contenteditable]"
-            )
-          ) {
-            el.focus();
-            el.scrollIntoView();
-            el = null;
-          } else {
-            el = el.parentElement;
-          }
-        }
-      }
-      this.sharedForm.focusTarget = null;
+    waitForErrorFocus() {
+      this.sharedForm.waitingForErrorFocus = true;
+      setTimeout(() => {
+        this.sharedForm.waitingForErrorFocus = false;
+      }, 500);
     },
     runValidate() {
       this.sharedForm.isValidating = true;

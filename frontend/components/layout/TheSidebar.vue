@@ -54,8 +54,8 @@ export default {
   computed: {
     resources() {
       return window.structure.resources;
-    }
-  }
+    },
+  },
 };
 </script>
 

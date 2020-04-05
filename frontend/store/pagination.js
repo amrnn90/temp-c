@@ -7,7 +7,7 @@ const defaultOptions = {
   filters: {},
   syncFiltersWithRouteParams: false,
   routeParamsPrefix: null,
-  namespaced: true
+  namespaced: true,
 };
 
 export default (url, opts = {}) => {
@@ -27,7 +27,7 @@ export default (url, opts = {}) => {
         oldFilters: {},
 
         /* WATCH THIS TO KNOW IF THE LAST LOADED PAGE HAS DIFFERENT FILTERS FROM PREVIOUS ONE */
-        isNewPage: null
+        isNewPage: null,
       };
     },
     getters: {
@@ -92,7 +92,7 @@ export default (url, opts = {}) => {
       },
       isNewPage(state) {
         return state.isNewPage;
-      }
+      },
     },
     mutations: {
       LOAD_PAGE_INIT(state) {
@@ -120,7 +120,7 @@ export default (url, opts = {}) => {
       UPDATE_FILTERS(state, newFilters) {
         state.oldFilters = { ...state.filters };
         state.filters = { ...newFilters };
-      }
+      },
     },
     actions: {
       /* DISPATCHED WHEN REGISTERING DYNAMIC MODULE */
@@ -169,7 +169,7 @@ export default (url, opts = {}) => {
         moduleRunning = false;
       },
 
-      load: function({ commit, dispatch, getters }) {
+      load: function ({ commit, dispatch, getters }) {
         commit("LOAD_PAGE_INIT");
         return axiosInstance
           .get(url, { params: { ...getters.nonEmptyFilters } })
@@ -181,11 +181,11 @@ export default (url, opts = {}) => {
 
             if (getters.currentPage > getters.lastPage) {
               return dispatch("updateFilters", {
-                page: getters.lastPage
+                page: getters.lastPage,
               });
             }
           })
-          .catch(error => {
+          .catch((error) => {
             if (!moduleRunning) return;
             if (axios.isCancel(error)) return;
             commit("LOAD_PAGE_ERROR", error);
@@ -201,7 +201,7 @@ export default (url, opts = {}) => {
         const newFilters = {
           ...state.filters,
           ...filters,
-          page: page > 0 ? page : null
+          page: page > 0 ? page : null,
         };
 
         const oldFilters = state.filters;
@@ -221,9 +221,9 @@ export default (url, opts = {}) => {
 
       clearFilters({ dispatch }) {
         return dispatch("updateFilters", {});
-      }
+      },
     },
-    namespaced: options.namespaced
+    namespaced: options.namespaced,
   };
 };
 
@@ -231,7 +231,7 @@ function applyPrefix(filters, prefix) {
   prefix = prefix ? `${prefix}_` : "";
   const result = {};
 
-  Object.keys(filters).forEach(key => {
+  Object.keys(filters).forEach((key) => {
     result[prefix + key] = filters[key];
   });
 
@@ -246,14 +246,9 @@ function removePrefix(filters, prefix) {
   const result = {};
 
   Object.keys(filters)
-    .filter(key => key.startsWith(prefix))
-    .forEach(key => {
-      result[
-        key
-          .split(prefix)
-          .slice(1)
-          .join("")
-      ] = filters[key];
+    .filter((key) => key.startsWith(prefix))
+    .forEach((key) => {
+      result[key.split(prefix).slice(1).join("")] = filters[key];
     });
 
   return result;
@@ -287,7 +282,7 @@ function syncFiltersWithRouteParams(filters, prefix) {
   if (!_.isEqual(newQueryParams, allQueryParams)) {
     router.replace({
       ...router.currenRoute,
-      query: newQueryParams
+      query: newQueryParams,
     });
   }
 }

@@ -158,7 +158,7 @@ class PostResource
                 ->canView(function ($user, $post) {
                     return true;
                 }),
-            ShortText::make('trans'),
+            // ShortText::make('trans'),
 
             LongText::make('body')
                 ->rules('required|min:10')
@@ -182,10 +182,10 @@ class PostResource
             Json::make('sections')
                 ->fields(function () {
                     return [
-                        JsonArray::make('lisss')
-                            ->templateField(function () {
-                                return ShortText::make('');
-                            }),
+                        // JsonArray::make('lisss')
+                        //     ->templateField(function () {
+                        //         return ShortText::make('');
+                        //     }),
 
                         Date::make('scheduled_at')
                             ->canSet(function () {

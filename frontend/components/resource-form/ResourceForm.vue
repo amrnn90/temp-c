@@ -1,82 +1,114 @@
 <template>
-  <form @submit.prevent="submit">
-    <slot :form="sharedForm"></slot>
-  </form>
+  <base-form #default="{form}" :item="itemData" @submit="onSubmit">
+    <div
+      :style="{
+        opacity: form.isLoading ? 0.5 : 1,
+        pointerEvents: form.isLoading ? 'none' : 'auto',
+      }"
+    >
+      <component
+        :is="`${field.type}Input`"
+        v-for="field in resource.fields"
+        :key="field.name"
+        :field="field"
+      />
+
+      <div class="actions">
+        <button type="submit" class="create-btn" :style="{}">
+          {{ submitButtonLabel }}
+        </button>
+      </div>
+
+      <pre>{{ form }}</pre>
+    </div>
+  </base-form>
 </template>
 
 <script>
+import { reactive, provide } from "@vue/composition-api";
+import { BaseForm } from "@amrnn/vue-form";
+import ShortTextInput from "@/components/fields/short_text/ShortTextInput";
+import LongTextInput from "@/components/fields/long_text/LongTextInput";
+import DateInput from "@/components/fields/date/DateInput";
+import ImageInput from "@/components/fields/image/ImageInput";
+import BooleanInput from "@/components/fields/boolean/BooleanInput";
+import JsonInput from "@/components/fields/json/JsonInput";
+import JsonArrayInput from "@/components/fields/json_array/JsonArrayInput";
 import axios from "@/axios";
-import _ from "@/lodash";
 
 export default {
-  props: {
-    action: {
-      type: String,
-      required: true
-    },
-    item: { type: Object, default: null }
+  components: {
+    BaseForm,
+    ShortTextInput,
+    LongTextInput,
+    DateInput,
+    ImageInput,
+    BooleanInput,
+    JsonInput,
+    JsonArrayInput,
   },
-  data() {
-    return {
-      sharedForm: {
-        locale: "en",
-        locales: this.$store.state.structure.locales,
-        fields: _.cloneDeep(this.item),
-        initialFields: _.cloneDeep(this.item),
-        errors: {},
-        errorComponents: [],
-        isLoading: false
-      },
-      shouldFocus: true
-    };
+  props: {
+    resource: { type: Object, required: true },
+    item: { type: Object, default: null },
+  },
+  setup(props) {
+    const resourcesFormLocales = reactive({
+      locale: "en",
+      locales: props.locales,
+    });
+
+    provide("RESOURCE_FORM_LOCALES", resourcesFormLocales);
   },
   computed: {
-    form() {
-      return this.sharedForm.fields;
-    },
     method() {
       return this.item ? "patch" : "post";
-    }
-  },
-  watch: {
-    "sharedForm.errorComponents": {
-      handler() {
-        const { sharedForm } = this;
-        if (sharedForm.errorComponents.length && this.shouldFocus) {
-          this.shouldFocus = false;
-          this.$nextTick(() => {
-            this.$emit("error-focus", sharedForm.errorComponents);
-            this.shouldFocus = true;
-            sharedForm.errorComponents = [];
-          });
-        }
-      }
-    }
+    },
+    itemData() {
+      return this.item
+        ? this.item.fields.reduce((result, field) => {
+            result[field.name] = field.data;
+            return result;
+          }, {})
+        : null;
+    },
+    submitButtonLabel() {
+      return this.item ? "Update" : "Create";
+    },
+    submitUrl() {
+      return this.item
+        ? this.item.api_urls.update
+        : this.resource.api_urls.store;
+    },
   },
   methods: {
-    submit() {
-      this.clearErrors();
-      this.sharedForm.isLoading = true;
-      axios[this.method](this.action, this.form)
+    onSubmit({ data, onSuccess, onError }) {
+      axios[this.method](this.submitUrl, data)
         .then(({ data }) => {
+          onSuccess();
           this.$emit("success", data);
         })
-        .catch(({ response }) => {
-          this.sharedForm.errors = response.data.errors || {};
-          this.$emit("fail", response);
-        })
-        .finally(() => {
-          this.sharedForm.isLoading = false;
+        .catch((error) => {
+          onError(error.response.data.errors);
+          this.$emit("error", error);
         });
     },
-    clearErrors() {
-      this.sharedForm.errors = {};
-    }
   },
-  provide() {
-    return {
-      sharedForm: this.sharedForm
-    };
-  }
 };
 </script>
+
+<style scoped>
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--sp-10);
+}
+
+.create-btn {
+  background: var(--primary);
+  color: var(--primary-10);
+  border-radius: var(--br);
+  padding: var(--sp-3) var(--sp-7);
+  font-size: var(--fz-xs);
+  font-weight: var(--fw-bold);
+}
+</style>

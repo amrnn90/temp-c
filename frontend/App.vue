@@ -27,12 +27,12 @@ export default {
         /* webpackChunkName: "icon-sprite" */ "@/components/icon/IconSprite"
       ),
     TheHeader,
-    TheSidebar
+    TheSidebar,
   },
   data() {
     return {};
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
 

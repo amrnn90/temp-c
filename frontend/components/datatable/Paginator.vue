@@ -32,12 +32,12 @@ export default {
   props: {
     pagingInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     isDisabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     totalPages() {
@@ -57,14 +57,14 @@ export default {
     },
     isLastPage() {
       return this.currentPage == this.lastPage;
-    }
+    },
   },
   watch: {
     currentPage(currentPage) {
       if (currentPage > this.lastPage) {
         this.changePage(this.lastPage);
       }
-    }
+    },
   },
   methods: {
     handlePrev() {
@@ -81,8 +81,8 @@ export default {
     },
     changePage(pageNum) {
       this.$emit("page-selected", pageNum);
-    }
-  }
+    },
+  },
 };
 </script>
 

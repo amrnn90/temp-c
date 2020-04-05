@@ -1,20 +1,33 @@
 <template>
-  <div style="padding: var(--sp-6); border: 1px solid var(--primary-8)">
-    <div v-for="(field, index) in nestedFields" :key="index">
-      <resource-form-field
-        v-if="index < 100"
-        #default="{on, props}"
-        :field="field"
+  <resource-form-field #default="{inputProps, inputListeners}" :field="field">
+    <div style="padding: var(--sp-6); border: 1px solid var(--primary-8);">
+      <div
+        v-for="(nestedField, index) in nestedFields(inputProps.value)"
+        :key="index"
       >
-        <component :is="`${field.type}Input`" v-bind="props" v-on="on" />
-        <button type="button" @click="() => remove(index)">remove</button>
-      </resource-form-field>
+        <component
+          :is="`${nestedField.type}Input`"
+          :key="nestedField.name"
+          :field="nestedField"
+        />
+        <button
+          type="button"
+          @click="() => remove(index, inputProps.value, inputListeners.input)"
+        >
+          remove
+        </button>
+      </div>
+
+      <button
+        type="button"
+        @click="() => add(inputProps.value, inputListeners.input)"
+      >
+        add
+      </button>
+
+      <!-- <pre>{{field}}</pre> -->
     </div>
-
-    <button type="button" @click="add">add</button>
-
-    <!-- <pre>{{field}}</pre> -->
-  </div>
+  </resource-form-field>
 </template>
 
 <script>
@@ -36,32 +49,33 @@ export default {
     JsonInput,
     JsonArrayInput,
     LongTextInput,
-    ShortTextInput
+    ShortTextInput,
   },
-  props: ["field", "value", "name", "id", "hasError"],
-  computed: {
-    nestedFields() {
-      return (this.value || []).map((_, index) => {
+  props: {
+    field: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {},
+  methods: {
+    nestedFields(value) {
+      return (value || []).map((_, index) => {
         return {
           ...this.field.template_field,
-          name: `${this.name}.${index}`
+          name: `${this.field.name}.${index}`,
         };
       });
-    }
-  },
-  methods: {
-    add() {
-      const newValue = [...(this.value || []), null];
-      this.$emit("input", newValue);
     },
-    remove(index) {
-      const newValue = [
-        ...this.value.slice(0, index),
-        ...this.value.slice(index + 1)
-      ];
-      this.$emit("input", newValue);
-    }
-  }
+    add(value, inputListener) {
+      const newValue = [...(value || []), null];
+      inputListener(newValue);
+    },
+    remove(index, value, inputListener) {
+      const newValue = [...value.slice(0, index), ...value.slice(index + 1)];
+      inputListener(newValue);
+    },
+  },
 };
 </script>
 

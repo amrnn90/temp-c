@@ -19,5 +19,5 @@ export default {
   omitBy,
   isEqual,
   isNil,
-  cloneDeep
+  cloneDeep,
 };

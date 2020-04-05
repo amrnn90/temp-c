@@ -26,10 +26,10 @@
       accept="image/*"
       type="file"
       :name="name"
-      style="display: none"
+      style="display: none;"
       :multiple="multiple"
       @change="handleFileChange"
-      @click="ev => !multiple && images.length > 0 && ev.preventDefault()"
+      @click="(ev) => !multiple && images.length > 0 && ev.preventDefault()"
     />
   </div>
 </template>
@@ -43,33 +43,33 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     name: {
       type: String,
-      default: null
+      default: null,
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     uploadUrl: {
       type: String,
-      required: true
+      required: true,
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
     inputClass: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data() {
     return {
       images: [],
-      hasMounted: false
+      hasMounted: false,
     };
   },
   watch: {
@@ -80,35 +80,35 @@ export default {
           /* https://stackoverflow.com/q/60346823/4765497 */
           this.setWrapperSize();
         });
-      }
+      },
     },
     value: {
       immediate: true,
       handler(value) {
         value = value || [];
 
-        let newValues = value.filter(image => {
-          return !this.images.find(img => _.isEqual(image, img.value));
+        let newValues = value.filter((image) => {
+          return !this.images.find((img) => _.isEqual(image, img.value));
         });
 
-        let notRemovedImages = this.images.filter(img => {
+        let notRemovedImages = this.images.filter((img) => {
           return (
             img.state !== "persisted" ||
-            value.find(image => _.isEqual(image, img.value))
+            value.find((image) => _.isEqual(image, img.value))
           );
         });
 
         this.images = [
           ...notRemovedImages,
-          ...newValues.map(image => ({
+          ...newValues.map((image) => ({
             id: genId(),
             state: "persisted",
             preview: image.preview,
-            value: { ...image }
-          }))
+            value: { ...image },
+          })),
         ];
-      }
-    }
+      },
+    },
   },
   mounted() {},
   methods: {
@@ -152,15 +152,15 @@ export default {
         id: genId(),
         state: "uploading",
         preview: null,
-        progress: 0
+        progress: 0,
       };
 
       this.images = [...this.images, image];
 
       const reader = new FileReader();
 
-      reader.onload = ev => {
-        this.resize(ev.target.result, 127, dataURL => {
+      reader.onload = (ev) => {
+        this.resize(ev.target.result, 127, (dataURL) => {
           image.preview = dataURL;
           // this.previews[image.id] = dataURL;
           // this.$emit("input", [...(this.value || []), image]);
@@ -172,33 +172,33 @@ export default {
       axios
         .post(this.uploadUrl, formData, {
           headers: {
-            "Content-Type": "multipart/formdata"
+            "Content-Type": "multipart/formdata",
           },
-          onUploadProgress: progressEvent => {
+          onUploadProgress: (progressEvent) => {
             const percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
             image.progress = percentCompleted;
-          }
+          },
         })
         .then(({ data }) => {
-          const index = this.images.findIndex(img => img.id == image.id);
+          const index = this.images.findIndex((img) => img.id == image.id);
 
           image = {
             ...image,
             value: { ...data },
-            state: "persisted"
+            state: "persisted",
           };
 
           this.images = [
             ...this.images.slice(0, index),
             image,
-            ...this.images.slice(index + 1)
+            ...this.images.slice(index + 1),
           ];
 
           this.$emit("input", [...(this.value || []), data]);
         })
-        .catch(error => {
+        .catch((error) => {
           image.state = "error";
           console.log("error", error);
         });
@@ -220,8 +220,8 @@ export default {
         wrapperOuterWidth +
         (itemsCount - 1) * gridGap +
         "px";
-    }
-  }
+    },
+  },
 };
 </script>
 

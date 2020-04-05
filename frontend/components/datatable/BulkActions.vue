@@ -13,17 +13,16 @@ export default {
       return this.tableStore.getters("items") || [];
     },
     selectedItems() {
-      return this.tableStore.getters('selectedRows');
+      return this.tableStore.getters("selectedRows");
     },
     anyItemSelected() {
       return this.selectedItems && this.selectedItems.length > 0;
     },
     isLoading() {
       return this.tableStore.getters("isLoading");
-    }
+    },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

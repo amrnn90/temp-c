@@ -10,20 +10,23 @@ Vue.use(VueRouter);
 const resourceRoutes = store.getters["structure/routes"];
 
 const routes = [
-    ...resourceRoutes.index.map(route => ({
-        ...route,
-        component: ResourceIndex
-    })),
-    ...resourceRoutes.create.map(route => ({
-        ...route,
-        component: ResourceCreate
-    })),
-    ...resourceRoutes.edit.map(route => ({ ...route, component: ResourceEdit }))
+  ...resourceRoutes.index.map((route) => ({
+    ...route,
+    component: ResourceIndex,
+  })),
+  ...resourceRoutes.create.map((route) => ({
+    ...route,
+    component: ResourceCreate,
+  })),
+  ...resourceRoutes.edit.map((route) => ({
+    ...route,
+    component: ResourceEdit,
+  })),
 ];
 
 const router = new VueRouter({
-    routes,
-    mode: "history"
+  routes,
+  mode: "history",
 });
 
 export default router;

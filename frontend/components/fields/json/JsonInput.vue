@@ -1,18 +1,20 @@
 <template>
-  <div
-    style="padding: var(--sp-6); border: 3px solid var(--grey-10); border-radius: var(--br)"
-  >
-    <resource-form-field
-      v-for="field in nestedFields"
-      #default="{on, props}"
-      :key="field.name"
-      :field="field"
+  <resource-form-field :field="field">
+    <div
+      style="
+        padding: var(--sp-6);
+        border: 3px solid var(--grey-10);
+        border-radius: var(--br);
+      "
     >
-      <component :is="`${field.type}Input`" v-bind="props" v-on="on" />
-    </resource-form-field>
-
-    <!-- <pre>{{field}}</pre> -->
-  </div>
+      <component
+        :is="`${nestedField.type}Input`"
+        v-for="nestedField in nestedFields"
+        :key="nestedField.name"
+        :field="nestedField"
+      />
+    </div>
+  </resource-form-field>
 </template>
 
 <script>
@@ -34,19 +36,24 @@ export default {
     JsonInput,
     JsonArrayInput,
     LongTextInput,
-    ShortTextInput
+    ShortTextInput,
   },
-  props: ["field", "value", "name", "id", "hasError"],
+  props: {
+    field: {
+      type: Object,
+      required: true,
+    },
+  },
   computed: {
     nestedFields() {
-      return this.field.fields.map(field => {
+      return this.field.fields.map((nestedField) => {
         return {
-          ...field,
-          name: `${this.name}.${field.name}`
+          ...nestedField,
+          name: `${this.field.name}.${nestedField.name}`,
         };
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
