@@ -5,6 +5,7 @@ import pick from "lodash/pick";
 import omit from "lodash/omit";
 import omitBy from "lodash/omitBy";
 import isEqual from "lodash/isEqual";
+import isEmpty from "lodash/isEmpty";
 import isNil from "lodash/isNil";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -18,6 +19,7 @@ export default {
   omit,
   omitBy,
   isEqual,
+  isEmpty,
   isNil,
   cloneDeep,
 };
