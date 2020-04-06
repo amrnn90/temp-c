@@ -5,7 +5,7 @@
         "build": "node vuepack.js build"
     },
     "dependencies": {
-        "@amrnn/vue-form": "^1.0.8",
+        "@amrnn/vue-form": "^1.0.10",
         "@juggle/resize-observer": "^3.0.2",
         "@vue/composition-api": "^0.5.0",
         "animejs": "^3.1.0",
