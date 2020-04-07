@@ -4,8 +4,10 @@ import _ from "@/lodash";
 export default {
   methods: {
     layTable: _.throttle(
-      function () {
+      function() {
         if (!this.$refs.table) return;
+
+        this.resetColumnsWidths();
 
         const requiredWidths = this.resource.fields.reduce((acc, field) => {
           acc[field.name] = this.getColumnMaxWidth(field.name);
@@ -15,12 +17,11 @@ export default {
         const adjustedWidths = this.getAdjustedWidths(requiredWidths);
 
         this.hiddenColumns = Object.keys(adjustedWidths).filter(
-          (column) => adjustedWidths[column] == 0
+          column => adjustedWidths[column] == 0
         );
 
         this.$nextTick(() => {
           this.setColumnsWidths(adjustedWidths);
-          // this.isLoading = false;
         });
       },
       150,
@@ -32,9 +33,7 @@ export default {
       const cells = table.querySelectorAll(`.cell-${column}`);
 
       return Math.max(
-        ...Array.prototype.map.call(cells, (cell) =>
-          this.getCellAutoWidth(cell)
-        )
+        ...Array.prototype.map.call(cells, cell => this.getCellAutoWidth(cell))
       );
     },
     getCellAutoWidth(cell) {
@@ -58,7 +57,7 @@ export default {
         this.$refs.table.querySelector(".table-cells").offsetWidth - 50;
 
       let visibleFields = this.resource.fields.filter(
-        (field) => widths[field.name] != 0
+        field => widths[field.name] != 0
       );
       let totalWidth = Object.values(widths).reduce(
         (total, current) => total + current
@@ -72,16 +71,25 @@ export default {
           (total, current) => total + current
         );
         visibleFields = this.resource.fields.filter(
-          (field) => widths[field.name] != 0
+          field => widths[field.name] != 0
         );
       }
       return widths;
     },
+    resetColumnsWidths() {
+      const cells = this.$refs.table.querySelectorAll(
+        ".table-row-cell, .table-head-cell"
+      );
+
+      cells.forEach(cell => {
+        cell.style.removeProperty("width");
+      });
+    },
     setColumnsWidths(widths) {
       const table = this.$refs.table;
-      Object.keys(widths).forEach((column) => {
+      Object.keys(widths).forEach(column => {
         const cells = table.querySelectorAll(`.cell-${column}`);
-        cells.forEach((cell) => {
+        cells.forEach(cell => {
           cell.style.width = `${widths[column]}px`;
           if (widths[column] == 0) {
             cell.style.display = "none";
@@ -90,7 +98,7 @@ export default {
           }
         });
       });
-    },
+    }
   },
   mounted() {
     this.resizeObserver = new ResizeObserver(() => {
@@ -103,5 +111,5 @@ export default {
   },
   destroyed() {
     this.resizeObserver.disconnect();
-  },
+  }
 };

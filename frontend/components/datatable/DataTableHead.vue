@@ -38,26 +38,28 @@
           :class="`cell-${field.name}`"
           style="flex-grow: 1;"
           :style="{
-            paddingLeft: resource.title_field == field.name ? '60px' : '0',
+            paddingLeft: resource.title_field == field.name ? '60px' : '0'
           }"
         >
-          <strong>{{ field.label }}</strong>
-          <span class="table-head-cell-sort-icons">
-            <app-icon
-              name="chevron-up"
-              size="10"
-              stroke-width="2"
-              stroke="var(--grey-8)"
-              style=""
-            />
-            <app-icon
-              name="chevron-down"
-              size="10"
-              stroke-width="2"
-              stroke="var(--grey-6)"
-              style=""
-            />
-          </span>
+          <div class="table-head-cell-content">
+            <strong>{{ field.label }}</strong>
+            <span class="table-head-cell-sort-icons">
+              <app-icon
+                name="chevron-up"
+                size="10"
+                stroke-width="2"
+                stroke="var(--grey-8)"
+                style=""
+              />
+              <app-icon
+                name="chevron-down"
+                size="10"
+                stroke-width="2"
+                stroke="var(--grey-6)"
+                style=""
+              />
+            </span>
+          </div>
         </div>
       </div>
       <div class="table-head-post">
@@ -74,13 +76,13 @@ import BulkActions from "./BulkActions";
 export default {
   components: {
     CheckboxInput,
-    BulkActions,
+    BulkActions
   },
   props: {
     resource: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   inject: ["tableStoreNamespace"],
   computed: {
@@ -96,14 +98,14 @@ export default {
       },
       set(val) {
         this.tableStore.dispatch("updateFilters", { search: val });
-      },
-    },
+      }
+    }
   },
   methods: {
     toggleSelectAllRows() {
       this.tableStore.dispatch("toggleSelectAllRows");
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -196,7 +198,7 @@ export default {
   margin: 0 var(--table-row-cells-horizontal-margin);
 }
 
-.table-head-cell {
+.table-head-cell-content {
   display: flex;
   align-items: center;
 }

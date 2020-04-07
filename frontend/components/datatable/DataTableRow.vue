@@ -15,7 +15,7 @@
         >
           <component
             :is="`${field.type}Index`"
-            :field="row.fields.find((f) => f.name == field.name)"
+            :field="row.fields.find(f => f.name == field.name)"
             :item="row"
             :is-title-field="resource.title_field == field.name"
           />
@@ -60,22 +60,22 @@ export default {
     JsonIndex,
     JsonArrayIndex,
     LongTextIndex,
-    ShortTextIndex,
+    ShortTextIndex
   },
   props: {
     row: {
       type: Object,
-      required: true,
+      required: true
     },
     resource: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   inject: ["tableStoreNamespace"],
   data() {
     return {
-      isExpanded: false,
+      isExpanded: false
     };
   },
   computed: {
@@ -87,13 +87,13 @@ export default {
     },
     isSelectedRow() {
       return this.tableStore.getters("isSelectedRow", this.rowId);
-    },
+    }
   },
   methods: {
     toggleSelectRow() {
       this.tableStore.dispatch("toggleSelectRow", this.rowId);
-    },
-  },
+    }
+  }
 };
 </script>
 
