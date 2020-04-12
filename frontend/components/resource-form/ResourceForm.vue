@@ -3,7 +3,7 @@
     <div
       :style="{
         opacity: form.isLoading ? 0.5 : 1,
-        pointerEvents: form.isLoading ? 'none' : 'auto',
+        pointerEvents: form.isLoading ? 'none' : 'auto'
       }"
     >
       <component
@@ -45,17 +45,23 @@ export default {
     ImageInput,
     BooleanInput,
     JsonInput,
-    JsonArrayInput,
+    JsonArrayInput
   },
   props: {
     resource: { type: Object, required: true },
     item: { type: Object, default: null },
+    locales: { type: Array, default: () => [] }
   },
   setup(props) {
     const resourcesFormLocales = reactive({
       locale: "en",
       locales: props.locales,
+      setLocale
     });
+
+    function setLocale(locale) {
+      resourcesFormLocales.locale = locale;
+    }
 
     provide("RESOURCE_FORM_LOCALES", resourcesFormLocales);
   },
@@ -78,7 +84,7 @@ export default {
       return this.item
         ? this.item.api_urls.update
         : this.resource.api_urls.store;
-    },
+    }
   },
   methods: {
     onSubmit({ data, onSuccess, onError }) {
@@ -87,12 +93,12 @@ export default {
           onSuccess();
           this.$emit("success", data);
         })
-        .catch((error) => {
+        .catch(error => {
           onError(error.response.data.errors);
           this.$emit("error", error);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

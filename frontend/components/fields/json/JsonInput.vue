@@ -1,5 +1,5 @@
 <template>
-  <resource-form-field :field="field">
+  <resource-form-field :field="field" :on-focus="() => {}">
     <div
       style="
         padding: var(--sp-6);
@@ -36,24 +36,24 @@ export default {
     JsonInput,
     JsonArrayInput,
     LongTextInput,
-    ShortTextInput,
+    ShortTextInput
   },
   props: {
     field: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     nestedFields() {
-      return this.field.fields.map((nestedField) => {
+      return this.field.fields.map(nestedField => {
         return {
           ...nestedField,
-          name: `${this.field.name}.${nestedField.name}`,
+          name: `${this.field.name}.${nestedField.name}`
         };
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

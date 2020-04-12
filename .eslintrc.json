@@ -19,7 +19,8 @@
   },
   "plugins": ["vue"],
   "rules": {
-    "no-debugger": "warn"
+    "no-debugger": "warn",
+    "vue/name-property-casing": "off"
   },
   "settings": {}
 }

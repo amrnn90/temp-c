@@ -1,22 +1,25 @@
 <template>
-  <div class="input-field-wrapper" :class="{ 'has-error': formField.hasError }">
+  <div
+    v-if="!translatableField"
+    class="input-field-wrapper"
+    :class="{ 'has-error': formField.hasError }"
+  >
     <div v-if="showHeader" class="field-header">
       <label :for="formField.name" class="label">
         {{ formField.label }}
       </label>
-      <!-- <select
-          v-if="field.translatable"
-          id=""
-          v-model="sharedForm.locale"
-          name=""
+      <select
+        v-if="isTranslationField"
+        :value="resourceFormLocales.locale"
+        @input="e => resourceFormLocales.setLocale(e.target.value)"
+      >
+        <option
+          v-for="locale in resourceFormLocales.locales"
+          :key="locale"
+          :value="locale"
+          >{{ locale }}</option
         >
-          <option
-            v-for="locale in sharedForm.locales"
-            :key="locale"
-            :value="locale"
-            >{{ locale }}</option
-          >
-        </select> -->
+      </select>
       <div class="actions">
         <button
           v-if="showResetButton && formField.isUpdated"
@@ -40,57 +43,78 @@
         <span>{{ formField.error }}</span>
       </div>
     </div>
-
     <!-- <pre>{{ formField }}</pre> -->
+  </div>
+
+  <div v-else>
+    <resource-form-field
+      #default="bindTranslatableField"
+      :field="translatableField"
+      :is-translation-field="true"
+    >
+      <slot v-bind="bindTranslatableField" />
+    </resource-form-field>
   </div>
 </template>
 
 <script>
 import { useFormField } from "@amrnn/vue-form";
-import { reactive, computed, inject } from "@vue/composition-api";
-import _ from "@/lodash";
+import { computed, inject } from "@vue/composition-api";
+import ResourceFormField from "@/components/resource-form/ResourceFormField";
+
 export default {
+  name: "resource-form-field",
+  components: { ResourceFormField },
   props: {
     field: {
       type: Object,
-      required: true,
+      required: true
+    },
+    isTranslationField: {
+      type: Boolean,
+      default: false
     },
     showHeader: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showResetButton: {
       type: Boolean,
-      default: true,
+      default: true
     },
+    onFocus: {
+      type: Function,
+      default: null
+    }
   },
-  setup(props, { attrs }) {
-    const state = reactive({
-      isTranslatable: computed(() => !!props.field.translatable),
-      resourceFormLocales: inject("RESOURCE_FORM_LOCALES"),
+  setup(props) {
+    const resourceFormLocales = inject("RESOURCE_FORM_LOCALES");
+
+    const fieldName = computed(() => props.field.name);
+
+    const translatableField = computed(() => {
+      return props.field.translatable
+        ? {
+            ...props.field,
+            name: `${props.field.name}.${resourceFormLocales.locale}`,
+            translatable: false
+          }
+        : null;
     });
 
-    state.formField = useFormField(props.field.name, {
-      getValue,
-      setValue,
+    const formFieldOpts = {
       label: props.field.label,
-      ...attrs,
-    });
+      unsetIfNull: props.isTranslationField
+    };
 
-    function getValue(value) {
-      return state.isTranslatable
-        ? _.get(value, state.resourceFormLocales.locale)
-        : value;
+    if (props.onFocus) {
+      formFieldOpts.onFocus = props.onFocus;
     }
 
-    function setValue(newValue, oldValue) {
-      return state.isTranslatable
-        ? { ...(oldValue || {}), [state.resourceFormLocales.locale]: newValue }
-        : newValue;
-    }
+    const formField = useFormField(fieldName, formFieldOpts);
 
-    return state;
-  },
+    return { formField, resourceFormLocales, translatableField };
+  }
 };
 </script>
 

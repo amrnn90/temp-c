@@ -49,13 +49,13 @@ export default {
     JsonInput,
     JsonArrayInput,
     LongTextInput,
-    ShortTextInput,
+    ShortTextInput
   },
   props: {
     field: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {},
   methods: {
@@ -63,7 +63,7 @@ export default {
       return (value || []).map((_, index) => {
         return {
           ...this.field.template_field,
-          name: `${this.field.name}.${index}`,
+          name: `${this.field.name}.${index}`
         };
       });
     },
@@ -74,8 +74,8 @@ export default {
     remove(index, value, inputListener) {
       const newValue = [...value.slice(0, index), ...value.slice(index + 1)];
       inputListener(newValue);
-    },
-  },
+    }
+  }
 };
 </script>
 

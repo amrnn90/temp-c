@@ -158,7 +158,7 @@ class PostResource
                 ->canView(function ($user, $post) {
                     return true;
                 }),
-            // ShortText::make('trans'),
+            ShortText::make('trans'),
 
             LongText::make('body')
                 ->rules('required|min:10')
