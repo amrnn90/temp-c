@@ -117,21 +117,21 @@ abstract class Field
     return [$this->nestedName() => $this->updateRules];
   }
 
-  public function getViewValue($model, $path)
+  public function getViewValue($model, $modelSlice)
   {
-    return $this->checkCanView($model) ? data_get($model, $path) : null;
+    return $this->checkCanView($model) ? $modelSlice : null;
   }
 
-  public function getCreateValue($model, $path, $value) 
+  public function getCreateValue($model, $modelSlice, $requestSlice)
   {
-    return $this->getUpdateValue($model, $path, $value);
+    return $this->getUpdateValue($model, $modelSlice, $requestSlice);
   }
 
-  public function getUpdateValue($model, $path, $value) 
+  public function getUpdateValue($model, $modelSlice, $requestSlice)
   {
-    if (!$this->checkCanSet($model)) return data_get($model, $path);
+    if (!$this->checkCanSet($model)) return $modelSlice;
 
-    return $value;
+    return $requestSlice;
   }
 
   public function structure()
@@ -141,6 +141,7 @@ abstract class Field
       'nested_name' => $this->nestedName(),
       'label' => $this->label,
       'type' => $this->fieldType(),
+      'translatable' => $this->isTranslatable(),
       'options' => $this->options(),
     ];
   }
@@ -150,6 +151,11 @@ abstract class Field
     return array_merge($this->structure(), [
       'abilities' => $this->abilitiesForModel($model),
     ]);
+  }
+
+  public function isTranslatable()
+  {
+    return in_array($this->nestedName(), data_get($this->resource->model(), 'translatable', []));
   }
 
   protected function abilitiesForModel($model)

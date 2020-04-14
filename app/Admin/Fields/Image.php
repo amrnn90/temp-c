@@ -26,15 +26,13 @@ class Image extends Field
     return $this;
   }
 
-  public function getViewValue($model, $path)
+  public function getViewValue($model, $modelSlice)
   {
-    $files = parent::getViewValue($model, $path);
+    $files = parent::getViewValue($model, $modelSlice);
 
-    if (!$files) {
-      return [];
-    }
+    if (!$files) return $files;
 
-    $files = is_string($files) ? json_decode($files, true) : json_decode(json_encode($files), true);
+    $files = is_array($files) ? $files : json_decode($files, true);
 
 
     if (!isset($files[0])) {
@@ -46,18 +44,16 @@ class Image extends Field
     });
   }
 
-  public function getCreateValue($model, $path, $value)
+  public function getCreateValue($model, $modelSlice, $requestSlice)
   {
-    return $this->getUpdateValue($model, $path, $value);
+    return $this->getUpdateValue($model, $modelSlice, $requestSlice);
   }
 
-  public function getUpdateValue($model, $path, $value)
+  public function getUpdateValue($model, $modelSlice, $requestSlice)
   {
-    if (!$this->checkCanSet($model)) return data_get($model, $path);
+    if (!$this->checkCanSet($model)) return $modelSlice;
 
-    $name = $this->name();
-
-    $files = collect($value) ?? [];
+    $files = collect($requestSlice) ?? [];
 
     $files = $files->map(function ($file) {
       return Arr::only($file, ['path', 'disk', 'meta']);

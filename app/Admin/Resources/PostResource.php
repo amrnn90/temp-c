@@ -82,7 +82,7 @@ class PostResource
             'id' => $this->getModelId($model),
             'fields' => $this->getFields()->map(function ($field) use ($model) {
                 return array_merge($field->structureForModel($model), [
-                    'data' => $field->getViewValue($model, $field->nestedName()),
+                    'data' => $field->getViewValue($model, $this->getModelSlice($model, $field)),
                 ]);
             })
         ];
@@ -129,8 +129,7 @@ class PostResource
         $model = $this->model();
 
         $this->getFields()->each(function ($field) use ($request, $model) {
-            // $field->createDataForModel($request->get($field->name()), $model);
-            $model->{$field->name()} = $field->getCreateValue($model, $field->nestedName(), $request->get($field->name()));
+            $model->{$field->name()} = $field->getCreateValue($model, $this->getModelSlice($model, $field), $request->get($field->name()));
         });
 
         $model->save();
@@ -142,12 +141,17 @@ class PostResource
     {
         $this->getFields()->each(function ($field) use ($request, $model) {
             // $field->updateDataForModel($request->get($field->name()), $model);
-            $model->{$field->name()} = $field->getUpdateValue($model, $field->nestedName(), $request->get($field->name()));
+            $model->{$field->name()} = $field->getUpdateValue($model, $this->getModelSlice($model, $field), $request->get($field->name()));
         });
 
         $model->save();
 
         return $model;
+    }
+
+    protected function getModelSlice($model, $field)
+    {
+        return $field->isTranslatable() ? $model->getTranslations($field->name()) : $model->{$field->name()};
     }
 
     protected function fields()
@@ -176,8 +180,8 @@ class PostResource
                 ->rules('present'),
 
             Image::make('image')
-                ->multiple(),
-            // ->rules('required')
+                ->multiple()
+                ->rules('required'),
 
             Json::make('sections')
                 ->fields(function () {

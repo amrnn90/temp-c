@@ -51,40 +51,40 @@ class Json extends Field
     return "{$this->nestedName()}.{$child->name()}";
   }
 
-  public function getViewValue($model, $path)
+  public function getViewValue($model, $modelSlice)
   {
-    $data = parent::getViewValue($model, $path);
+    $data = parent::getViewValue($model, $modelSlice);
 
     if (!$data) return $data;
 
-    $data = is_string($data) ? json_decode($data) : (object) $data;
+    $data = is_array($data) ? $data : json_decode($data, true);
 
-    $this->getFields()->each(function ($field) use ($model, $path, &$data) {
-      $data->{$field->name()} = $field->getViewValue($model, $field->nestedName());
-    }); 
+    $this->getFields()->each(function ($field) use ($model, &$data) {
+      $data[$field->name()] = $field->getViewValue($model, $data[$field->name()]);
+    });
 
     return $data;
   }
 
-  public function getCreateValue($model, $path, $value)
+  public function getCreateValue($model, $modelSlice, $requestSlice)
   {
-    return $this->getMutationValue($model, $path, $value, 'create');
+    return $this->getMutationValue($model, $modelSlice, $requestSlice, 'create');
   }
 
 
-  public function getUpdateValue($model, $path, $value)
+  public function getUpdateValue($model, $modelSlice, $requestSlice)
   {
-    return $this->getMutationValue($model, $path, $value, 'update');
+    return $this->getMutationValue($model, $modelSlice, $requestSlice, 'update');
   }
 
-  public function getMutationValue($model, $path, $value, $method)
+  public function getMutationValue($model, $modelSlice, $requestSlice, $method)
   {
-    if (!$this->checkCanSet($model)) return data_get($model, $path);
+    if (!$this->checkCanSet($model)) return $modelSlice;
 
     $result = [];
 
-    $this->getFields()->each(function ($field) use ($model, $value,  $method, &$result) {
-      $result[$field->name()] = $field->{"get{$method}Value"}($model, $field->nestedName(), data_get($value, $field->name()));
+    $this->getFields()->each(function ($field) use ($model, $modelSlice, $requestSlice,  $method, &$result) {
+      $result[$field->name()] = $field->{"get{$method}Value"}($model, data_get($modelSlice, $field->name()), data_get($requestSlice, $field->name()));
     });
 
     return $result;

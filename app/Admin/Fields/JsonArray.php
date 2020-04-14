@@ -52,46 +52,42 @@ class JsonArray extends Field
     return "{$this->nestedName()}.*";
   }
 
-  public function getViewValue($model, $path)
+  public function getViewValue($model, $modelSlice)
   {
-    $data = parent::getViewValue($model, $path);
+    $data = parent::getViewValue($model, $modelSlice);
 
     if (!$data) return $data;
 
-    $data = is_string($data) ? json_decode($data, true) : (array) $data;
+    $data = is_array($data) ? $data : json_decode($data, true);
 
     for ($i = 0; $i < count($data); $i++) {
-      $itemPath = $path . '.' . $i;
-      $data[$i] = $this->getTemplateField()->getViewValue($model, $itemPath);
+      $data[$i] = $this->getTemplateField()->getViewValue($model, $data[$i]);
     }
 
     return $data;
   }
 
-
-
-  public function getCreateValue($model, $path, $value)
+  public function getCreateValue($model, $modelSlice, $requestSlice)
   {
-    return $this->getMutationValue($model, $path, $value, 'create');
+    return $this->getMutationValue($model, $modelSlice, $requestSlice, 'create');
   }
 
 
-  public function getUpdateValue($model, $path, $value)
+  public function getUpdateValue($model, $modelSlice, $requestSlice)
   {
-    return $this->getMutationValue($model, $path, $value, 'update');
+    return $this->getMutationValue($model, $modelSlice, $requestSlice, 'update');
   }
 
-  public function getMutationValue($model, $path, $value, $method)
+  public function getMutationValue($model, $modelSlice, $requestSlice, $method)
   {
-    if (!$this->checkCanSet($model)) return data_get($model, $path);
+    if (!$this->checkCanSet($model)) return $modelSlice;
 
-    $value = $value ?? [];
-    
+    $requestSlice = (array) $requestSlice ?? [];
+
     $result = [];
 
-    for ($i = 0; $i < count($value); $i++) {
-      $itemPath = $path . '.' . $i;
-      $result[$i] = $this->getTemplateField()->{"get{$method}Value"}($model, $itemPath, data_get($value, $i));
+    for ($i = 0; $i < count($requestSlice); $i++) {
+      $result[$i] = $this->getTemplateField()->{"get{$method}Value"}($model, data_get($modelSlice, $i), data_get($requestSlice, $i));
     }
 
     return $result;
@@ -114,5 +110,4 @@ class JsonArray extends Field
 
     return $rules;
   }
-
 }
