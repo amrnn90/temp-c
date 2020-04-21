@@ -56,6 +56,8 @@ class AdminServiceProvider extends ServiceProvider
                                 Route::patch('{resource}/{id}', 'AdminController@update')->name('update');
                                 Route::delete('{resource}/{id}', 'AdminController@destroy')->name('destroy');
 
+                                Route::get('select-items/{resource}/{field}', 'SelectItemsController@index')->name('select-items');
+
                                 Route::post('upload/{resource}/{field}', 'UploadController@upload')->name('upload');
                             });
 

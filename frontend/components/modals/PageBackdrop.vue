@@ -42,13 +42,10 @@ export default {
       document.body.style.setProperty("padding-right", bodyScrollbarWidth);
       this.$el.style.setProperty("padding-right", bodyScrollbarWidth);
     }
-
-    console.log("mounted");
   },
   destroyed() {
     window.removeEventListener("keydown", this.escapeListener);
     /* Removing body styles is in a transition hook: afterLeave() */
-    console.log("destroyed");
   },
   methods: {
     /* https://stackoverflow.com/a/13382873 */

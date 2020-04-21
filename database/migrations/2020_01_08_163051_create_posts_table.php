@@ -18,6 +18,7 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('body');
             $table->timestamp('published_at')->nullable();
+            $table->enum('category', ['Fashion', 'Health', 'Programming', 'Politics'])->nullable();
             $table->boolean('featured')->default(false);
             $table->json('image')->nullable();
             $table->json('sections')->nullable();

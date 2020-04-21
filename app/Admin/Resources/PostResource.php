@@ -9,6 +9,7 @@ use App\Admin\Fields\Boolean;
 use App\Admin\Fields\Image;
 use App\Admin\Fields\Json;
 use App\Admin\Fields\JsonArray;
+use App\Admin\Fields\Select;
 use App\Post;
 use Str;
 
@@ -163,6 +164,17 @@ class PostResource
                     return true;
                 }),
             ShortText::make('trans'),
+
+            // Select::make('category')->items(['first', 'second', 'third']),
+            Select::make('category')->items(function ($query) {
+                return collect([
+                    ['label' => 'first', 'value' => 'firstVal'],
+                    ['label' => 'second', 'value' => 'secondVal'],
+                    ['label' => 'third', 'value' => 'thirdVal'],
+                ])->filter(function ($item) use ($query) {
+                    return $query ? \Str::contains($item['label'], $query) : true;
+                });
+            })->labelBy('label')->trackBy('value')->searchable(),
 
             LongText::make('body')
                 ->rules('required|min:10')

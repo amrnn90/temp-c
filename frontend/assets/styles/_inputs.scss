@@ -1,5 +1,5 @@
 .field-input {
-  display: block; 
+  display: block;
   width: 100%;
   background: hsl(var(--primary-hue), 100%, 99%);
   border-radius: var(--br);
@@ -10,5 +10,16 @@
 
   &.has-error {
     border-color: var(--danger-8);
+
+    &:focus,
+    &:focus-within {
+      box-shadow: 0 0 2px hsla(var(--danger-v-7), 0.6);
+    }
+  }
+
+  &:focus,
+  &:focus-within {
+    outline: none;
+    box-shadow: 0 0 4px hsla(var(--primary-v-7), 0.6);
   }
 }

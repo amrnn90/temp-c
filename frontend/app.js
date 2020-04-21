@@ -35,12 +35,20 @@ console.info("structure:", window.structure);
  */
 
 // eslint-disable-next-line no-undef
-const files = require.context("./", true, /App[A-Z]\w+\.vue$/i);
-files
-  .keys()
-  .map((key) =>
-    Vue.component(key.split("/").pop().split(".")[0], files(key).default)
-  );
+const files = require.context(
+  "./",
+  true,
+  /(App[A-Z]\w+)|(fields\/.*Index)|(fields\/.*Input)\.vue$/i
+);
+files.keys().map(key =>
+  Vue.component(
+    key
+      .split("/")
+      .pop()
+      .split(".")[0],
+    files(key).default
+  )
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -49,7 +57,7 @@ files
  */
 
 new Vue({
-  render: (h) => h(App),
+  render: h => h(App),
   router,
-  store,
+  store
 }).$mount("#app");

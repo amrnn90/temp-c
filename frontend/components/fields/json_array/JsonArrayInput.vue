@@ -32,24 +32,10 @@
 
 <script>
 import ResourceFormField from "@/components/resource-form/ResourceFormField";
-import BooleanInput from "@/components/fields/boolean/BooleanInput";
-import DateInput from "@/components/fields/date/DateInput";
-import ImageInput from "@/components/fields/image/ImageInput";
-import JsonInput from "@/components/fields/json/JsonInput";
-import JsonArrayInput from "@/components/fields/json_array/JsonArrayInput";
-import LongTextInput from "@/components/fields/long_text/LongTextInput";
-import ShortTextInput from "@/components/fields/short_text/ShortTextInput";
 
 export default {
   components: {
-    ResourceFormField,
-    BooleanInput,
-    DateInput,
-    ImageInput,
-    JsonInput,
-    JsonArrayInput,
-    LongTextInput,
-    ShortTextInput
+    ResourceFormField
   },
   props: {
     field: {

@@ -27,25 +27,12 @@
 <script>
 import { reactive, provide } from "@vue/composition-api";
 import { BaseForm } from "@amrnn/vue-form";
-import ShortTextInput from "@/components/fields/short_text/ShortTextInput";
-import LongTextInput from "@/components/fields/long_text/LongTextInput";
-import DateInput from "@/components/fields/date/DateInput";
-import ImageInput from "@/components/fields/image/ImageInput";
-import BooleanInput from "@/components/fields/boolean/BooleanInput";
-import JsonInput from "@/components/fields/json/JsonInput";
-import JsonArrayInput from "@/components/fields/json_array/JsonArrayInput";
+
 import axios from "@/axios";
 
 export default {
   components: {
-    BaseForm,
-    ShortTextInput,
-    LongTextInput,
-    DateInput,
-    ImageInput,
-    BooleanInput,
-    JsonInput,
-    JsonArrayInput
+    BaseForm
   },
   props: {
     resource: { type: Object, required: true },
